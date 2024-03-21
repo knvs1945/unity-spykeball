@@ -110,7 +110,6 @@ public class PlayerHandler : Handler
         if (playerObj) {
             playerObj.Player.IsControlDisabled = true;
             playerObj.Player.transform.position = currentPlayerSpawn.position;
-            consoleUI.Log("Starting level in...");
             StartCoroutine(prepPlayerForStage());   // countdown before starting the stage
             Debug.Log("Player now able to use controls");
         }
@@ -125,7 +124,6 @@ public class PlayerHandler : Handler
         float Timer = stageIntroTimer;
         
         while (Timer >= 0) {
-            consoleUI.Log(Timer.ToString());
             yield return new WaitForSeconds(1);
             Timer--;            
         }

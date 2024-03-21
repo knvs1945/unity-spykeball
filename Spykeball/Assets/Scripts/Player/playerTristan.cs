@@ -11,14 +11,10 @@ using UnityEngine;
 public class PlayerTristan : PlayerUnit
 {
     // public entries
-    public Projectiles attackEffect;
+    // public Projectiles attackEffect;
     public Transform frontSide, attackPoint, notePoint, bodyPoint;
     
     // Arrays and Lists
-    public MusicNote[] skillNotes;
-    protected List<MusicNote> noteList;
-    protected int[] skillCombo = new int[4];    // skill activation requires four notes
-    private List<Buff> buffsToRemove;
     
     // will contain the stats for the character to be set on the UI
     public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange; 
@@ -40,8 +36,6 @@ public class PlayerTristan : PlayerUnit
     protected Animator animBody;
 
     // Testing items here;
-    public ActiveFireball skill1;
-    public BuffSpeedUp1 skill2;
     
     // Start is called before the first frame update
     protected override void Start()
@@ -50,11 +44,8 @@ public class PlayerTristan : PlayerUnit
         
         rbBody = GetComponent<Rigidbody2D>();
         animBody = body.GetComponent<Animator>();
-        noteList = new List<MusicNote>();
         initializeStats();
-        initSkillTesting();
-        resetTapCheckerStats();
-
+        
         // temporarily enable god mode;
         // isImmune = true;
     }
@@ -63,13 +54,7 @@ public class PlayerTristan : PlayerUnit
     void Update()
     {
         if (!isControlDisabled) {
-            checkIfAlive();
             inputMovement();
-            checkForSkillTaps();
-        }
-        // check these stuff if the player is still alive
-        if (isAlive) { 
-            buffListManagement();
         }
     }
 
@@ -80,12 +65,11 @@ public class PlayerTristan : PlayerUnit
     }
 
     // ================ Stats and Status sequences start here  ================ //
-    private void checkIfAlive () {
-        isAlive = checkHPifAlive() ? true : false;
-    }
+
 
     // use this class at the start of every game
     private void initializeStats() {
+        /*
         ATKbase = base_ATKbase;
         ATKmax = base_ATKmax;
         ATKdelay = base_ATKdelay;
@@ -96,6 +80,12 @@ public class PlayerTristan : PlayerUnit
 
         // reset the skills used
         skillList = new SkillManager(this);
+        */
+    }
+
+    /*
+    private void checkIfAlive () {
+        isAlive = checkHPifAlive() ? true : false;
     }
 
     // reset tap checker stats here
@@ -117,12 +107,13 @@ public class PlayerTristan : PlayerUnit
             }
         }
     }
+    */
 
     // ================ Input action sequences start here  ================ //
     // Input for moving player
     private void inputMovement() {
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        moveData = moveInput.normalized * (moveSpeed + playerBuffs.moveSpeed);
+        moveData = moveInput.normalized * moveSpeed;
 
         // add default keycode for up, down left and right arrows
         if (Input.GetKeyDown(controls.MoveUp) || Input.GetKeyDown(KeyCode.UpArrow)) setAnimationWalking(1, true);
@@ -148,26 +139,29 @@ public class PlayerTristan : PlayerUnit
         canAttack = true;
     }
 
+    /*
     // disable the damage shield as needed
     private void updateDamageShield() {
         isdamageShldActive = false;
     }
+    */
 
     //  ================ animation sequences start here  ================ //
     private void setAnimationWalking(int direction, bool isWalking) {
         animBody.SetBool("isWalking", isWalking);
-        if (direction > 0) animBody.SetInteger("walkDirection", direction);
+        // if (direction > 0) animBody.SetInteger("walkDirection", direction);
     }
 
     private void animateAttack() {
-        Projectiles tempSlash; 
+        /*Projectiles tempSlash; 
         int frontSideRotation = 0;
         frontSideRotation = animBody.GetInteger("walkDirection");
         animBody.SetTrigger("normalAttack");
         tempSlash = Instantiate(attackEffect, attackPoint.position, attackPoint.rotation);
-        tempSlash.DMG = Random.Range(base_ATKbase, base_ATKmax) + playerBuffs.ATKmin;
+        tempSlash.DMG = Random.Range(base_ATKbase, base_ATKmax) + playerBuffs.ATKmin;*/
     }
     
+    /*
     // do on takes damage
     protected override void doOnTakeDamage(float DMG) {
         Debug.Log("Getting damaged: " + isdamageShldActive);
@@ -302,10 +296,12 @@ public class PlayerTristan : PlayerUnit
         }
 
     }
+    */
 
     //  ================ testing sequences start here  ================ //
 
     private void initSkillTesting() {
+        /*
         // temporary skills here;
         skill1.DMG = base_ATKbase;
         skill1.SPEED = 30;
@@ -322,6 +318,7 @@ public class PlayerTristan : PlayerUnit
         // add those skills to the skillList
         skillList.addSkill(skill1);
         skillList.addSkill(skill2);
+        */
     }
 
 }

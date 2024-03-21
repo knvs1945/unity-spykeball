@@ -31,6 +31,6 @@ public class Handler : MonoBehaviour
     protected static int gameStage = 1;
 
     // A goal will inform its handler that it has been completed
-    public virtual void goalCompleted (Goal goal) { }
-    public virtual void goalFailed (Goal goal) { }
+    // public virtual void goalCompleted (Goal goal) { }
+    // public virtual void goalFailed (Goal goal) { }
 }

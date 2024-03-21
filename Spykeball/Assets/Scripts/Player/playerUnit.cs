@@ -11,13 +11,9 @@ public class PlayerUnit : GameUnit
 {    
     
     // Managers
-    protected BuffManager buffList = new BuffManager();
-    protected SkillManager skillList;
-
     protected PlayerControls controls;
     protected bool isControlDisabled = true, isdamageShldActive = false;
-    protected buffStatsList playerBuffs;
-
+    
     public float base_DMGdelay; // damage shield between damage instances
 
     [SerializeField]
@@ -67,50 +63,9 @@ public class PlayerUnit : GameUnit
     }
 
     protected void updateHPBar() {
-        consoleUI.Log("Updating HP Bar: " + HP);
         PlayerUnit.updatePlayerHPBar();    // inform the playerHandler that the HP bar needs updating
     }
 
     // overridden methods from gameUnit. factor should be -1 if removing a buff
-    public override void addBuff(float amount, string statname, Buff buffToAdd, int factor = 1, bool isRemoveBuff = false) {
-        // no use for buffs if it's less than zero;
-        if (amount <= 0) return;
 
-        amount *= factor;
-        switch (statname) {
-            case "hp":
-            case "HP":  playerBuffs.HPmin += amount;
-                        break;
-            case "movespeed":
-            case "MOVESPEED":   playerBuffs.moveSpeed += amount;
-                                break;
-            case "atkmin":
-            case "ATKMIN": playerBuffs.ATKmin += amount;
-                            break;
-        }
-        if (!isRemoveBuff) {
-            Debug.Log("Add Buff Started: " + amount);
-            buffList.addBuffToList(buffToAdd);
-        }
-    }
-
-}
-
-// class for keeping buff stats for easier management
-public class buffStatsList{
-    public float HPmin, moveSpeed, ATKmin;
-
-    // constructor here
-    public buffStatsList (float hpmin = 0, float movespeed = 0, float atkmin = 0) {
-        HPmin = hpmin;
-        moveSpeed = movespeed;
-        ATKmin = ATKmin;
-    }
-
-    // force resetStats here;
-    public void resetStats () {
-        HPmin = 0;
-        moveSpeed = 0;
-        ATKmin = 0;
-    }
 }

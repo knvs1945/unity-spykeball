@@ -8,16 +8,7 @@ public class GameHandler : Handler
     
     [SerializeField]
     protected PlayerHandler playerHandle;
-    [SerializeField]
-    protected RhythmHandler rhythmHandle;
-    [SerializeField]
-    protected EnemyHandler enemyHandle;
-    [SerializeField]
-    protected GoalHandler goalHandle;
-    [SerializeField]
-    protected MapHandler mapHandle;
     private bool stagePrepFlag;
-
 
     // Start is called before the first frame update
 
@@ -28,7 +19,6 @@ public class GameHandler : Handler
 
         // test setBPM
         // RhythmHandler.setBPM(60);
-        consoleUI.Log("State: " + GameHandler.getGameState());
 
         // move this somewhere else once startLevel works
         startLevel();
@@ -57,6 +47,7 @@ public class GameHandler : Handler
     */
     public bool startLevel() {
         stagePrepFlag = false;
+        /*
         if (gameState != states.inStage) {
             Debug.Log("GameHandler: starting level...");
            
@@ -70,6 +61,7 @@ public class GameHandler : Handler
                     else Debug.Log ("An error occurred during stage preparation.");
                 }));
             }
+        */
         return stagePrepFlag;
     }
 
@@ -77,11 +69,13 @@ public class GameHandler : Handler
     IEnumerator startStagePreps(Action<bool> checkPrepDone) {
         yield return StartCoroutine(mapGoalsStagePrep());
         
-        checkPrepDone(stagePrepFlag); // all coroutines returned properly so we return true
+        // checkPrepDone(stagePrepFlag); // all coroutines returned properly so we return true
     }
 
     IEnumerator mapGoalsStagePrep() {
+        
         bool success = false;
+        /*
         string defaultGoalTitle = "Destroy Obelisks";
         string defaultGoalDesc = "Destroy the obelisk block the next area";
         Goal thisGoal, prevGoal = null;
@@ -112,12 +106,14 @@ public class GameHandler : Handler
             yield return StartCoroutine(enemyStagePrep());
             success = true;
         }
+        */
         yield return success;
-
     }
 
     IEnumerator enemyStagePrep() {
+        
         bool success = false;
+        /*
         Enemy tempEnemy;
         int monsterCount = 5;
         float distanceFromGK = 3f;
@@ -132,22 +128,29 @@ public class GameHandler : Handler
         }
         success = true;
         yield return StartCoroutine(playerStagePrep());
+        */
         yield return success;
     }
     
     IEnumerator playerStagePrep() {
         bool success = false;
+        /*
+        
         if (playerHandle.startStageSequence()) {
             // call rhythm stage prep next
             yield return StartCoroutine(rhythmStagePrep());
             success = true;
         }
         else stagePrepFlag = true;
+        */
         yield return success;
+        
     }
 
     IEnumerator rhythmStagePrep() {
         
+        bool success = false;
+        /*
         yield return new WaitForSeconds(stageIntroTimer + 1);
         bool success = false;
         goalHandle.IsCheckingGoals = true;
@@ -156,7 +159,9 @@ public class GameHandler : Handler
         // enemyHandle.startGenerator(0,1); // start spawning monsters    
         // Enemy.isEnemyEnabled = true; // true = unpauses the enemy
         success = true;
-        // yield return success;
+        
+        */
+        yield return success;
     }
 
 
