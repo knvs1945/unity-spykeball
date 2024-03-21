@@ -33,14 +33,15 @@ public class PlayerHandler : Handler
         playerObj.Controls = controlPlayer1;
 
         // get the HP bar of the player
-        playerHP = GameObject.Find("PlayerHP").GetComponent<Slider>();
-        playerHP.value = playerObj.Player.HP;
-        HPBarPos = playerHP.transform.localPosition;
+        // playerHP = GameObject.Find("PlayerHP").GetComponent<Slider>();
+        // playerHP.value = playerObj.Player.HP;
+        // HPBarPos = playerHP.transform.localPosition;
 
         do {
             if (playerObj != null) {
                 // register to event when player gets damaged
-                PlayerUnit.updatePlayerHPBar += updatePlayerHPBar;
+                // PlayerUnit.updatePlayerHPBar += updatePlayerHPBar;
+                playerObj.Player.IsControlDisabled = false;
                 Debug.Log("Registering updatePlayerHPBar event...");
             }
         } while (playerObj == null);
