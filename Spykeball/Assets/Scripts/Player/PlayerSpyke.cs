@@ -17,11 +17,11 @@ public class PlayerSpyke : PlayerUnit
     // Arrays and Lists
     
     // will contain the stats for the character to be set on the UI
-    public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_JumpPower; 
+    public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_JumpPower, base_PushPower; 
 
     // objects 
     private Rigidbody2D rbBody;
-    private Vector2 moveInput, moveData;
+    private Vector2 moveInput, moveData, currentGravity;
 
     // primitives    
     private int castCounter = 0, xDirection = 1, jumpXDirection = 0;
@@ -45,6 +45,8 @@ public class PlayerSpyke : PlayerUnit
         
         rbBody = GetComponent<Rigidbody2D>();
         animBody = GetComponent<Animator>();
+        currentGravity = Physics2D.gravity;
+        Debug.Log("Gravity Check: " + currentGravity);
         initializeStats();
         
         // temporarily enable god mode;
@@ -76,9 +78,8 @@ public class PlayerSpyke : PlayerUnit
 
     void FixedUpdate()
     {
-        // move the rigidbody here
-        // rbBody.MovePosition(rbBody.position + moveData * Time.fixedDeltaTime);
-        if (!isJumping) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
+        // move the rigidbody here. 
+        if (!isJumping && !isFalling) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
     }
 
     // ================ Stats and Status sequences start here  ================ //
@@ -91,15 +92,8 @@ public class PlayerSpyke : PlayerUnit
         ATKmax = base_ATKmax;
         ATKdelay = base_ATKdelay;
         ATKRange = base_ATKRange;
-
-        // reset the buffStatsList;
-        playerBuffs = new buffStatsList(0, 0, 0);
-
-        // reset the skills used
-        skillList = new SkillManager(this);
         */
     }
-
 
     // ================ Input action sequences start here  ================ //
     // Input for moving player
@@ -174,17 +168,28 @@ public class PlayerSpyke : PlayerUnit
     // check if it is still falling
     private bool checkIfFalling() {
         bool isfalling = false;
-        if (rbBody.velocity.y < -1) isfalling = true;
+        if (rbBody.velocity.y < 0) {
+            isfalling = true;
+        }
         return isfalling;
     }
 
     private bool checkIfLanded() {
         bool isLanded = false;
-        if (Mathf.Abs(rbBody.velocity.y) < 0.01f)  {
-            animBody.SetTrigger("hasLanded");
+        if (Mathf.Abs(rbBody.velocity.y) < 0.1f)  {
+            rbBody.velocity = new Vector2(0,0); // reset the velocity to prevent weird movement on the next jump
             isLanded = true;
         }
         return isLanded;
+    }
+
+    //  ================ collision sequences start here  ================ //
+
+    protected void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider.tag == "Ball") {
+            Debug.Log("Pushing ball");
+            collision.collider.GetComponent<Rigidbody2D>().AddForce(new Vector2(rbBody.velocity.x, base_PushPower));
+        }
     }
 
 
