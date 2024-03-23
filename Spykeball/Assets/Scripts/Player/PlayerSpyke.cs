@@ -247,7 +247,7 @@ public class PlayerSpyke : PlayerUnit
             if ((hitObject != null) && (hitObject.gameObject.name == "Player Ball")) {
                 // apply force to the ball using 
                 ballPower = hitObject.gameObject.GetComponent<Rigidbody2D>();
-                power = Mathf.Max(Mathf.Abs(ballPower.velocity.y) * base_ATKbase, base_ATKbase));
+                power = Mathf.Max(Mathf.Abs(ballPower.velocity.y) * base_ATKbase, base_ATKbase);
                 Debug.Log("Power: " + power);
                 ballPower.AddForce(new Vector2(rbBody.velocity.x,power));
                 doOnHitBall(scoreOnStrikeBall); // update the score
