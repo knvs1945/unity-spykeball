@@ -8,6 +8,9 @@ public class GameHandler : Handler
     
     [SerializeField]
     protected PlayerHandler playerHandle;
+
+    [SerializeField]
+    protected UIHandler UIHandle;
     private bool stagePrepFlag;
 
     // Start is called before the first frame update

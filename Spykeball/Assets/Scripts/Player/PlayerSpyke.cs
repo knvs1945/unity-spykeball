@@ -10,6 +10,11 @@ using UnityEngine;
 
 public class PlayerSpyke : PlayerUnit
 {
+
+    // Delegates and Events
+    public delegate void onHitBall(int score);
+    public event onHitBall doOnHitBall;
+
     // public entries
     // public Projectiles attackEffect;
     public Transform frontSide, attackPoint, notePoint, bodyPoint;
@@ -17,15 +22,17 @@ public class PlayerSpyke : PlayerUnit
     // Arrays and Lists
     
     // will contain the stats for the character to be set on the UI
-    public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_JumpPower, base_PushPower; 
+    public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_JumpPower, base_PushPower, attackRadius; 
+    public int scoreOnHitBall, scoreOnStrikeBall, scoreOnHitTarget;
 
     // objects 
     private Rigidbody2D rbBody;
+    protected Renderer render;
     private Vector2 moveInput, moveData, currentGravity;
 
     // primitives    
     private int castCounter = 0, xDirection = 1, jumpXDirection = 0;
-    private float jumpXPower = 0;
+    private float jumpXPower = 0, width, height, atkTimer = 0f;
     private bool canAttack = true, isJumping = false, isFalling = false;
         
     // specifics
@@ -45,7 +52,9 @@ public class PlayerSpyke : PlayerUnit
         
         rbBody = GetComponent<Rigidbody2D>();
         animBody = GetComponent<Animator>();
+        render = body.GetComponent<Renderer>();
         currentGravity = Physics2D.gravity;
+
         Debug.Log("Gravity Check: " + currentGravity);
         initializeStats();
         
@@ -93,6 +102,13 @@ public class PlayerSpyke : PlayerUnit
         ATKdelay = base_ATKdelay;
         ATKRange = base_ATKRange;
         */
+
+        width = render.bounds.size.x;
+        height = render.bounds.size.y;
+
+        Debug.Log("Width & Height: " + width + " - " + height);
+        atkTimer = 0f;
+        
     }
 
     // ================ Input action sequences start here  ================ //
@@ -136,6 +152,7 @@ public class PlayerSpyke : PlayerUnit
                 applyXForce(moveSpeed);
             }
         }
+        if (Input.GetKeyDown(controls.MoveDown) || Input.GetKeyDown(KeyCode.DownArrow)) animateAttack();    
 
         // keep walking animation while any of the directions are pressed
         if (Input.GetKey(controls.MoveLeft) || Input.GetKey(controls.MoveRight)) setAnimationWalking(0, true); 
@@ -187,8 +204,9 @@ public class PlayerSpyke : PlayerUnit
 
     protected void OnCollisionEnter2D(Collision2D collision) {
         if (collision.collider.tag == "Ball") {
-            Debug.Log("Pushing ball");
+            // Debug.Log("Pushing ball");
             collision.collider.GetComponent<Rigidbody2D>().AddForce(new Vector2(rbBody.velocity.x, base_PushPower));
+            doOnHitBall(scoreOnHitBall); // update the score
         }
     }
 
@@ -219,7 +237,24 @@ public class PlayerSpyke : PlayerUnit
     }
 
     private void animateAttack() {
+        Rigidbody2D ballPower;
+        float power;
+        if (Time.time > atkTimer) {
+            animBody.SetTrigger("attack");
 
+            // detect if the ball is somewhere near the player if attack is fired
+            Collider2D hitObject = Physics2D.OverlapCircle(transform.position, width + attackRadius);
+            if ((hitObject != null) && (hitObject.gameObject.name == "Player Ball")) {
+                // apply force to the ball using 
+                ballPower = hitObject.gameObject.GetComponent<Rigidbody2D>();
+                power = Mathf.Max(Mathf.Abs(ballPower.velocity.y) * base_ATKbase, base_ATKbase));
+                Debug.Log("Power: " + power);
+                ballPower.AddForce(new Vector2(rbBody.velocity.x,power));
+                doOnHitBall(scoreOnStrikeBall); // update the score
+            }
+
+            atkTimer = Time.time + base_ATKdelay; // add a cooldown to the atk button to prevent spamming
+        }
     }
     
 
