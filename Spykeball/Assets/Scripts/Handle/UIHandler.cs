@@ -10,6 +10,9 @@ public class UIHandler : Handler
     protected PlayerSpyke player;
 
     [SerializeField]
+    protected PlayerBall ball;
+
+    [SerializeField]
     protected Text scoreboard;
 
     protected int currentScore = 0;
@@ -33,11 +36,17 @@ public class UIHandler : Handler
         if (player != null) {
             player.doOnHitBall += updateScore;
         }
+        if (ball != null) {
+            ball.doOnHitTarget += updateScore;
+        }
     }
 
     protected void unRegisterEvents() {
        if (player != null) {
             player.doOnHitBall -= updateScore;
+        }
+        if (ball != null) {
+            ball.doOnHitTarget -= updateScore;
         }
     }
 

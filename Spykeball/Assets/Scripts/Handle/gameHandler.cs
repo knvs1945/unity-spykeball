@@ -30,7 +30,7 @@ public class GameHandler : Handler
     // Update is called once per frame
     void Update()
     {
-        
+        checkExitGame();
     }
     
     
@@ -41,6 +41,10 @@ public class GameHandler : Handler
 
     public static bool isGamePaused() {
         return pauseGame;
+    }
+
+    public void checkExitGame() {
+        if (Input.GetKeyDown("escape")) Application.Quit();
     }
 
     /* 

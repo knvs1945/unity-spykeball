@@ -33,7 +33,7 @@ public class PlayerSpyke : PlayerUnit
     // primitives    
     private int castCounter = 0, xDirection = 1, jumpXDirection = 0;
     private float jumpXPower = 0, width, height, atkTimer = 0f;
-    private bool canAttack = true, isJumping = false, isFalling = false;
+    private bool canAttack = true, isJumping = false, isFalling = false, isGrounded = false;
         
     // specifics
     [SerializeField]
@@ -88,7 +88,7 @@ public class PlayerSpyke : PlayerUnit
     void FixedUpdate()
     {
         // move the rigidbody here. 
-        if (!isJumping && !isFalling) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
+        if (isGrounded && !isJumping && !isFalling) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
     }
 
     // ================ Stats and Status sequences start here  ================ //
@@ -96,13 +96,6 @@ public class PlayerSpyke : PlayerUnit
 
     // use this class at the start of every game
     private void initializeStats() {
-        /*
-        ATKbase = base_ATKbase;
-        ATKmax = base_ATKmax;
-        ATKdelay = base_ATKdelay;
-        ATKRange = base_ATKRange;
-        */
-
         width = render.bounds.size.x;
         height = render.bounds.size.y;
 
@@ -193,7 +186,8 @@ public class PlayerSpyke : PlayerUnit
 
     private bool checkIfLanded() {
         bool isLanded = false;
-        if (Mathf.Abs(rbBody.velocity.y) < 0.1f)  {
+        // if (Mathf.Abs(rbBody.velocity.y) < 0.1f)  {
+        if (isGrounded) {
             rbBody.velocity = new Vector2(0,0); // reset the velocity to prevent weird movement on the next jump
             isLanded = true;
         }
@@ -203,6 +197,9 @@ public class PlayerSpyke : PlayerUnit
     //  ================ collision sequences start here  ================ //
 
     protected void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider.tag == "Floor") {
+            isGrounded = true;
+        }
         if (collision.collider.tag == "Ball") {
             // Debug.Log("Pushing ball");
             collision.collider.GetComponent<Rigidbody2D>().AddForce(new Vector2(rbBody.velocity.x, base_PushPower));
@@ -220,6 +217,7 @@ public class PlayerSpyke : PlayerUnit
         Debug.Log("Applying Jump Power: " + jumpXPower * jumpXDirection + " (" + xDirection + ")");
         rbBody.AddForce(new Vector2(jumpXPower * jumpXDirection, base_JumpPower), ForceMode2D.Impulse);
         isJumping = true;
+        isGrounded = false;
         animBody.SetTrigger("isJumping");
     }
 
@@ -237,23 +235,23 @@ public class PlayerSpyke : PlayerUnit
     }
 
     private void animateAttack() {
-        Rigidbody2D ballPower;
-        float power;
         if (Time.time > atkTimer) {
             animBody.SetTrigger("attack");
-
-            // detect if the ball is somewhere near the player if attack is fired
-            Collider2D hitObject = Physics2D.OverlapCircle(transform.position, width + attackRadius);
-            if ((hitObject != null) && (hitObject.gameObject.name == "Player Ball")) {
-                // apply force to the ball using 
-                ballPower = hitObject.gameObject.GetComponent<Rigidbody2D>();
-                power = Mathf.Max(Mathf.Abs(ballPower.velocity.y) * base_ATKbase, base_ATKbase);
-                Debug.Log("Power: " + power);
-                ballPower.AddForce(new Vector2(rbBody.velocity.x,power));
-                doOnHitBall(scoreOnStrikeBall); // update the score
-            }
-
             atkTimer = Time.time + base_ATKdelay; // add a cooldown to the atk button to prevent spamming
+        }
+    }
+
+    protected void launchBall() {
+        Rigidbody2D ballPower;
+        float power;
+        // detect if the ball is somewhere near the player if attack is fired
+        Collider2D hitObject = Physics2D.OverlapCircle(transform.position, width + attackRadius);
+        if ((hitObject != null) && (hitObject.gameObject.name == "Player Ball")) {
+            // apply force to the ball using 
+            ballPower = hitObject.gameObject.GetComponent<Rigidbody2D>();
+            power = Mathf.Max(Mathf.Abs(ballPower.velocity.y) * base_ATKbase, base_ATKbase);
+            // Debug.Log("Power: " + power);
+            ballPower.AddForce(new Vector2((rbBody.velocity.x), base_ATKbase));
         }
     }
     
