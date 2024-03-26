@@ -33,4 +33,10 @@ public class Handler : MonoBehaviour
     // A goal will inform its handler that it has been completed
     // public virtual void goalCompleted (Goal goal) { }
     // public virtual void goalFailed (Goal goal) { }
+
+    public void restartHandler(string gameMode) {
+        doOnRestartHandler(gameMode);
+    }
+
+    protected virtual void doOnRestartHandler(string gameMode) {}
 }

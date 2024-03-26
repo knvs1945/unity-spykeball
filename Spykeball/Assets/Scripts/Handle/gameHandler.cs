@@ -11,6 +11,9 @@ public class GameHandler : Handler
 
     [SerializeField]
     protected UIHandler UIHandle;
+
+    [SerializeField]
+    protected TargetHandler targetHandle;
     private bool stagePrepFlag;
 
     // Start is called before the first frame update
@@ -25,6 +28,12 @@ public class GameHandler : Handler
 
         // move this somewhere else once startLevel works
         startLevel();
+    }
+
+    void Awake() 
+    {
+        // restartAllHandlers();
+        registerEvents();
     }
 
     // Update is called once per frame
@@ -44,7 +53,21 @@ public class GameHandler : Handler
     }
 
     public void checkExitGame() {
+        if (Input.GetKeyDown("r")) restartAllHandlers(1, "normal");
         if (Input.GetKeyDown("escape")) Application.Quit();
+    }
+
+    // register events
+    protected void registerEvents() {
+        
+        // register events from MainMenu screen
+        ButtonMainMenu.doOnStartGame += restartAllHandlers;
+    }
+
+    protected void restartAllHandlers(int mode, string gameType) {
+        playerHandle.restartHandler(gameType);
+        UIHandle.restartHandler(gameType);
+        targetHandle.restartHandler(gameType);
     }
 
     /* 
@@ -69,6 +92,7 @@ public class GameHandler : Handler
                 }));
             }
         */
+        restartAllHandlers(1, "normal");
         return stagePrepFlag;
     }
 

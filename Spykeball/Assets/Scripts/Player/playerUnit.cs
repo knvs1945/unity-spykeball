@@ -54,6 +54,12 @@ public class PlayerUnit : GameUnit
         get { return isdamageShldActive;}
     }
 
+    // restart player unit    
+    public override void restartUnit(string gameMode) {
+        Debug.Log("Restarting player unit");
+        player.restartUnit(gameMode);
+    }
+
     // common functions
     protected bool checkHPifAlive() {
         if (isAlive && !isNPC) {

@@ -11,6 +11,7 @@ using UnityEngine;
 public class PlayerSpyke : PlayerUnit
 {
 
+    protected const float startPosX = 0f, startPosY = -4.3f;
     // Delegates and Events
     public delegate void onHitBall(int score);
     public event onHitBall doOnHitBall;
@@ -22,7 +23,7 @@ public class PlayerSpyke : PlayerUnit
     // Arrays and Lists
     
     // will contain the stats for the character to be set on the UI
-    public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_JumpPower, base_PushPower, attackRadius; 
+    public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_DashDelay, base_DashPower, base_JumpPower, base_PushPower, attackRadius; 
     public int scoreOnHitBall, scoreOnStrikeBall, scoreOnHitTarget;
 
     // objects 
@@ -32,8 +33,8 @@ public class PlayerSpyke : PlayerUnit
 
     // primitives    
     private int castCounter = 0, xDirection = 1, jumpXDirection = 0;
-    private float jumpXPower = 0, width, height, atkTimer = 0f;
-    private bool canAttack = true, isJumping = false, isFalling = false, isGrounded = false;
+    private float jumpXPower = 0, width, height, atkTimer = 0f, dashTimer = 0f;
+    private bool canAttack = true, isJumping = false, isFalling = false, isGrounded = false, isDashing = false;
         
     // specifics
     [SerializeField]
@@ -56,7 +57,7 @@ public class PlayerSpyke : PlayerUnit
         currentGravity = Physics2D.gravity;
 
         Debug.Log("Gravity Check: " + currentGravity);
-        initializeStats();
+        // restartUnit("normal");
         
         // temporarily enable god mode;
         // isImmune = true;
@@ -88,20 +89,23 @@ public class PlayerSpyke : PlayerUnit
     void FixedUpdate()
     {
         // move the rigidbody here. 
-        if (isGrounded && !isJumping && !isFalling) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
+        if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
     }
 
     // ================ Stats and Status sequences start here  ================ //
+    public override void restartUnit(string gameMode) {
+        initializeStats();
+    }
 
 
     // use this class at the start of every game
     private void initializeStats() {
         width = render.bounds.size.x;
         height = render.bounds.size.y;
-
-        Debug.Log("Width & Height: " + width + " - " + height);
+        rbBody.velocity = new Vector2(0,0);
         atkTimer = 0f;
-        
+        dashTimer = 0f;
+        transform.position = new Vector2(startPosX, startPosY);
     }
 
     // ================ Input action sequences start here  ================ //
@@ -111,8 +115,6 @@ public class PlayerSpyke : PlayerUnit
         moveData = moveInput.normalized * moveSpeed;
 
         // add default keycode for up, down left and right arrows
-        
-        //else if (Input.GetKeyDown(controls.MoveDown) || Input.GetKeyDown(KeyCode.DownArrow)) setAnimationWalking(2, true);
         
         // add jump force when pressing up
         if (!isJumping) {
@@ -145,7 +147,8 @@ public class PlayerSpyke : PlayerUnit
                 applyXForce(moveSpeed);
             }
         }
-        if (Input.GetKeyDown(controls.MoveDown) || Input.GetKeyDown(KeyCode.DownArrow)) animateAttack();    
+        if (Input.GetKeyDown(controls.MoveDown) || Input.GetKeyDown(KeyCode.DownArrow)) animateDash();    
+        if (Input.GetKeyDown(controls.Attack)) animateAttack();    
 
         // keep walking animation while any of the directions are pressed
         if (Input.GetKey(controls.MoveLeft) || Input.GetKey(controls.MoveRight)) setAnimationWalking(0, true); 
@@ -168,13 +171,6 @@ public class PlayerSpyke : PlayerUnit
         canAttack = true;
     }
 
-    /*
-    // disable the damage shield as needed
-    private void updateDamageShield() {
-        isdamageShldActive = false;
-    }
-    */
-
     // check if it is still falling
     private bool checkIfFalling() {
         bool isfalling = false;
@@ -186,12 +182,16 @@ public class PlayerSpyke : PlayerUnit
 
     private bool checkIfLanded() {
         bool isLanded = false;
-        // if (Mathf.Abs(rbBody.velocity.y) < 0.1f)  {
         if (isGrounded) {
             rbBody.velocity = new Vector2(0,0); // reset the velocity to prevent weird movement on the next jump
             isLanded = true;
         }
         return isLanded;
+    }
+
+    protected void resetDashState() {
+        isDashing = false;
+        rbBody.velocity = new Vector2(0, rbBody.velocity.y); // remove any force currently in it
     }
 
     //  ================ collision sequences start here  ================ //
@@ -239,6 +239,20 @@ public class PlayerSpyke : PlayerUnit
             animBody.SetTrigger("attack");
             atkTimer = Time.time + base_ATKdelay; // add a cooldown to the atk button to prevent spamming
         }
+    }
+
+    private void animateDash() {
+        if (Time.time > dashTimer) {
+            animBody.SetTrigger("dash");
+            isDashing = true;
+            Debug.Log("Dash Power: " + (base_DashPower * xDirection));
+            rbBody.AddForce(new Vector2(base_DashPower * xDirection, 0), ForceMode2D.Force);
+            dashTimer = Time.time + base_DashDelay;
+        }
+    }
+
+    private void addDashPower() {
+        
     }
 
     protected void launchBall() {

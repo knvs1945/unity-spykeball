@@ -68,8 +68,9 @@ public class GameUnit : MonoBehaviour
         }
         return false;
     }
-
+ 
     // Overrideables
+    public virtual void restartUnit(string gameMode) {}
     protected virtual void doOnTakeDamage(float DMG) {}
     protected virtual void doOnDeath() {}
 

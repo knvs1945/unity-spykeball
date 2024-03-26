@@ -15,6 +15,9 @@ public class UIHandler : Handler
     [SerializeField]
     protected Text scoreboard;
 
+    [SerializeField]
+    protected GameObject panelMainMenu;
+
     protected int currentScore = 0;
 
 
@@ -33,12 +36,14 @@ public class UIHandler : Handler
 
     // Register and unregister events
     protected void registerEvents() {
+        // register events from the game objects
         if (player != null) {
             player.doOnHitBall += updateScore;
         }
         if (ball != null) {
             ball.doOnHitTarget += updateScore;
         }
+
     }
 
     protected void unRegisterEvents() {
@@ -50,6 +55,13 @@ public class UIHandler : Handler
         }
     }
 
+    // restart handler and elements here
+    protected override void doOnRestartHandler(string gameMode) {
+        Debug.Log("Restarting UI handler");
+        resetUIStats();
+        panelMainMenu.SetActive(false);
+    }
+
     // Update the score here
     protected void updateScore(int score) {
         currentScore += score;
@@ -58,5 +70,6 @@ public class UIHandler : Handler
 
     protected void resetUIStats() {
         currentScore = 0;
+        scoreboard.text = currentScore.ToString();
     }
 }

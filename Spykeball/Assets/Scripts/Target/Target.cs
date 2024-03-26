@@ -32,9 +32,14 @@ public class Target : GameUnit
         }
     }
 
-    protected void destroyTarget () {
+    // destroy and respawn new target. Set noSpawn to true if the targets don't need to spawn
+    protected void destroyTarget(bool noRespawn = false) {
         Instantiate(targetBreak, transform.position, Quaternion.identity);
-        doOnDestroyTarget();
+        if (!noRespawn) doOnDestroyTarget();
         Destroy(gameObject);
+    }
+
+    public void restartTarget() {
+        destroyTarget(true);
     }
 }

@@ -15,9 +15,11 @@ public class PlayerHandler : Handler
     protected PlayerUnit playerObj;
     protected Transform currentPlayerSpawn;
 
+    [SerializeField]
+    protected PlayerBall ball;
+
     // Player's controls
     protected PlayerControls controlPlayer1;
-    protected string[] defaultTapKeys = {"h","j","k","l"};
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +27,7 @@ public class PlayerHandler : Handler
         // create default controls for player
         controlPlayer1 = new PlayerControls(
             "w", "s", "a", "d",
-            "u", "i", "j", "k", "shift", "p",
-            defaultTapKeys
+            "space", "i", "shift", "p"
         );
         
         // assign the control set to player 1
@@ -52,6 +53,13 @@ public class PlayerHandler : Handler
     void Update()
     {
         
+    }
+
+    // Restart the game sets
+    protected override void doOnRestartHandler(string gameType) {
+        Debug.Log("Restarting player handler");
+        playerObj.restartUnit(gameType);       
+        ball.restartUnit(gameType);
     }
 
     // update HP Bar after getting damaged
@@ -137,14 +145,12 @@ public class PlayerHandler : Handler
 
 // class to contain player controls
 public class PlayerControls {
-    protected string moveUp, moveDown, moveLeft, moveRight, attack, defend, skillsync1, skillsync2, dodge, pause;
-    protected string[] tapButtons = new string[4];
+    protected string moveUp, moveDown, moveLeft, moveRight, attack, defend, dodge, pause;
 
     // constructor
     public PlayerControls(
         string _up, string _down, string _left, string _right, 
-        string _attack, string _defend, string _sync1, string _sync2, string _dodge, string _pause,
-        string[] tapbuttons
+        string _attack, string _defend, string _dodge, string _pause
     ) {
         moveUp = _up;
         moveDown = _down;
@@ -152,11 +158,8 @@ public class PlayerControls {
         moveRight = _right;
         attack = _attack;
         defend = _defend;
-        skillsync1 = _sync1;
-        skillsync2 = _sync2;
         dodge = _dodge;
         pause = _pause;
-        tapButtons = tapbuttons;
     }
 
     // getters & setters
@@ -184,14 +187,6 @@ public class PlayerControls {
         get { return defend; }
         set { defend = value; }
     }
-    public string Skillsync1 {
-        get { return skillsync1; }
-        set { skillsync1 = value; }
-    }
-    public string Skillsync2 {
-        get { return skillsync2; }
-        set { skillsync2 = value; }
-    }
     public string Dodge {
         get { return dodge; }
         set { dodge = value; }
@@ -200,9 +195,6 @@ public class PlayerControls {
         get { return pause; }
         set { pause = value; }
     }
-    public string[] TapButtons {
-        get { return tapButtons; }
-        set { tapButtons = value; }
-    }
+
 }
 
