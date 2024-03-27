@@ -27,18 +27,20 @@ public class Target : GameUnit
 
     protected void OnCollisionEnter2D (Collision2D collision) {
         if (collision.collider.tag == "Ball") {
-            // Debug.Log("Target Hit!");
             destroyTarget();
         }
     }
 
     // destroy and respawn new target. Set noSpawn to true if the targets don't need to spawn
     protected void destroyTarget(bool noRespawn = false) {
-        Instantiate(targetBreak, transform.position, Quaternion.identity);
-        if (!noRespawn) doOnDestroyTarget();
+        if (!noRespawn) {
+            Instantiate(targetBreak, transform.position, Quaternion.identity);
+            doOnDestroyTarget();
+        }
         Destroy(gameObject);
     }
-
+    
+    // restart target spawn by destroying the current one
     public void restartTarget() {
         destroyTarget(true);
     }

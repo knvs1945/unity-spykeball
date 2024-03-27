@@ -27,6 +27,7 @@ public class GameHandler : Handler
         // RhythmHandler.setBPM(60);
 
         // move this somewhere else once startLevel works
+        freezeGame(true);
         startLevel();
     }
 
@@ -52,6 +53,11 @@ public class GameHandler : Handler
         return pauseGame;
     }
 
+    // setting to true will freeze the game, and false unfreezes it
+    protected void freezeGame(bool val) {
+        Time.timeScale = val ? 0 : 1;
+    }
+
     public void checkExitGame() {
         if (Input.GetKeyDown("r")) restartAllHandlers(1, "normal");
         if (Input.GetKeyDown("escape")) Application.Quit();
@@ -70,6 +76,7 @@ public class GameHandler : Handler
         playerHandle.restartHandler(gameType);
         UIHandle.restartHandler(gameType);
         targetHandle.restartHandler(gameType);
+        freezeGame(false);
     }
 
     /* 
@@ -199,6 +206,7 @@ public class GameHandler : Handler
 
     // game end sequence
     protected void GameEnded() {
+        freezeGame(true);
         UIHandle.showEndGamePanel();
     }
 

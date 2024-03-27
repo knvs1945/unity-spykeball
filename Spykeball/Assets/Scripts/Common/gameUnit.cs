@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameUnit : MonoBehaviour
 {
     public float HP, moveSpeed;
+    public static bool isGamePaused = false;
 
     protected int Level = 1;
     protected float HPMax, HPTemp;
@@ -13,10 +14,6 @@ public class GameUnit : MonoBehaviour
     
     [SerializeField]
     protected string unitName;
-
-    // constructor
-    public GameUnit() {
-    }
 
     // getters
     public string Name {
