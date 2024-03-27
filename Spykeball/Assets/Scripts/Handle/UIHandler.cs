@@ -15,8 +15,7 @@ public class UIHandler : Handler
     [SerializeField]
     protected Text scoreboard;
 
-    [SerializeField]
-    protected GameObject panelMainMenu;
+    public GameObject panelMainMenu, panelRestartMenu;
 
     protected int currentScore = 0;
 
@@ -60,6 +59,12 @@ public class UIHandler : Handler
         Debug.Log("Restarting UI handler");
         resetUIStats();
         panelMainMenu.SetActive(false);
+        panelRestartMenu.SetActive(false);
+    }
+
+    // show the end game panel
+    public void showEndGamePanel() {
+        panelRestartMenu.SetActive(true);
     }
 
     // Update the score here
@@ -72,4 +77,5 @@ public class UIHandler : Handler
         currentScore = 0;
         scoreboard.text = currentScore.ToString();
     }
+
 }

@@ -62,6 +62,8 @@ public class GameHandler : Handler
         
         // register events from MainMenu screen
         ButtonMainMenu.doOnStartGame += restartAllHandlers;
+        Handler.doOnGameOver += GameEnded;
+
     }
 
     protected void restartAllHandlers(int mode, string gameType) {
@@ -195,6 +197,10 @@ public class GameHandler : Handler
         yield return success;
     }
 
+    // game end sequence
+    protected void GameEnded() {
+        UIHandle.showEndGamePanel();
+    }
 
     
 }

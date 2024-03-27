@@ -6,14 +6,18 @@ public class PlayerBall : GameUnit
 {
 
     protected const float startPosX = 0, startPosY = 4;
+    protected const int COUNT_Lives = 3;
 
     // delegates and events
     public delegate void onHitTarget(int score);
-    public event onHitTarget doOnHitTarget;
+    public delegate void onNoMoreLives();
 
+    public event onHitTarget doOnHitTarget;
+    public event onNoMoreLives doOnNoMoreLives;
     public int baseScore;
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
 
+    protected int lives;
     private Animator anim;
     private Rigidbody2D rb;
 
@@ -38,6 +42,7 @@ public class PlayerBall : GameUnit
     public override void restartUnit(string gameMode) {    
         transform.position = new Vector2(startPosX, startPosY);
         rb.velocity = new Vector2(0,0);
+        lives = COUNT_Lives;
     }
 
 
@@ -47,8 +52,15 @@ public class PlayerBall : GameUnit
         if (collision.collider.tag == "Target") {
             scoreToAdd = baseScore + ((int)Mathf.Abs(rb.velocity.y) * 5);
             doOnHitTarget( scoreToAdd ); // use the current speed as the score
+            lives = COUNT_Lives; // restore the ball's lives back to maximum;
+        }
+        if (collision.collider.tag == "Floor") {
+            lives--;
+            Debug.Log("Lives Left: " + lives);
+            if (lives <= 0) doOnNoMoreLives();
         }
         if (rb.velocity.y > 3) anim.SetTrigger("bounce"); // only bounce the ball if its going faster than 1;
+        
     }
 
     // move the ball back within game bounds

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 // Handler for players
 public class PlayerHandler : Handler
 {
+
     public Transform[] playerSpawns;
     protected Slider playerHP;
     protected Vector3 HPBarPos; 
@@ -47,6 +48,14 @@ public class PlayerHandler : Handler
             }
         } while (playerObj == null);
 
+        registerEvents();
+    }
+
+    // register and deregister events here
+    protected void registerEvents() {
+        if (ball != null) {
+            ball.doOnNoMoreLives += doOnPlayerBallGone;
+        }
     }
 
     // Update is called once per frame
@@ -60,6 +69,8 @@ public class PlayerHandler : Handler
         Debug.Log("Restarting player handler");
         playerObj.restartUnit(gameType);       
         ball.restartUnit(gameType);
+        //ball.GetComponent<GameObject>().SetActive(true);
+        ball.gameObject.SetActive(true);
     }
 
     // update HP Bar after getting damaged
@@ -140,6 +151,13 @@ public class PlayerHandler : Handler
         playerObj.Player.IsControlDisabled = false;
 
         // get the player object ang transfer it to the current player spawn
+    }
+
+    // report game over when the ball has no more lives
+    protected void doOnPlayerBallGone() {
+        Debug.Log(" Player ball is now gone ");
+        ball.gameObject.SetActive(false);
+        doOnGameOver();
     }
 }
 

@@ -21,6 +21,10 @@ public enum states
 
 public class Handler : MonoBehaviour
 {
+    // delegates and events
+    public delegate void onGameOver();
+    public static onGameOver doOnGameOver;
+
     protected static states gameState = states.Preload; // default the gameState to preload
 
     protected static bool pauseGame = false;
