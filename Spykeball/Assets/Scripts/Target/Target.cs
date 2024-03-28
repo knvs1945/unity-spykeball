@@ -5,6 +5,8 @@ using UnityEngine;
 // Floating Target Classes
 public class Target : GameUnit
 {
+    protected const float finalSpeed = 25f;
+
     // Delegates and Events
     public delegate void onDestroyTarget();
     public static event onDestroyTarget doOnDestroyTarget;
@@ -13,19 +15,17 @@ public class Target : GameUnit
     public ParticleSystem targetBreak;
 
     protected Rigidbody2D rb;
+    // protected int Level = 1;
+
+
     // Start is called before the first frame update
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    protected void OnCollisionEnter2D (Collision2D collision) {
+    protected virtual void OnCollisionEnter2D (Collision2D collision) {
         if (collision.collider.tag == "Ball") {
             destroyTarget();
         }
@@ -44,4 +44,15 @@ public class Target : GameUnit
     public void restartTarget() {
         destroyTarget(true);
     }
+
+    public void applyLevel(int level = 1) {
+        Level = level;
+        doOnApplyLevel();
+    }
+
+    protected virtual void doOnApplyLevel() {
+
+    }
+
+
 }

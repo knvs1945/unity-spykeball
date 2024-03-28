@@ -42,7 +42,9 @@ public class TargetHandler : Handler
         spawnPoint = new Vector2( Random.Range(spawnBoundMinX, spawnBoundMaxX), Random.Range(spawnBoundMinY, spawnBoundMaxY) );
         temp = Instantiate(targetList[0], spawnPoint, Quaternion.identity);
         if (temp != null) {
+            temp.applyLevel(1);
             currentTarget = temp;
+
         }
     }
 
