@@ -59,7 +59,7 @@ public class GameHandler : Handler
     }
 
     public void checkExitGame() {
-        if (Input.GetKeyDown("r")) restartAllHandlers(1, "normal");
+        if (Input.GetKeyDown("r")) restartAllHandlers(1, ""); // restart whatever game mode they were in
         if (Input.GetKeyDown("escape")) Application.Quit();
     }
 
@@ -69,13 +69,24 @@ public class GameHandler : Handler
         // register events from MainMenu screen
         ButtonMainMenu.doOnStartGame += restartAllHandlers;
         Handler.doOnGameOver += GameEnded;
+        UIHandler.doOnTimeRunOut += GameEnded;
 
     }
 
     protected void restartAllHandlers(int mode, string gameType) {
-        playerHandle.restartHandler(gameType);
-        UIHandle.restartHandler(gameType);
-        targetHandle.restartHandler(gameType);
+        Debug.Log("Game Type: " + gameType);
+        switch(gameType) {
+            case "survival":
+                Mode = Modes.Survival;
+                break;
+            case "time attack":
+                Mode = Modes.TimeAttack;
+                break;
+        }
+
+        playerHandle.restartHandler();
+        UIHandle.restartHandler();
+        targetHandle.restartHandler();
         freezeGame(false);
     }
 

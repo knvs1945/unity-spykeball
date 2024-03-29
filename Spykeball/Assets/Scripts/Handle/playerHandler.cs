@@ -7,7 +7,6 @@ using UnityEngine.UI;
 // Handler for players
 public class PlayerHandler : Handler
 {
-
     public Transform[] playerSpawns;
     protected Slider playerHP;
     protected Vector3 HPBarPos; 
@@ -65,12 +64,18 @@ public class PlayerHandler : Handler
     }
 
     // Restart the game sets
-    protected override void doOnRestartHandler(string gameType) {
-        Debug.Log("Restarting player handler");
-        playerObj.restartUnit(gameType);       
-        ball.restartUnit(gameType);
-        //ball.GetComponent<GameObject>().SetActive(true);
+    protected override void doOnRestartHandler() {
+        
+        if (Mode == Modes.Survival) {
+            playerObj.restartUnit("Survival");       
+            ball.restartUnit("Survival");
+        }
+        else if (Mode == Modes.TimeAttack) {
+            playerObj.restartUnit("Time Attack");       
+            ball.restartUnit("Time Attack");
+        }
         ball.gameObject.SetActive(true);
+
     }
 
     // update HP Bar after getting damaged

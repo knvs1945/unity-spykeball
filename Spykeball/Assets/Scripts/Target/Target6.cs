@@ -61,7 +61,7 @@ public class Target6 : Target
         if (!canDodge && !isMoving) {
             if (dodgelessTimer < Time.time) {
                 Debug.Log("Target can now dodge! ");
-                currentColor = new Color(0, 0, 0, 1);
+                currentColor = new Color(1, 0, 0, 1);
                 rbRender.material.color = currentColor;
                 canDodge = true;
                 triggerArea.enabled = true;

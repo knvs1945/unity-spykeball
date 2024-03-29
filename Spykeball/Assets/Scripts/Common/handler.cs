@@ -46,9 +46,9 @@ public class Handler : MonoBehaviour
     // public virtual void goalCompleted (Goal goal) { }
     // public virtual void goalFailed (Goal goal) { }
 
-    public void restartHandler(string gameMode) {
-        doOnRestartHandler(gameMode);
+    public void restartHandler() {
+        doOnRestartHandler();
     }
 
-    protected virtual void doOnRestartHandler(string gameMode) {}
+    protected virtual void doOnRestartHandler() {}
 }

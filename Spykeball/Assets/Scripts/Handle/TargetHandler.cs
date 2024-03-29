@@ -28,7 +28,7 @@ public class TargetHandler : Handler
         Target.doOnDestroyTarget += spawnNewTarget;
     }
 
-    protected override void doOnRestartHandler(string gameType) {
+    protected override void doOnRestartHandler() {
         Debug.Log("Restarting Target handler");
         if (currentTarget != null) currentTarget.restartTarget();
         spawnNewTarget();
