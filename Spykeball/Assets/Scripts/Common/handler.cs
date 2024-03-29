@@ -19,6 +19,13 @@ public enum states
     Preload
 }
 
+// Game Modes
+public enum Modes
+{
+    Survival,
+    TimeAttack
+}
+
 public class Handler : MonoBehaviour
 {
     // delegates and events
@@ -26,6 +33,7 @@ public class Handler : MonoBehaviour
     public static onGameOver doOnGameOver;
 
     protected static states gameState = states.Preload; // default the gameState to preload
+    protected static Modes Mode = Modes.Survival; // default the gameMode to Survival
 
     protected static bool pauseGame = false;
     protected static int FPS = 30;

@@ -15,8 +15,6 @@ public class Target : GameUnit
     public ParticleSystem targetBreak;
 
     protected Rigidbody2D rb;
-    // protected int Level = 1;
-
 
     // Start is called before the first frame update
     void Awake()
