@@ -8,6 +8,7 @@ public class PlayerBall : GameUnit
     protected const float startPosX = 0, startPosY = 4, MAX_velocity = 17.5f;
     protected const int COUNT_Lives = 4, TIME_addTime = 3;
     protected const int MODE_survival = 1, MODE_timeattack = 2;
+    
 
     // delegates and events
     public delegate void onHitTarget(int score, int timeToAdd = 0);

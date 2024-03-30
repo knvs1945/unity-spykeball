@@ -6,7 +6,9 @@ using UnityEngine;
 public class ButtonMainMenu : MonoBehaviour
 {
     public delegate void onMainMenuButton(int mode, string gametype);
+    public delegate void onReturnToMain(string evt);
     public static event onMainMenuButton doOnStartGame;
+    public static event onReturnToMain doOnReturnToMain;
 
     // Start is called before the first frame update
     void Start()
@@ -24,5 +26,11 @@ public class ButtonMainMenu : MonoBehaviour
     public void btStartGame(string gameMode) {
         Debug.Log("Start game Button Clicked");
         doOnStartGame(1, gameMode);
+    }
+
+    // returns to the main menu
+    public void btReturnToMain(string evt) {
+        Debug.Log("Returning to Main menu");
+        doOnReturnToMain(evt);   
     }
 }

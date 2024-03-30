@@ -20,9 +20,12 @@ public class UIHandler : Handler
     [SerializeField]
     protected Text scoreboard;
 
+    [SerializeField]
+    protected Text targetText;
+
     public float timeAttackLimit;
     public GameObject panelMainMenu, panelRestartMenu;
-    public GameObject panelTimer, panelLives, panelScore; // ingame panels
+    public GameObject panelTimer, panelLives, panelScore, panelTargets; // ingame panels
     public Image[] livesCount;
     public Text[] timerText;
     
@@ -52,6 +55,7 @@ public class UIHandler : Handler
         if (ball != null) {
             ball.doOnLivesLeft += updateLives;
             ball.doOnHitTarget += updateScore;
+            ball.doOnHitTarget += updateGameLevel;
         }
 
     }
@@ -85,9 +89,20 @@ public class UIHandler : Handler
             startTimer();
         }
 
-        Debug.Log("Restarting UI handler");
-        resetUIStats();
         panelMainMenu.SetActive(false);
+        panelRestartMenu.SetActive(false);
+        resetUIStats();
+        
+    }
+    
+    // show the main menu panel coming from other buttons
+    public void returnToMainMenu() {
+        // hide the ingame panels
+        panelScore.SetActive(false);
+        panelLives.SetActive(false);
+        panelTimer.SetActive(false);
+
+        panelMainMenu.SetActive(true);
         panelRestartMenu.SetActive(false);
     }
 
@@ -95,6 +110,7 @@ public class UIHandler : Handler
     public void showEndGamePanel() {
         panelRestartMenu.SetActive(true);
     }
+
 
     // Update the score here
     protected void updateScore(int score, int time = 0) {
@@ -114,8 +130,16 @@ public class UIHandler : Handler
         }
     }
 
+    // Update the game level here
+    protected void updateGameLevel(int score, int time = 0) {
+        gameLevel++;
+        targetText.text = "Targets: " + gameLevel.ToString("D2");
+    }
+
     protected void resetUIStats() {
         currentScore = 0;
+        gameLevel = 0;
+        targetText.text = "Targets: " + gameLevel.ToString("D2");
         scoreboard.text = currentScore.ToString();
     }
 

@@ -28,7 +28,7 @@ public class GameHandler : Handler
 
         // move this somewhere else once startLevel works
         freezeGame(true);
-        startLevel();
+        returnToMainMenu("");
     }
 
     void Awake() 
@@ -66,15 +66,19 @@ public class GameHandler : Handler
     // register events
     protected void registerEvents() {
         
-        // register events from MainMenu screen
+        // register events from MainMenu & Restart screen
         ButtonMainMenu.doOnStartGame += restartAllHandlers;
+        ButtonMainMenu.doOnReturnToMain += returnToMainMenu;
         Handler.doOnGameOver += GameEnded;
         UIHandler.doOnTimeRunOut += GameEnded;
 
     }
 
+    protected void returnToMainMenu(string evt) {
+        UIHandle.returnToMainMenu();
+    }
+
     protected void restartAllHandlers(int mode, string gameType) {
-        Debug.Log("Game Type: " + gameType);
         switch(gameType) {
             case "survival":
                 Mode = Modes.Survival;
@@ -88,6 +92,7 @@ public class GameHandler : Handler
         UIHandle.restartHandler();
         targetHandle.restartHandler();
         freezeGame(false);
+        gameLevel = 0;
     }
 
     /* 

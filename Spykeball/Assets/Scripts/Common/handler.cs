@@ -36,7 +36,7 @@ public class Handler : MonoBehaviour
     protected static Modes Mode = Modes.Survival; // default the gameMode to Survival
 
     protected static bool pauseGame = false;
-    protected static int FPS = 30;
+    protected static int FPS = 30, gameLevel = 0;
     protected static float stageIntroTimer = 3f;
 
     // game-shared data

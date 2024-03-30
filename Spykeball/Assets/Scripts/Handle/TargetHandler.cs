@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TargetHandler : Handler
 {
+    protected const int levelUp = 4; // increase target choices based on every N levels of this constant
     public float spawnBoundMinX, spawnBoundMaxX, spawnBoundMinY, spawnBoundMaxY;
     [SerializeField]
     protected List<Target> targetList;
@@ -36,15 +37,22 @@ public class TargetHandler : Handler
 
     // spawn targets here
     protected void spawnNewTarget() {
-        Debug.Log("Spawning new target here...");
         Target temp;
         Vector2 spawnPoint;
-        spawnPoint = new Vector2( Random.Range(spawnBoundMinX, spawnBoundMaxX), Random.Range(spawnBoundMinY, spawnBoundMaxY) );
-        temp = Instantiate(targetList[0], spawnPoint, Quaternion.identity);
-        if (temp != null) {
-            temp.applyLevel(1);
-            currentTarget = temp;
+        int index = 0, maxRange;
 
+        // generate a target randomly but gradually based on game level
+        maxRange = Mathf.Min(targetList.Count, (gameLevel / levelUp) + 1);
+        Debug.Log("Spawning between " + 0 + " and " + maxRange);
+
+        index = Random.Range(0, maxRange);        
+        Debug.Log("Spawning target index: " + index);
+
+        spawnPoint = new Vector2( Random.Range(spawnBoundMinX, spawnBoundMaxX), Random.Range(spawnBoundMinY, spawnBoundMaxY) );
+        temp = Instantiate(targetList[index], spawnPoint, Quaternion.identity);
+        if (temp != null) {
+            temp.applyLevel(gameLevel);
+            currentTarget = temp;
         }
     }
 
