@@ -111,11 +111,23 @@ public class PlayerSpyke : PlayerUnit
     // ================ Input action sequences start here  ================ //
     // Input for moving player
     private void inputMovement() {
+
+        if (Input.GetKeyDown(controls.Pause)) {
+            if (!isGamePaused) {
+                playerPressedPause(true);
+            }
+            else {
+                Debug.Log("Unpausing game...");
+                playerPressedPause(false);
+            }
+        }
+        if (isGamePaused) return; // reject every other control unless the game is unpaused
+        
+
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
         moveData = moveInput.normalized * moveSpeed;
 
         // add default keycode for up, down left and right arrows
-        
         // add jump force when pressing up
         if (!isJumping) {
             if (Input.GetKeyDown(controls.MoveUp) || Input.GetKeyDown(KeyCode.UpArrow)) setAnimationJumping();    

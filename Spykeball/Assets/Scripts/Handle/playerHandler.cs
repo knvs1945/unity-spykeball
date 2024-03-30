@@ -7,6 +7,11 @@ using UnityEngine.UI;
 // Handler for players
 public class PlayerHandler : Handler
 {
+
+    // events and delegates
+    public delegate void onPausePressed(bool paused);
+    public static event onPausePressed doOnPlayerPaused;
+
     public Transform[] playerSpawns;
     protected Slider playerHP;
     protected Vector3 HPBarPos; 
@@ -33,20 +38,17 @@ public class PlayerHandler : Handler
         // assign the control set to player 1
         playerObj.Controls = controlPlayer1;
 
-        // get the HP bar of the player
-        // playerHP = GameObject.Find("PlayerHP").GetComponent<Slider>();
-        // playerHP.value = playerObj.Player.HP;
-        // HPBarPos = playerHP.transform.localPosition;
-
         do {
             if (playerObj != null) {
                 // register to event when player gets damaged
-                // PlayerUnit.updatePlayerHPBar += updatePlayerHPBar;
                 playerObj.Player.IsControlDisabled = false;
                 Debug.Log("Registering updatePlayerHPBar event...");
             }
         } while (playerObj == null);
 
+    }
+
+    void Awake() {
         registerEvents();
     }
 
@@ -54,6 +56,9 @@ public class PlayerHandler : Handler
     protected void registerEvents() {
         if (ball != null) {
             ball.doOnNoMoreLives += doOnPlayerBallGone;
+        }
+        if (playerObj != null) {
+            PlayerUnit.doOnPausePressed += playerPressedPause;
         }
     }
 
@@ -163,6 +168,12 @@ public class PlayerHandler : Handler
         Debug.Log(" Player ball is now gone ");
         ball.gameObject.SetActive(false);
         doOnGameOver();
+    }
+
+    // report game pause entries from player unit
+    protected void playerPressedPause(bool state) {
+        Debug.Log("playerPressedPause reached" );
+        doOnPlayerPaused(state);
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ using UnityEngine;
 
 public class PlayerUnit : GameUnit
 {    
+    // events and delegates
+    public delegate void onPausePressed(bool state);
+    public static event onPausePressed doOnPausePressed;
     
     // Managers
     protected PlayerControls controls;
@@ -70,6 +74,11 @@ public class PlayerUnit : GameUnit
 
     protected void updateHPBar() {
         PlayerUnit.updatePlayerHPBar();    // inform the playerHandler that the HP bar needs updating
+    }
+    
+    protected void playerPressedPause(bool pauseEvent) {
+        Debug.Log("Pausing game... " + pauseEvent);
+        doOnPausePressed?.Invoke(pauseEvent);
     }
 
     // overridden methods from gameUnit. factor should be -1 if removing a buff

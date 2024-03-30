@@ -71,6 +71,7 @@ public class GameHandler : Handler
         ButtonMainMenu.doOnReturnToMain += returnToMainMenu;
         Handler.doOnGameOver += GameEnded;
         UIHandler.doOnTimeRunOut += GameEnded;
+        PlayerHandler.doOnPlayerPaused += doOnGamePaused;
 
     }
 
@@ -220,11 +221,15 @@ public class GameHandler : Handler
         yield return success;
     }
 
+    // pause the game 
+    protected void doOnGamePaused(bool paused) {
+        Debug.Log("Pausing the game...");
+    }
+
     // game end sequence
     protected void GameEnded() {
         freezeGame(true);
         UIHandle.showEndGamePanel();
     }
 
-    
 }

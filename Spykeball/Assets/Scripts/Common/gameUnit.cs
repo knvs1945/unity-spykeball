@@ -19,6 +19,7 @@ public class GameUnit : MonoBehaviour
     public string Name {
         get { return unitName; }
     }
+    
     public bool IsAlive {
         get { return isAlive; }
     }

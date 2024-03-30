@@ -7,8 +7,10 @@ public class ButtonMainMenu : MonoBehaviour
 {
     public delegate void onMainMenuButton(int mode, string gametype);
     public delegate void onReturnToMain(string evt);
+    public delegate void onUnpauseGame();
     public static event onMainMenuButton doOnStartGame;
     public static event onReturnToMain doOnReturnToMain;
+    public static event onUnpauseGame doOnUnpauseGame;
 
     // Start is called before the first frame update
     void Start()
@@ -32,5 +34,10 @@ public class ButtonMainMenu : MonoBehaviour
     public void btReturnToMain(string evt) {
         Debug.Log("Returning to Main menu");
         doOnReturnToMain(evt);   
+    }
+
+    // unpauses the game if unpause is clicked
+    public void unPauseGame() {
+
     }
 }

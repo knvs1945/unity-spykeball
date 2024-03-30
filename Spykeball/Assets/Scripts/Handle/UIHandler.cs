@@ -84,11 +84,11 @@ public class UIHandler : Handler
             panelScore.SetActive(true);
             panelLives.SetActive(false);
             panelTimer.SetActive(true);
-
             setTimerTexts();
             startTimer();
         }
 
+        panelTargets.SetActive(true);
         panelMainMenu.SetActive(false);
         panelRestartMenu.SetActive(false);
         resetUIStats();
@@ -101,6 +101,7 @@ public class UIHandler : Handler
         panelScore.SetActive(false);
         panelLives.SetActive(false);
         panelTimer.SetActive(false);
+        panelTargets.SetActive(false);
 
         panelMainMenu.SetActive(true);
         panelRestartMenu.SetActive(false);
