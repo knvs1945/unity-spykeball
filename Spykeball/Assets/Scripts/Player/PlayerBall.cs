@@ -6,15 +6,17 @@ public class PlayerBall : GameUnit
 {
 
     protected const float startPosX = 0, startPosY = 4, MAX_velocity = 17.5f;
-    protected const int COUNT_Lives = 4;
+    protected const int COUNT_Lives = 4, TIME_addTime = 3;
     protected const int MODE_survival = 1, MODE_timeattack = 2;
 
     // delegates and events
-    public delegate void onHitTarget(int score);
+    public delegate void onHitTarget(int score, int timeToAdd = 0);
+    public delegate void onLivesLeft(int livesleft);
     public delegate void onNoMoreLives();
 
     public event onHitTarget doOnHitTarget;
     public event onNoMoreLives doOnNoMoreLives;
+    public event onLivesLeft doOnLivesLeft;
     public int baseScore;
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
 
@@ -70,15 +72,20 @@ public class PlayerBall : GameUnit
 
     // if the ball hits 
     protected void OnCollisionEnter2D(Collision2D collision) {
-        int scoreToAdd;
+        int scoreToAdd, timeToAdd = 0;
         if (collision.collider.tag == "Target") {
             scoreToAdd = baseScore + ((int)Mathf.Abs(rb.velocity.y) * 5);
-            doOnHitTarget(scoreToAdd); // use the current speed as the score
 
             if (mode == MODE_survival) {
                 rbRender.material.color = baseColor; // reset the color back to max lives    
                 lives = COUNT_Lives; // restore the ball's lives back to maximum;
+                doOnLivesLeft(lives);
             }
+            else if (mode == MODE_timeattack) {
+                timeToAdd = TIME_addTime + ((int) Mathf.Abs(rb.velocity.magnitude / 3)); // add maximum of 6 seconds based on ball's speed capped at 6 seconds
+            }
+
+            doOnHitTarget(scoreToAdd, timeToAdd); // report the score and time to add
         }
         if (collision.collider.tag == "Floor") {
             if (mode == MODE_survival) deductLives();
@@ -94,6 +101,7 @@ public class PlayerBall : GameUnit
         Debug.Log("Lives Left: " + lives);
         currentColor = currentColor - (colorfactor * (COUNT_Lives - lives));
         rbRender.material.color = new Color(1, currentColor, currentColor, 1); // color starts getting redder per bounce
+        doOnLivesLeft(lives);
         if (lives <= 0) doOnNoMoreLives();
     }
 

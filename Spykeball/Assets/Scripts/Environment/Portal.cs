@@ -22,7 +22,6 @@ public class Portal : MonoBehaviour
     protected void OnTriggerEnter2D(Collider2D collision) {
         Vector2 targetPos;
         if (collision.tag == "Player" || collision.tag == "Ball" || collision.tag == "Target" ) {
-            Debug.Log("Warping...");
             targetPos = collision.GetComponent<Transform>().position;
             collision.GetComponent<Transform>().position = new Vector2(warpPoint, targetPos.y);
         }

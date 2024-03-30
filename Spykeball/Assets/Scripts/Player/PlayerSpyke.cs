@@ -13,7 +13,7 @@ public class PlayerSpyke : PlayerUnit
 
     protected const float startPosX = 0f, startPosY = -4.3f;
     // Delegates and Events
-    public delegate void onHitBall(int score);
+    public delegate void onHitBall(int score, int timeToAdd = 0);
     public event onHitBall doOnHitBall;
 
     // public entries

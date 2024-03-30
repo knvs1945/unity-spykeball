@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,12 +22,13 @@ public class UIHandler : Handler
 
     public float timeAttackLimit;
     public GameObject panelMainMenu, panelRestartMenu;
+    public GameObject panelTimer, panelLives, panelScore; // ingame panels
+    public Image[] livesCount;
     public Text[] timerText;
+    
 
     protected int currentScore = 0, gameTimerSecs = 0;
     protected int[] timers = new int[] {0,0,0};
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +50,7 @@ public class UIHandler : Handler
             player.doOnHitBall += updateScore;
         }
         if (ball != null) {
+            ball.doOnLivesLeft += updateLives;
             ball.doOnHitTarget += updateScore;
         }
 
@@ -58,6 +61,7 @@ public class UIHandler : Handler
             player.doOnHitBall -= updateScore;
         }
         if (ball != null) {
+            ball.doOnLivesLeft += updateLives;
             ball.doOnHitTarget -= updateScore;
         }
     }
@@ -65,10 +69,18 @@ public class UIHandler : Handler
     // restart handler and elements here
     protected override void doOnRestartHandler() {
 
+        // enable needed panels and set up the UI
         if (Mode == Modes.Survival) {
-
+            panelScore.SetActive(true);
+            panelLives.SetActive(true);
+            panelTimer.SetActive(false);
+            updateLives(4);
         }
         else if (Mode == Modes.TimeAttack) {
+            panelScore.SetActive(true);
+            panelLives.SetActive(false);
+            panelTimer.SetActive(true);
+
             setTimerTexts();
             startTimer();
         }
@@ -85,9 +97,21 @@ public class UIHandler : Handler
     }
 
     // Update the score here
-    protected void updateScore(int score) {
+    protected void updateScore(int score, int time = 0) {
         currentScore += score;
         scoreboard.text = currentScore.ToString();
+        if (Mode == Modes.TimeAttack) addTime(time);
+    }
+
+    protected void updateLives(int lives) {
+        bool active = true;
+        int currentLives = Mathf.Abs(lives - 1);
+        if (lives <= 0) return;
+
+        for (int i = 0; i < livesCount.Length; i++ ) {
+            if (i >= currentLives) active = false; // if lives reported is 0, then diff
+            livesCount[i].enabled = active;
+        }
     }
 
     protected void resetUIStats() {
@@ -116,6 +140,26 @@ public class UIHandler : Handler
         timerText[0].text = "00"; // msecs
         timerText[1].text = "00"; // secs
         timerText[2].text = mintext.ToString("D2");
+    }
+
+    // Add time here when ball hits a target
+    protected void addTime(int timeToAdd) {
+        float timeInMins, timeInSecs;
+        TimeSpan convertedTime; // .Net class for changing time given an integer
+
+        // first, add the time to the current timer;
+        gameTimerSecs += timeToAdd;
+
+        // then, convert the timer to both minutes and seconds using FromSeconds
+        convertedTime = TimeSpan.FromSeconds(gameTimerSecs);
+        
+        // then, apply the converted time into the minutes and seconds field
+        timers[1] = convertedTime.Seconds;
+        timers[2] = convertedTime.Minutes;
+
+        // then, update the timer text
+        updateTimerTexts(1, timers[1].ToString("D2"));
+        updateTimerTexts(2, timers[2].ToString("D2"));
     }
 
     // Set timer 
