@@ -57,6 +57,10 @@ public class PlayerSpyke : PlayerUnit
         currentGravity = Physics2D.gravity;
 
         Debug.Log("Gravity Check: " + currentGravity);
+
+        width = render.bounds.size.x;
+        height = render.bounds.size.y;
+        
         // restartUnit("normal");
         
         // temporarily enable god mode;
@@ -66,14 +70,13 @@ public class PlayerSpyke : PlayerUnit
     // Update is called once per frame
     void Update()
     {
-
+        if (gameState == 0) return;
         if (!isControlDisabled) {
             inputMovement();    
         }
         if (checkIfGamePaused()) return;
 
         if (isJumping && !isFalling) {
-            // Debug.Log("Body velocity: " + rbBody.velocity.x + " - " + rbBody.velocity.y);
                 if (checkIfFalling()) {
                     animBody.SetTrigger("isFalling");
                     isFalling = true;
@@ -102,8 +105,6 @@ public class PlayerSpyke : PlayerUnit
 
     // use this class at the start of every game
     private void initializeStats() {
-        width = render.bounds.size.x;
-        height = render.bounds.size.y;
         rbBody.velocity = new Vector2(0,0);
         atkTimer = 0f;
         dashTimer = 0f;
@@ -242,7 +243,7 @@ public class PlayerSpyke : PlayerUnit
     }
 
     private void setAnimationJumping() {
-        Debug.Log("Applying Jump Power: " + jumpXPower * jumpXDirection + " (" + xDirection + ")");
+        // Debug.Log("Applying Jump Power: " + jumpXPower * jumpXDirection + " (" + xDirection + ")");
         rbBody.AddForce(new Vector2(jumpXPower * jumpXDirection, base_JumpPower), ForceMode2D.Impulse);
         isJumping = true;
         isGrounded = false;

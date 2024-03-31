@@ -55,6 +55,7 @@ public class Handler : MonoBehaviour
         doOnPauseHandler(state);
     }
 
+    public virtual void returnToMainMenu() {}
     protected virtual void doOnRestartHandler() {}
     protected virtual void doOnPauseHandler(bool state) {}
 }

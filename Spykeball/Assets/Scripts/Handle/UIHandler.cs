@@ -106,7 +106,7 @@ public class UIHandler : Handler
     }
     
     // show the main menu panel coming from other buttons
-    public void returnToMainMenu() {
+    public override void returnToMainMenu() {
         // hide the ingame panels
         panelScore.SetActive(false);
         panelLives.SetActive(false);
@@ -115,6 +115,7 @@ public class UIHandler : Handler
 
         panelMainMenu.SetActive(true);
         panelRestartMenu.SetActive(false);
+        panelPauseMenu.SetActive(false);
     }
 
     // show the end game panel

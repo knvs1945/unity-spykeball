@@ -68,8 +68,17 @@ public class PlayerHandler : Handler
         
     }
 
+    public override void returnToMainMenu() {
+        // hide the current target
+        ball.gameObject.SetActive(false);
+        playerObj.IsControlDisabled = true;
+    }
+
     // Restart the game sets
     protected override void doOnRestartHandler() {
+        
+        ball.gameObject.SetActive(true);
+        if (playerObj != null) playerObj.IsControlDisabled = false;
         
         if (Mode == Modes.Survival) {
             playerObj.restartUnit("Survival");       
@@ -79,7 +88,7 @@ public class PlayerHandler : Handler
             playerObj.restartUnit("Time Attack");       
             ball.restartUnit("Time Attack");
         }
-        ball.gameObject.SetActive(true);
+        
     }
 
     // paused player objects
@@ -169,14 +178,13 @@ public class PlayerHandler : Handler
 
     // report game over when the ball has no more lives
     protected void doOnPlayerBallGone() {
-        Debug.Log(" Player ball is now gone ");
         ball.gameObject.SetActive(false);
+        playerObj.IsControlDisabled = true;
         doOnGameOver();
     }
 
     // report game pause entries from player unit
     protected void playerPressedPause(bool state) {
-        Debug.Log("playerPressedPause reached" );
         doOnPlayerPaused(state);
     }
 }

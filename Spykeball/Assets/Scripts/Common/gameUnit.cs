@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameUnit : MonoBehaviour
 {
     public float HP, moveSpeed;
+    public static int gameState = 0;
     public static bool isGamePaused = false;
 
     protected int Level = 1;

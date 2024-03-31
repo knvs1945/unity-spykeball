@@ -28,7 +28,7 @@ public class GameHandler : Handler
 
         // move this somewhere else once startLevel works
         freezeGame(true);
-        returnToMainMenu("");
+        doReturnToMainMenu("");
     }
 
     void Awake() 
@@ -68,7 +68,7 @@ public class GameHandler : Handler
         
         // register events from MainMenu & Restart screen
         ButtonMainMenu.doOnStartGame += restartAllHandlers;
-        ButtonMainMenu.doOnReturnToMain += returnToMainMenu;
+        ButtonMainMenu.doOnReturnToMain += doReturnToMainMenu;
         ButtonMainMenu.doOnUnpauseGame += doOnGamePaused;
 
         Handler.doOnGameOver += GameEnded;
@@ -77,8 +77,12 @@ public class GameHandler : Handler
 
     }
 
-    protected void returnToMainMenu(string evt) {
+    protected void doReturnToMainMenu(string evt) {
+        GameUnit.gameState = 0;
+        doOnGamePaused(false);
         UIHandle.returnToMainMenu();
+        playerHandle.returnToMainMenu();
+        targetHandle.returnToMainMenu();
     }
 
     protected void restartAllHandlers(int mode, string gameType) {
@@ -96,6 +100,7 @@ public class GameHandler : Handler
         targetHandle.restartHandler();
         freezeGame(false);
         gameLevel = 0;
+        GameUnit.gameState = 1; // inform the units that we are in game mode
     }
 
     /* 

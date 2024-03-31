@@ -29,6 +29,11 @@ public class TargetHandler : Handler
         Target.doOnDestroyTarget += spawnNewTarget;
     }
 
+    public override void returnToMainMenu() {
+        // hide the current target
+        if (currentTarget != null) currentTarget.restartTarget();
+    }
+
     protected override void doOnRestartHandler() {
         Debug.Log("Restarting Target handler");
         if (currentTarget != null) currentTarget.restartTarget();
