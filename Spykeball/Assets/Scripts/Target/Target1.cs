@@ -6,13 +6,14 @@ using UnityEngine;
 public class Target1 : Target
 {
     public float minSpeed, maxSpeed, duration;
-    protected float moveTimer;
+    protected float moveTimer, moveTimerRem;
 
     protected int directionX = 1;
 
     // Update is called once per frame
     void Update()
     {
+        if (checkIfGamePaused()) return;
         moveSideways();
     }
 
@@ -28,5 +29,11 @@ public class Target1 : Target
 
     protected override void doOnApplyLevel() {
         moveSpeed = Random.Range(minSpeed, maxSpeed) * Mathf.Min(finalSpeed, Mathf.Max(1, (Level / 10f)));
+    }
+
+    
+    protected override void doOnTimersSaved(bool state) {
+        if (state) moveTimerRem = moveTimer - Time.time; // get the difference between the moveTimer's currentTime
+        else moveTimer = Time.time + moveTimerRem; // apply the difference between the moveTimer's currentTime
     }
 }

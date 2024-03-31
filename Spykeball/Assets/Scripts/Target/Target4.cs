@@ -10,12 +10,13 @@ public class Target4 : Target
     protected Renderer rbRender;
     protected Vector2 nextPos;
     protected Color baseColor = new Color(1,1,1,1), currentColor;
-    protected float moveTimer, currentDuration, fraction, newAlpha;
+    protected float moveTimer, moveTimerRem, currentDuration, fraction, newAlpha;
     
 
     // Update is called once per frame
     void Update()
     {
+        if (checkIfGamePaused()) return;
         fadeOutToNextPos();
     }
 
@@ -50,5 +51,10 @@ public class Target4 : Target
         rbRender = GetComponent<Renderer>();
         generateNextPos();
         moveTimer = Time.time + currentDuration;
+    }
+
+    protected override void doOnTimersSaved(bool state) {
+        if (state) moveTimerRem = moveTimer - Time.time; // get the difference between the moveTimer's currentTime
+        else moveTimer = Time.time + moveTimerRem; // apply the difference between the moveTimer's currentTime
     }
 }

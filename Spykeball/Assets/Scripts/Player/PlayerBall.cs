@@ -44,6 +44,7 @@ public class PlayerBall : GameUnit
     // Update is called once per frame
     void Update()
     {
+        if (checkIfGamePaused()) return;
         checkIfOutOfBounds();
     }
 
@@ -112,6 +113,21 @@ public class PlayerBall : GameUnit
         if (transform.position.y <= -10f) transform.position = new Vector2(transform.position.x, boundsCeiling);
         if (transform.position.x <= -12f) transform.position = new Vector2(boundsRight, transform.position.y);
         if (transform.position.x >= 12f) transform.position = new Vector2(boundsRight, transform.position.y);
+    }
+
+    // pause ball components to check if it is paused or not
+    protected bool checkIfGamePaused() {
+        
+        if (isGamePaused) {
+            if (rb.simulated) rb.simulated = false; // disable rigidbody physics when paused
+            if (anim.speed != 0) anim.speed = 0;    // disable animator when paused
+        }
+        else {
+            if (!rb.simulated) rb.simulated = true;
+            if (anim.speed == 0) anim.speed = 1;
+        }
+
+        return isGamePaused;
     }
 
     // Cap the ball's maximum velocity if it is on time attack 

@@ -9,12 +9,13 @@ public class Target5 : Target
     public int maxDodges;
 
     protected Vector2 nextPos;
-    protected float moveTimer, currentDodges;
+    protected float currentDodges;
     protected bool isMoving = false;
 
     // Update is called once per frame
     void Update()
     {
+        if (checkIfGamePaused()) return;
         moveToNextPos();
     }
 

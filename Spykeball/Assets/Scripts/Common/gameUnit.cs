@@ -30,6 +30,7 @@ public class GameUnit : MonoBehaviour
 
     public bool IsPaused {
         get { return isPaused; }
+        set { isPaused = value; }
     }
 
     public bool IsImmune {

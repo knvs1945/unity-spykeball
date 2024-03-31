@@ -25,7 +25,7 @@ public class UIHandler : Handler
 
     public float timeAttackLimit;
     public GameObject panelMainMenu, panelRestartMenu;
-    public GameObject panelTimer, panelLives, panelScore, panelTargets; // ingame panels
+    public GameObject panelTimer, panelLives, panelScore, panelTargets, panelPauseMenu; // ingame panels
     public Image[] livesCount;
     public Text[] timerText;
     
@@ -57,7 +57,6 @@ public class UIHandler : Handler
             ball.doOnHitTarget += updateScore;
             ball.doOnHitTarget += updateGameLevel;
         }
-
     }
 
     protected void unRegisterEvents() {
@@ -91,8 +90,19 @@ public class UIHandler : Handler
         panelTargets.SetActive(true);
         panelMainMenu.SetActive(false);
         panelRestartMenu.SetActive(false);
-        resetUIStats();
-        
+        panelPauseMenu.SetActive(false);
+        resetUIStats();   
+    }
+
+    // paused UI objects
+    protected override void doOnPauseHandler(bool state) {
+        if (state) {
+            // stop the timer if it is counting
+            panelPauseMenu.SetActive(true);
+        }
+        else {
+            panelPauseMenu.SetActive(false);
+        }
     }
     
     // show the main menu panel coming from other buttons
@@ -111,7 +121,6 @@ public class UIHandler : Handler
     public void showEndGamePanel() {
         panelRestartMenu.SetActive(true);
     }
-
 
     // Update the score here
     protected void updateScore(int score, int time = 0) {
@@ -201,6 +210,7 @@ public class UIHandler : Handler
     // countDown milliseconds
     IEnumerator countDownMsecs() {
         while (gameTimerSecs > 0) {        
+            while (pauseGame) yield return null;
             timers[0]--; 
             if (timers[0] < 0) {
                 gameTimerSecs--;

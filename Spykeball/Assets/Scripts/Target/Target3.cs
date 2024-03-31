@@ -6,12 +6,13 @@ using UnityEngine;
 public class Target3 : Target
 {
     public float minSpeed, maxSpeed;
-    protected float moveTimer, vertSpeed = 0f, duration = 1f;
+    protected float moveTimer, moveTimerRem, vertSpeed = 0f, duration = 1f;
     protected int directionX = 1, directionY;
 
     // Update is called once per frame
     void Update()
     {
+        if (checkIfGamePaused()) return;
         moveSideways();
     }
 
@@ -32,6 +33,11 @@ public class Target3 : Target
         moveTimer = Time.time + duration;
 
         Debug.Log("Target 3: " + vertSpeed + " - " + directionY);
+    }
+    
+    protected override void doOnTimersSaved(bool state) {
+        if (state) moveTimerRem = moveTimer - Time.time; // get the difference between the moveTimer's currentTime
+        else moveTimer = Time.time + moveTimerRem; // apply the difference between the moveTimer's currentTime
     }
 }
 

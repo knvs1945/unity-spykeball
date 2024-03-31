@@ -80,6 +80,10 @@ public class PlayerHandler : Handler
             ball.restartUnit("Time Attack");
         }
         ball.gameObject.SetActive(true);
+    }
+
+    // paused player objects
+    protected override void doOnPauseHandler(bool state) {
 
     }
 

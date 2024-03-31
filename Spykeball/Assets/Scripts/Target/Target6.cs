@@ -10,13 +10,14 @@ public class Target6 : Target
     protected Renderer rbRender;
     protected Vector2 nextPos;
     protected Color baseColor = new Color(0,0,0,1), currentColor;
-    protected float dodgelessTimer, currentDuration, fraction, turnRed;
+    protected float dodgelessTimer, dodgelessTimerRem, currentDuration, fraction, turnRed;
     protected bool isMoving = false, canDodge = true;    
     protected Collider2D triggerArea;
 
     // Update is called once per frame
     void Update()
     {
+        if (checkIfGamePaused()) return;
         moveToNextPos();
         checkDodgeSetting();
     }
@@ -114,6 +115,11 @@ public class Target6 : Target
                 break;
             }
         }
+    }
+
+    protected override void doOnTimersSaved(bool state) {
+        if (state) dodgelessTimerRem = dodgelessTimer - Time.time; // get the difference between the moveTimer's currentTime
+        else dodgelessTimer = Time.time + dodgelessTimerRem; // apply the difference between the moveTimer's currentTime
     }
 
 }

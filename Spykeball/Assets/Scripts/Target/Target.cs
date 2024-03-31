@@ -13,15 +13,19 @@ public class Target : GameUnit
 
     // explosion effect
     public ParticleSystem targetBreak;
-
+    
     protected Rigidbody2D rb;
+    protected Animator anim;
+
+    // inherited timer flags
+    protected bool timersSaved = false; // this will inform the class that the timer data have already been saved during a pause
 
     // Start is called before the first frame update
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
-
 
     protected virtual void OnCollisionEnter2D (Collision2D collision) {
         if (collision.collider.tag == "Ball") {
@@ -45,6 +49,7 @@ public class Target : GameUnit
 
     public void applyLevel(int level = 1) {
         Level = level;
+        timersSaved = false; // default timersSaved as false
         doOnApplyLevel();
     }
 
@@ -52,5 +57,37 @@ public class Target : GameUnit
 
     }
 
+    // pause player components to check if it is paused or not
+    protected bool checkIfGamePaused() {
+        
+        if (isGamePaused) {
+            if (rb.simulated) rb.simulated = false; // disable rigidbody physics when paused
+            if (anim.speed != 0) anim.speed = 0;    // disable animator when paused
+        }
+        else {
+            if (!rb.simulated) rb.simulated = true;
+            if (anim.speed == 0) anim.speed = 1;
+        }
+        pauseTimers(isGamePaused);
+
+        return isGamePaused;
+    }
+
+    protected void pauseTimers(bool state) {
+        if (state) {
+            if (!timersSaved) {
+                timersSaved = true;
+                doOnTimersSaved(state);
+            }
+        }
+        else {
+            if (timersSaved) {
+                timersSaved = false;
+                doOnTimersSaved(state);
+            }
+        }
+    }
+
+    protected virtual void doOnTimersSaved(bool state) {}
 
 }

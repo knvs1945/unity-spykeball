@@ -50,5 +50,11 @@ public class Handler : MonoBehaviour
         doOnRestartHandler();
     }
 
+    public void pauseHandler(bool state) {
+        pauseGame = state;
+        doOnPauseHandler(state);
+    }
+
     protected virtual void doOnRestartHandler() {}
+    protected virtual void doOnPauseHandler(bool state) {}
 }

@@ -66,10 +66,12 @@ public class PlayerSpyke : PlayerUnit
     // Update is called once per frame
     void Update()
     {
+
         if (!isControlDisabled) {
-            inputMovement();
-            
+            inputMovement();    
         }
+        if (checkIfGamePaused()) return;
+
         if (isJumping && !isFalling) {
             // Debug.Log("Body velocity: " + rbBody.velocity.x + " - " + rbBody.velocity.y);
                 if (checkIfFalling()) {
@@ -122,7 +124,6 @@ public class PlayerSpyke : PlayerUnit
             }
         }
         if (isGamePaused) return; // reject every other control unless the game is unpaused
-        
 
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
         moveData = moveInput.normalized * moveSpeed;
@@ -204,6 +205,21 @@ public class PlayerSpyke : PlayerUnit
     protected void resetDashState() {
         isDashing = false;
         rbBody.velocity = new Vector2(0, rbBody.velocity.y); // remove any force currently in it
+    }
+
+    // pause player components to check if it is paused or not
+    protected bool checkIfGamePaused() {
+        
+        if (isGamePaused) {
+            if (rbBody.simulated) rbBody.simulated = false; // disable rigidbody physics when paused
+            if (animBody.speed != 0) animBody.speed = 0;    // disable animator when paused
+        }
+        else {
+            if (!rbBody.simulated) rbBody.simulated = true;
+            if (animBody.speed == 0) animBody.speed = 1;
+        }
+
+        return isGamePaused;
     }
 
     //  ================ collision sequences start here  ================ //

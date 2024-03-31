@@ -6,12 +6,12 @@ using UnityEngine;
 public class Target2 : Target
 {
      public float minSpeed, maxSpeed;
-    protected float moveTimer;
     protected int directionX = 1;
 
     // Update is called once per frame
     void Update()
     {
+        if (checkIfGamePaused()) return;
         moveSideways();
     }
 
