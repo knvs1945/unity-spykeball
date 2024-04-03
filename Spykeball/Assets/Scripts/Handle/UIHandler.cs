@@ -25,7 +25,7 @@ public class UIHandler : Handler
 
     public float timeAttackLimit;
     public GameObject panelMainMenu, panelRestartMenu;
-    public GameObject panelTimer, panelLives, panelScore, panelTargets, panelPauseMenu; // ingame panels
+    public GameObject panelTimer, panelLives, panelScore, panelTargets, panelPauseMenu, panelControls; // ingame panels
     public Image[] livesCount;
     public Text[] timerText;
     
@@ -91,6 +91,7 @@ public class UIHandler : Handler
         panelMainMenu.SetActive(false);
         panelRestartMenu.SetActive(false);
         panelPauseMenu.SetActive(false);
+        panelControls.SetActive(false);
         resetUIStats();   
     }
 
