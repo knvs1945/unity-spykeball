@@ -5,28 +5,31 @@ using UnityEngine;
 public class PlayerBall : GameUnit
 {
 
-    protected const float startPosX = 0, startPosY = 4, MAX_velocity = 17.5f;
+    protected const float startPosX = 0, startPosY = 4, MAX_velocity = 17.5f, MIN_effectSpd = 13f, effectsGap = 0.05f;
     protected const int COUNT_Lives = 4, TIME_addTime = 3;
     protected const int MODE_survival = 1, MODE_timeattack = 2;
     
-
     // delegates and events
     public delegate void onHitTarget(int score, int timeToAdd = 0);
     public delegate void onLivesLeft(int livesleft);
     public delegate void onNoMoreLives();
-
     public event onHitTarget doOnHitTarget;
     public event onNoMoreLives doOnNoMoreLives;
     public event onLivesLeft doOnLivesLeft;
+
+    public SpeedMirage mirageEffect;
     public int baseScore;
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
 
     protected int lives, mode;
     protected Color baseColor = new Color(1,1,1,1);
+    protected float effectTimer;
+    protected bool isHighVelocity = false;
 
     private Animator anim;
     private Rigidbody2D rb;
     private Renderer rbRender;
+    private SpriteRenderer spriteRnd;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +42,7 @@ public class PlayerBall : GameUnit
         anim = GetComponent<Animator>();   
         rb = GetComponent<Rigidbody2D>();
         rbRender = GetComponent<Renderer>();
+        spriteRnd = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -50,10 +54,9 @@ public class PlayerBall : GameUnit
 
     // Fixed Update - called for physics-based behavior
     void FixedUpdate()
-    {
-        if (mode == MODE_timeattack) {
-            checkBallVelocity();
-        }
+    {   
+        checkBallVelocity();
+        createSpdEffects();
     }
 
     public override void restartUnit(string gameMode) {    
@@ -133,10 +136,32 @@ public class PlayerBall : GameUnit
     // Cap the ball's maximum velocity if it is on time attack 
     protected void checkBallVelocity() {
         
-        if (rb.velocity.magnitude > MAX_velocity) {
-            Debug.Log("Ball exceeding max velocity: " + rb.velocity.magnitude);
+        if (mode == MODE_timeattack) {
+            if (rb.velocity.magnitude > MAX_velocity) {
             rb.velocity = rb.velocity.normalized * MAX_velocity; // cap the velocity to the max velocity on time attack
+            }
         }
 
+        // check if the velocity DID pass at least the MIN_effectSpd before creating mirages
+        if (rb.velocity.magnitude > MIN_effectSpd) {
+            if (!isHighVelocity) {
+                isHighVelocity = true;
+                effectTimer = Time.time + effectsGap;
+            }
+        }
+        else {
+            if (isHighVelocity) isHighVelocity = false;
+        }
+    }
+
+    // create effects only when ball is super fast
+    protected void createSpdEffects() {
+        if (!isHighVelocity) return;
+        if (Time.time < effectTimer) return;
+
+        SpeedMirage temp;
+        temp = Instantiate(mirageEffect, transform.position, transform.rotation);
+        if (temp) temp.applySprite(spriteRnd.sprite);
+        effectTimer = Time.time + effectsGap; // reload the timer
     }
 }

@@ -11,7 +11,7 @@ using UnityEngine;
 public class PlayerSpyke : PlayerUnit
 {
 
-    protected const float startPosX = 0f, startPosY = -4.3f;
+    protected const float startPosX = 0f, startPosY = -4.3f, dashEffectGap = 0.05f;
     // Delegates and Events
     public delegate void onHitBall(int score, int timeToAdd = 0);
     public event onHitBall doOnHitBall;
@@ -19,6 +19,7 @@ public class PlayerSpyke : PlayerUnit
     // public entries
     // public Projectiles attackEffect;
     public Transform frontSide, attackPoint, notePoint, bodyPoint;
+    public SpeedMirage mirageEffect;
     
     // Arrays and Lists
     
@@ -29,11 +30,12 @@ public class PlayerSpyke : PlayerUnit
     // objects 
     private Rigidbody2D rbBody;
     protected Renderer render;
+    protected SpriteRenderer spriteRnd;
     private Vector2 moveInput, moveData, currentGravity;
 
     // primitives    
     private int castCounter = 0, xDirection = 1, jumpXDirection = 0;
-    private float jumpXPower = 0, width, height, atkTimer = 0f, dashTimer = 0f;
+    private float jumpXPower = 0, width, height, atkTimer = 0f, dashTimer = 0f, dashEffectTimer = 0f;
     private bool canAttack = true, isJumping = false, isFalling = false, isGrounded = false, isDashing = false;
         
     // specifics
@@ -54,6 +56,7 @@ public class PlayerSpyke : PlayerUnit
         rbBody = GetComponent<Rigidbody2D>();
         animBody = GetComponent<Animator>();
         render = body.GetComponent<Renderer>();
+        spriteRnd = body.GetComponent<SpriteRenderer>();
         currentGravity = Physics2D.gravity;
 
         Debug.Log("Gravity Check: " + currentGravity);
@@ -71,30 +74,18 @@ public class PlayerSpyke : PlayerUnit
     void Update()
     {
         if (gameState == 0) return;
-        if (!isControlDisabled) {
-            inputMovement();    
-        }
+        
+        inputMovement();    // prioritize inputMovement check so player can still unpause
         if (checkIfGamePaused()) return;
 
-        if (isJumping && !isFalling) {
-                if (checkIfFalling()) {
-                    animBody.SetTrigger("isFalling");
-                    isFalling = true;
-                }
-            }
-        else if (isFalling) {
-            if (checkIfLanded()){
-                    animBody.SetTrigger("hasLanded");
-                    isFalling = false;
-                    isJumping = false;
-            }
-        }
+        movementChecks();
     }
 
     void FixedUpdate()
     {
         // move the rigidbody here. 
         if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
+        createDashEffects();
     }
 
     // ================ Stats and Status sequences start here  ================ //
@@ -114,6 +105,7 @@ public class PlayerSpyke : PlayerUnit
     // ================ Input action sequences start here  ================ //
     // Input for moving player
     private void inputMovement() {
+        if (isControlDisabled) return;
 
         if (Input.GetKeyDown(controls.Pause)) {
             if (!isGamePaused) {
@@ -177,6 +169,23 @@ public class PlayerSpyke : PlayerUnit
                 canAttack = false;
                 animateAttack();
                 Invoke("updateAttackCD", ATKdelay);
+            }
+        }
+    }
+
+    // do movement checks here
+    protected void movementChecks() {
+        if (isJumping && !isFalling) {
+                if (checkIfFalling()) {
+                    animBody.SetTrigger("isFalling");
+                    isFalling = true;
+                }
+            }
+        else if (isFalling) {
+            if (checkIfLanded()){
+                    animBody.SetTrigger("hasLanded");
+                    isFalling = false;
+                    isJumping = false;
             }
         }
     }
@@ -264,24 +273,30 @@ public class PlayerSpyke : PlayerUnit
     }
 
     private void animateAttack() {
-        if (Time.time > atkTimer) {
-            animBody.SetTrigger("attack");
-            atkTimer = Time.time + base_ATKdelay; // add a cooldown to the atk button to prevent spamming
-        }
+        if (Time.time <= atkTimer) return;
+        animBody.SetTrigger("attack");
+        atkTimer = Time.time + base_ATKdelay; // add a cooldown to the atk button to prevent spamming
     }
 
     private void animateDash() {
-        if (Time.time > dashTimer) {
-            animBody.SetTrigger("dash");
-            isDashing = true;
-            Debug.Log("Dash Power: " + (base_DashPower * xDirection));
-            rbBody.AddForce(new Vector2(base_DashPower * xDirection, 0), ForceMode2D.Force);
-            dashTimer = Time.time + base_DashDelay;
-        }
+        if (Time.time <= dashTimer) return;
+        animBody.SetTrigger("dash");
+        isDashing = true;
+        Debug.Log("Dash Power: " + (base_DashPower * xDirection));
+        rbBody.AddForce(new Vector2(base_DashPower * xDirection, 0), ForceMode2D.Force);
+        dashTimer = Time.time + base_DashDelay;
+        dashEffectTimer = Time.time + dashEffectGap; // start creating dashes
     }
 
-    private void addDashPower() {
+    private void createDashEffects() {
+        if (!isDashing) return;
+        if (Time.time < dashEffectTimer) return;
         
+        // create new dashing mirage
+        SpeedMirage temp;
+        temp = Instantiate(mirageEffect, transform.position, transform.rotation);
+        if (temp) temp.applySprite(spriteRnd.sprite);
+        dashEffectTimer = Time.time + dashEffectGap; // reload the timer
     }
 
     protected void launchBall() {
