@@ -26,6 +26,15 @@ public class PlayerHandler : Handler
     // Player's controls
     protected PlayerControls controlPlayer1;
 
+    // getters and setters
+    public PlayerControls ControlPlayer1 {
+        get { return controlPlayer1; }
+        set {
+            controlPlayer1 = value;
+            playerObj.Controls = controlPlayer1;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {

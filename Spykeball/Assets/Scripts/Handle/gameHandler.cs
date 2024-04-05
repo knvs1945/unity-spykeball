@@ -74,12 +74,17 @@ public class GameHandler : Handler
         Handler.doOnGameOver += GameEnded;
         UIHandler.doOnTimeRunOut += GameEnded;
         PlayerHandler.doOnPlayerPaused += doOnGamePaused;
-
+        
     }
 
     protected void doReturnToMainMenu(string evt) {
         GameUnit.gameState = 0;
+        gameState = states.MainMenu;
         doOnGamePaused(false);
+        
+        // get the current controls used by the player
+        UIHandle.setCurrentControls(playerHandle.ControlPlayer1);
+
         UIHandle.returnToMainMenu();
         playerHandle.returnToMainMenu();
         targetHandle.returnToMainMenu();

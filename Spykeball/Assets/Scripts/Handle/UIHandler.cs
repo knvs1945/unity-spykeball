@@ -57,6 +57,9 @@ public class UIHandler : Handler
             ball.doOnHitTarget += updateScore;
             ball.doOnHitTarget += updateGameLevel;
         }
+
+        ButtonMainMenu.doOnOpenSettings += openSettingsPanel;
+        ControlPanel.doOnCloseSettings += saveSettingsAndClose;
     }
 
     protected void unRegisterEvents() {
@@ -93,6 +96,10 @@ public class UIHandler : Handler
         panelPauseMenu.SetActive(false);
         panelControls.SetActive(false);
         resetUIStats();   
+
+        // game is starting, set the game state as needed
+        gameState = states.inStage;
+        
     }
 
     // paused UI objects
@@ -117,11 +124,47 @@ public class UIHandler : Handler
         panelMainMenu.SetActive(true);
         panelRestartMenu.SetActive(false);
         panelPauseMenu.SetActive(false);
+        panelControls.SetActive(false);
     }
 
     // show the end game panel
     public void showEndGamePanel() {
         panelRestartMenu.SetActive(true);
+        gameState = states.GameEnd;
+    }
+
+    // show the controls panel. Set to true if open and false if close
+    public void openSettingsPanel(bool open) {
+        
+        if (open) {
+            if (gameState == states.MainMenu) {
+                panelMainMenu.SetActive(false); // hide the main menu if entering settings
+            }
+        }
+        else {
+            if (gameState == states.MainMenu) {
+                panelMainMenu.SetActive(true); // hide the main menu if entering settings
+            }
+        }
+
+        panelControls.SetActive(open);
+    }
+
+    // close the settings panel with or without saving the changes
+    public void saveSettingsAndClose(bool saveSettings) {
+        if (!saveSettings) {
+            // do nothing and close
+            openSettingsPanel(false); // close the control panel;
+        }
+        else {
+            // save the controls here before closing 
+            openSettingsPanel(false); // close the control panel;
+        }
+    }
+
+    // set the controls from the player to display in the control panel
+    public void setCurrentControls(PlayerControls controls) {
+        panelControls.GetComponent<ControlPanel>().setCurrentControlUI(controls);
     }
 
     // Update the score here
