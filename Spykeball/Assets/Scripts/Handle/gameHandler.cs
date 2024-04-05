@@ -59,8 +59,10 @@ public class GameHandler : Handler
     }
 
     public void checkExitGame() {
-        if (Input.GetKeyDown("r")) restartAllHandlers(1, ""); // restart whatever game mode they were in
-        if (Input.GetKeyDown("escape")) Application.Quit();
+        // if (Input.GetKeyDown("r")) restartAllHandlers(1, ""); // restart whatever game mode they were in
+        if (Input.GetKeyDown("escape")) {
+            Application.Quit();
+        }
     }
 
     // register events
