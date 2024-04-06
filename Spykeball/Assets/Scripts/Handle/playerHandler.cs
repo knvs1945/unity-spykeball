@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -217,6 +218,23 @@ public class PlayerControls {
         pause = _pause;
     }
 
+    // overridden constructor
+    public PlayerControls(
+        string[] controlSet
+    ) {
+        if (controlSet.Length < 8) {
+            throw new ArgumentException("Invalid controlSet property. Must have 8 elements to initialize a PlayerControl class");
+        }
+        moveUp = controlSet[0];
+        moveDown = controlSet[1];
+        moveLeft = controlSet[2];
+        moveRight = controlSet[3];
+        attack = controlSet[4];
+        defend = controlSet[5];
+        dodge = controlSet[6];
+        pause = controlSet[7];
+    }
+
     // getters & setters
     public string MoveUp {
         get { return moveUp; }
@@ -251,5 +269,8 @@ public class PlayerControls {
         set { pause = value; }
     }
 
+    public string[] getControlSet() {
+        return new string [] {moveUp, moveDown, moveLeft, moveRight, attack, defend, dodge, pause};
+    }
 }
 

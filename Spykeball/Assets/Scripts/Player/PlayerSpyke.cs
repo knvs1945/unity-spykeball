@@ -93,7 +93,6 @@ public class PlayerSpyke : PlayerUnit
         initializeStats();
     }
 
-
     // use this class at the start of every game
     private void initializeStats() {
         rbBody.velocity = new Vector2(0,0);
@@ -118,25 +117,40 @@ public class PlayerSpyke : PlayerUnit
         }
         if (isGamePaused) return; // reject every other control unless the game is unpaused
 
-        moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
-        moveData = moveInput.normalized * moveSpeed;
-
         // add default keycode for up, down left and right arrows
         // add jump force when pressing up
+
+        bool moveLeft = (Input.GetKey(controls.MoveLeft) || Input.GetKey(KeyCode.LeftArrow));
+        bool moveRight = (Input.GetKey(controls.MoveRight) || Input.GetKey(KeyCode.RightArrow));
+        int moveDir = 0;
+
         if (!isJumping) {
             if (Input.GetKeyDown(controls.MoveUp) || Input.GetKeyDown(KeyCode.UpArrow)) setAnimationJumping();    
-            if (Input.GetKeyDown(controls.MoveLeft) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+
+            // move left OR right, or neither if both are pressed;
+            if (moveLeft && moveRight){
+                moveDir = 0;
+            }
+            else if (moveLeft) {
                 flipSprite(-1);
                 xDirection = -1;
                 jumpXDirection = 1;
+                moveDir = xDirection;
                 setAnimationWalking(3, true);
             }
-            else if (Input.GetKeyDown(controls.MoveRight) || Input.GetKeyDown(KeyCode.RightArrow)) {
+            else if (moveRight) {
                 flipSprite(1);
                 xDirection = 1;
                 jumpXDirection = 1;
+                moveDir = xDirection;
                 setAnimationWalking(4, true);
             }
+            else {
+                moveDir = 0;
+            }
+
+            moveInput = new Vector2(moveDir, 0);
+            moveData = moveInput.normalized * moveSpeed;
             jumpXPower = moveSpeed * xDirection;
         }
         else {

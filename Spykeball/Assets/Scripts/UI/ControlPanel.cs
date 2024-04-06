@@ -18,13 +18,17 @@ public class ControlPanel : Panel
     [SerializeField]
     protected Text[] btText;
 
-    protected char[] newControls;
+    protected string[] newControls;
     protected string currentButton = "";
     protected bool isListening = false;
 
+    public string[] NewControls {
+        get {return newControls; }
+    }
+
     void Awake()
     {
-        newControls = new char[btText.Length];
+        newControls = new string[btText.Length];
     }
 
     // Update is called once per frame
@@ -42,13 +46,20 @@ public class ControlPanel : Panel
             btText[4].text = controls.Attack.ToUpper();
         }
 
-        for (int i = 0; i < btText.Length; i++) {
-            newControls[i] = btText[i].text[0];
-        }
-        
+        newControls = controls.getControlSet();   
     }
 
-    // settings panel button behavior here
+    public PlayerControls getCurrentControl() {
+        PlayerControls newControl = new PlayerControls(newControls);
+        Debug.Log("New Controls: " + newControl.MoveLeft + "-" + newControl.MoveRight + "-" + newControl.MoveUp + "-" + newControl.MoveDown + "-" + newControl.Attack);
+        return newControl;
+    }
+
+    /// <summary>
+    /// 
+    /// settings panel button behavior here
+    /// 
+    /// </summary>
     public void btCloseSettingsWithoutSave() {
         doOnCloseSettings(false);
     }
@@ -59,29 +70,43 @@ public class ControlPanel : Panel
         isListening = true;
     }
 
-    // Listen for control updates here
+    // apply changes clicked
+    public void btControlConfirmChanges() {
+        doOnCloseSettings(true);
+    }
+
+    /// <summary>
+    /// 
+    /// Listen for control updates here
+    /// 
+    /// </summary>
     protected void listenToControlUpdates() {
         if (!isListening) return;
-        int index = 0;
+        int controlindex = 0, UIindex = 0;
 
         if (Input.anyKeyDown) {
             string keyPresses = Input.inputString; // get all the keys prseed during the time
             if (!string.IsNullOrEmpty(keyPresses)){
                 if (keyPresses.ToLower() != "escape") {        
                     switch(currentButton) {
-                        case "left": index = 0;
+                        case "left": UIindex = 0;
+                                     controlindex = 2;
                                      break;
-                        case "right": index = 1;
+                        case "right": UIindex = 1;
+                                     controlindex = 3;
                                      break;
-                        case "jump": index = 2;
+                        case "jump": UIindex = 2;
+                                     controlindex = 0;
                                      break;
-                        case "dash": index = 3;
+                        case "dash": UIindex = 3;
+                                     controlindex = 1;
                                      break;
-                        case "spike": index = 4;
+                        case "spike": UIindex = 4;
+                                     controlindex = 4;
                                      break;
                     }
-                    newControls[index] = keyPresses[0]; // just get the first character recorded
-                    btText[index].text = newControls[index].ToString().ToUpper();
+                    newControls[controlindex] = keyPresses[0].ToString().ToLower(); // just get the first character recorded
+                    btText[UIindex].text = newControls[controlindex].ToString().ToUpper();
                     isListening = false;
                 }
                 else {

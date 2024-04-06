@@ -9,7 +9,10 @@ public class UIHandler : Handler
 
     // delegates and events
     public delegate void onTimeRunOut();
+    public delegate void onGetNewControls();
+
     public static event onTimeRunOut doOnTimeRunOut;
+    public static event onGetNewControls doOnGetNewControls;
 
     [SerializeField]
     protected PlayerSpyke player;
@@ -143,7 +146,7 @@ public class UIHandler : Handler
         }
         else {
             if (gameState == states.MainMenu) {
-                panelMainMenu.SetActive(true); // hide the main menu if entering settings
+                panelMainMenu.SetActive(true); // show the main menu if exiting settings
             }
         }
 
@@ -158,6 +161,7 @@ public class UIHandler : Handler
         }
         else {
             // save the controls here before closing 
+            doOnGetNewControls();
             openSettingsPanel(false); // close the control panel;
         }
     }
@@ -165,6 +169,11 @@ public class UIHandler : Handler
     // set the controls from the player to display in the control panel
     public void setCurrentControls(PlayerControls controls) {
         panelControls.GetComponent<ControlPanel>().setCurrentControlUI(controls);
+    }
+
+    public PlayerControls getNewControls() {
+        PlayerControls newControl = panelControls.GetComponent<ControlPanel>().getCurrentControl();
+        return newControl;
     }
 
     // Update the score here

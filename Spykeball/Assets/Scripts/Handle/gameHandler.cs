@@ -75,6 +75,7 @@ public class GameHandler : Handler
 
         Handler.doOnGameOver += GameEnded;
         UIHandler.doOnTimeRunOut += GameEnded;
+        UIHandler.doOnGetNewControls += doOnGetNewControls;
         PlayerHandler.doOnPlayerPaused += doOnGamePaused;
         
     }
@@ -90,6 +91,11 @@ public class GameHandler : Handler
         UIHandle.returnToMainMenu();
         playerHandle.returnToMainMenu();
         targetHandle.returnToMainMenu();
+    }
+
+    protected void doOnGetNewControls() {
+        
+        playerHandle.ControlPlayer1 = UIHandle.getNewControls();
     }
 
     protected void restartAllHandlers(int mode, string gameType) {
