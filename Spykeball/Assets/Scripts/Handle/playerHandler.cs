@@ -5,7 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Handler for players
+/// <summary>
+/// Handler for players
+/// </summary>
 public class PlayerHandler : Handler
 {
 

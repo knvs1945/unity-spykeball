@@ -17,7 +17,6 @@ public class PlayerBall : GameUnit
     public event onNoMoreLives doOnNoMoreLives;
     public event onLivesLeft doOnLivesLeft;
 
-    public SpeedMirage mirageEffect;
     public int baseScore;
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
 
@@ -159,9 +158,7 @@ public class PlayerBall : GameUnit
         if (!isHighVelocity) return;
         if (Time.time < effectTimer) return;
 
-        SpeedMirage temp;
-        temp = Instantiate(mirageEffect, transform.position, transform.rotation);
-        if (temp) temp.applySprite(spriteRnd.sprite);
+        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite);
         effectTimer = Time.time + effectsGap; // reload the timer
     }
 }

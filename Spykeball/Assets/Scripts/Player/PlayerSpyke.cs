@@ -11,7 +11,8 @@ using UnityEngine;
 public class PlayerSpyke : PlayerUnit
 {
 
-    protected const float startPosX = 0f, startPosY = -4.3f, dashEffectGap = 0.05f;
+    protected const float startPosX = 0f, startPosY = -4.3f, dashEffectGap = 0.05f, ballImpactMin = 15f;
+    
     // Delegates and Events
     public delegate void onHitBall(int score, int timeToAdd = 0);
     public event onHitBall doOnHitBall;
@@ -19,13 +20,13 @@ public class PlayerSpyke : PlayerUnit
     // public entries
     // public Projectiles attackEffect;
     public Transform frontSide, attackPoint, notePoint, bodyPoint;
-    public SpeedMirage mirageEffect;
     
     // Arrays and Lists
     
     // will contain the stats for the character to be set on the UI
     public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_DashDelay, base_DashPower, base_JumpPower, base_PushPower, attackRadius; 
     public int scoreOnHitBall, scoreOnStrikeBall, scoreOnHitTarget;
+    public bool impactReleased = false;
 
     // objects 
     private Rigidbody2D rbBody;
@@ -64,8 +65,6 @@ public class PlayerSpyke : PlayerUnit
         width = render.bounds.size.x;
         height = render.bounds.size.y;
         
-        // restartUnit("normal");
-        
         // temporarily enable god mode;
         // isImmune = true;
     }
@@ -84,7 +83,8 @@ public class PlayerSpyke : PlayerUnit
     void FixedUpdate()
     {
         // move the rigidbody here. 
-        if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
+        // if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
+        if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, rbBody.velocity.y) * Time.fixedDeltaTime);
         createDashEffects();
     }
 
@@ -307,24 +307,35 @@ public class PlayerSpyke : PlayerUnit
         if (Time.time < dashEffectTimer) return;
         
         // create new dashing mirage
-        SpeedMirage temp;
-        temp = Instantiate(mirageEffect, transform.position, transform.rotation);
-        if (temp) temp.applySprite(spriteRnd.sprite);
+        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite);
         dashEffectTimer = Time.time + dashEffectGap; // reload the timer
     }
 
     protected void launchBall() {
         Rigidbody2D ballPower;
         float power;
+
         // detect if the ball is somewhere near the player if attack is fired
         Collider2D hitObject = Physics2D.OverlapCircle(transform.position, width + attackRadius);
         if ((hitObject != null) && (hitObject.gameObject.name == "Player Ball")) {
-            // apply force to the ball using 
+            // apply upward force to the ball 
             ballPower = hitObject.gameObject.GetComponent<Rigidbody2D>();
             power = Mathf.Max(Mathf.Abs(ballPower.velocity.y) * base_ATKbase, base_ATKbase);
-            // Debug.Log("Power: " + power);
+            
             ballPower.AddForce(new Vector2((rbBody.velocity.x), base_ATKbase));
+            
+            // create impact ring effect when striking the ball. only do this if ball's velocity is higher than a threshold
+            if (!impactReleased) {
+                if (ballPower.velocity.magnitude > ballImpactMin) {
+                    EffectHandler.Instance.CreateEffectImpactRing(hitObject.gameObject.transform.position, 0.05f);
+                    impactReleased = true;
+                }
+            }
         }
+    }
+
+    public void resetImpactReleased() {
+        impactReleased = false;
     }
     
 

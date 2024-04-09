@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Handler for the User Interface
+/// </summary>
 public class UIHandler : Handler
 {
 

@@ -13,7 +13,6 @@ public class SpeedMirage : GameUnit
     protected Color matcolor;
     protected bool startFade = false;
 
-    // Start is called before the first frame update
     void Awake()
     {
         rnd = GetComponent<SpriteRenderer>();
@@ -30,7 +29,7 @@ public class SpeedMirage : GameUnit
 
         // get current alpha of the renderer
         Color temp = rnd.material.color;
-        float alpha = temp.a, fraction;
+        float alpha = temp.a;
         
         // apply decreasing alpha 
         if (alpha >= 0) {
