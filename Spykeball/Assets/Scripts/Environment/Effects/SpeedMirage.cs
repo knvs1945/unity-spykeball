@@ -42,8 +42,11 @@ public class SpeedMirage : GameUnit
         }
     }
 
-    public void applySprite(Sprite _sprite) {
+    public void applySprite(Sprite _sprite, bool _isFlipped = false) {
         rnd.sprite = _sprite;
+        if (_isFlipped) {
+            transform.localScale = new Vector2(-1,1);
+        }
         startFade = true; // we can start fading out now
     }
 

@@ -38,9 +38,9 @@ public class EffectHandler : Handler
     }
 
     // create speed effect for dashes and speedups
-    public void CreateEffectSpeedMirage(Vector2 location, Sprite _sprite) {
+    public void CreateEffectSpeedMirage(Vector2 location, Sprite _sprite, bool _isFlipped = false) {
         SpeedMirage temp = Instantiate(VFXSpeedMirage, location, Quaternion.identity);
-        if (temp != null) temp.applySprite(_sprite);
+        if (temp != null) temp.applySprite(_sprite, _isFlipped);
     }
 
     // create effect for displaying scores and addedTime
