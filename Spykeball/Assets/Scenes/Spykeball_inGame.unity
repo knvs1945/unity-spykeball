@@ -2663,7 +2663,6 @@ MonoBehaviour:
   HP: 3
   moveSpeed: 0
   unitName: player ball
-  mirageEffect: {fileID: 2114855591386183464, guid: 4809c51a4e604e44c8a7f7f5fa1b8ca0, type: 3}
   baseScore: 5
   boundsFloor: -5
   boundsCeiling: 9
@@ -3448,6 +3447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VFXImpactRing: {fileID: 1887885597142821201, guid: 542c36c1bca25584dbc88271a6c648bf, type: 3}
   VFXSpeedMirage: {fileID: 2114855591386183464, guid: 4809c51a4e604e44c8a7f7f5fa1b8ca0, type: 3}
+  VFXScoreText: {fileID: 5986097220500788278, guid: 8cba0accb9ab7d0469e3ac7edba3fe64, type: 3}
 --- !u!1 &1240220045
 GameObject:
   m_ObjectHideFlags: 0
@@ -3861,7 +3861,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 30
@@ -5636,7 +5636,6 @@ MonoBehaviour:
   attackPoint: {fileID: 0}
   notePoint: {fileID: 0}
   bodyPoint: {fileID: 0}
-  mirageEffect: {fileID: 2114855591386183464, guid: 4809c51a4e604e44c8a7f7f5fa1b8ca0, type: 3}
   base_ATKbase: 40
   base_ATKmax: 0
   base_ATKdelay: 0.5
@@ -5649,6 +5648,7 @@ MonoBehaviour:
   scoreOnHitBall: 1
   scoreOnStrikeBall: 5
   scoreOnHitTarget: 10
+  impactReleased: 0
   SFXCast: {fileID: 0}
   body: {fileID: 450869958}
 --- !u!50 &2101165958

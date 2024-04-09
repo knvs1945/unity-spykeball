@@ -84,9 +84,14 @@ public class PlayerBall : GameUnit
                 rbRender.material.color = baseColor; // reset the color back to max lives    
                 lives = COUNT_Lives; // restore the ball's lives back to maximum;
                 doOnLivesLeft(lives);
+                // show added score 
+                EffectHandler.Instance.CreateEffectScoreText(collision.collider.gameObject.transform.position, "+" + scoreToAdd);
             }
             else if (mode == MODE_timeattack) {
-                timeToAdd = TIME_addTime + ((int) Mathf.Abs(rb.velocity.magnitude / 3)); // add maximum of 6 seconds based on ball's speed capped at 6 seconds
+                // add maximum of 6 seconds based on ball's speed capped at 6 seconds
+                timeToAdd = TIME_addTime + ((int) Mathf.Abs(rb.velocity.magnitude / 3)); 
+                // show added time
+                EffectHandler.Instance.CreateEffectScoreText(collision.collider.gameObject.transform.position, "+" + timeToAdd + " secs");
             }
 
             doOnHitTarget(scoreToAdd, timeToAdd); // report the score and time to add

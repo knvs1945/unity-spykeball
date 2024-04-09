@@ -12,6 +12,7 @@ public class EffectHandler : Handler
     
     public ImpactRing VFXImpactRing;
     public SpeedMirage VFXSpeedMirage;
+    public ScoreEffect VFXScoreText;
     
     void Awake()
     {
@@ -40,5 +41,11 @@ public class EffectHandler : Handler
     public void CreateEffectSpeedMirage(Vector2 location, Sprite _sprite) {
         SpeedMirage temp = Instantiate(VFXSpeedMirage, location, Quaternion.identity);
         if (temp != null) temp.applySprite(_sprite);
+    }
+
+    // create effect for displaying scores and addedTime
+    public void CreateEffectScoreText(Vector2 location, string textToAdd) {
+        ScoreEffect temp = Instantiate(VFXScoreText, location, Quaternion.identity);
+        if (temp != null) temp.addText(textToAdd);
     }
 }

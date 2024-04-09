@@ -83,8 +83,7 @@ public class PlayerSpyke : PlayerUnit
     void FixedUpdate()
     {
         // move the rigidbody here. 
-        // if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
-        if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, rbBody.velocity.y) * Time.fixedDeltaTime);
+        if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
         createDashEffects();
     }
 
