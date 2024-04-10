@@ -2903,11 +2903,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 999850213}
+  - component: {fileID: 999850215}
   - component: {fileID: 999850214}
   - component: {fileID: 999850218}
   - component: {fileID: 999850217}
   - component: {fileID: 999850216}
-  - component: {fileID: 999850215}
   m_Layer: 0
   m_Name: Sound Handler
   m_TagString: Untagged
@@ -3044,6 +3044,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 056d902b44e3668498bc9c9485cec938, type: 3}
   - {fileID: 8300000, guid: 458a760a9421b0d4d8db4aedcecdf7f6, type: 3}
   - {fileID: 8300000, guid: 37f82c1cdf101f84c99a896fb7ce7303, type: 3}
+  - {fileID: 8300000, guid: ed8caef4e6a2e754b820b8aa67b83dcb, type: 3}
+  - {fileID: 8300000, guid: 193620b9663a5ac43a1ffa64521bac96, type: 3}
   - {fileID: 8300000, guid: 1b48d7eea464d824f88f60c1bcb0cfa6, type: 3}
   SFXSources:
   - {fileID: 999850214}

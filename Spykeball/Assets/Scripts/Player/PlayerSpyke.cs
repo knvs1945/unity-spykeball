@@ -26,7 +26,7 @@ public class PlayerSpyke : PlayerUnit
     // will contain the stats for the character to be set on the UI
     public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_DashDelay, base_DashPower, base_JumpPower, base_PushPower, attackRadius; 
     public int scoreOnHitBall, scoreOnStrikeBall, scoreOnHitTarget;
-    public bool impactReleased = false;
+    public bool impactReleased = false, sfxBallHit = false;
 
     // objects 
     private Rigidbody2D rbBody;
@@ -326,27 +326,27 @@ public class PlayerSpyke : PlayerUnit
             power = Mathf.Max(Mathf.Abs(ballPower.velocity.y) * base_ATKbase, base_ATKbase);
             
             ballPower.AddForce(new Vector2((rbBody.velocity.x), base_ATKbase));
-            
-            
             // create impact ring effect when striking the ball. only do this if ball's velocity is higher than a threshold
             if (!impactReleased) {
                 
                 if (ballPower.velocity.magnitude > ballImpactMin) {
-                    SoundHandler.Instance.playSFX(SFXType.SpikeHitHard);
                     EffectHandler.Instance.CreateEffectImpactRing(hitObject.gameObject.transform.position, 0.05f);
                     impactReleased = true;
+                    sfxBallHit = true;
                 }
-                else {
+                else if (!sfxBallHit) { // only need to play the spike hit sfx once
                     SoundHandler.Instance.playSFX(SFXType.SpikeHit);
+                    sfxBallHit = true;
                 }
             }
         }
     }
 
+    // reset the impactReleased bool
     public void resetImpactReleased() {
         impactReleased = false;
+        sfxBallHit = false;
     }
-    
 
     //  ================ testing sequences start here  ================ //
 

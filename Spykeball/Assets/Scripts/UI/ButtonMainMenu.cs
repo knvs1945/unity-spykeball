@@ -29,22 +29,26 @@ public class ButtonMainMenu : MonoBehaviour
 
     // starts the game
     public void btStartGame(string gameMode) {
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         Debug.Log("Start game Button Clicked");
         doOnStartGame(1, gameMode);
     }
 
     // returns to the main menu
     public void btReturnToMain(string evt) {
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         Debug.Log("Returning to Main menu");
-        doOnReturnToMain(evt);   
+        doOnReturnToMain(evt);
     }
 
     // unpauses the game if unpause is clicked
     public void btUnpauseGame(bool state) {
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         doOnUnpauseGame(state);
     }
 
     public void btOpenSettings(bool open) {
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         doOnOpenSettings(open);
     }
 }

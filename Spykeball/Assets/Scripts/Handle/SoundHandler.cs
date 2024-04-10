@@ -9,7 +9,9 @@ public enum SFXType
     Spike,
     SpikeHit,
     SpikeHitHard,
-    ScoreTarget
+    TargetBreak,
+    ScoreTarget,
+    ButtonClick
 }
 
 /// <summary>

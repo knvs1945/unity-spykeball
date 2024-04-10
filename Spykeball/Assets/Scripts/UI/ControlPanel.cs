@@ -61,17 +61,20 @@ public class ControlPanel : Panel
     /// 
     /// </summary>
     public void btCloseSettingsWithoutSave() {
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         doOnCloseSettings(false);
     }
 
     public void btControlButtonClicked(string buttonClicked) {
         Debug.Log("Setting button clicked: " + buttonClicked);
         currentButton = buttonClicked;
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         isListening = true;
     }
 
     // apply changes clicked
     public void btControlConfirmChanges() {
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         doOnCloseSettings(true);
     }
 

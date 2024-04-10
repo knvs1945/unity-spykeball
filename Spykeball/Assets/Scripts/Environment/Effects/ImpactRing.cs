@@ -46,6 +46,7 @@ public class ImpactRing : GameUnit
     }
     
     public void applyEffect(float _rateOfFade) {
+        SoundHandler.Instance.playSFX(SFXType.SpikeHitHard);
         rateOfFade = _rateOfFade;
         startResize = true;
     }
