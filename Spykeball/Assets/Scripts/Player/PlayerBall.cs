@@ -98,6 +98,7 @@ public class PlayerBall : GameUnit
         }
         if (collision.collider.tag == "Floor") {
             if (mode == MODE_survival) deductLives();
+            SoundHandler.Instance.playSFX(SFXType.Bounce); // play bouncing sound effect
         }
         if (rb.velocity.y > 3) anim.SetTrigger("bounce"); // only bounce the ball if its going faster than 1;
     }

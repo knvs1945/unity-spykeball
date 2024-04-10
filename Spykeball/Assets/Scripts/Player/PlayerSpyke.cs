@@ -288,12 +288,14 @@ public class PlayerSpyke : PlayerUnit
     private void animateAttack() {
         if (Time.time <= atkTimer) return;
         animBody.SetTrigger("attack");
+        SoundHandler.Instance.playSFX(SFXType.Spike);
         atkTimer = Time.time + base_ATKdelay; // add a cooldown to the atk button to prevent spamming
     }
 
     private void animateDash() {
         if (Time.time <= dashTimer) return;
         animBody.SetTrigger("dash");
+        SoundHandler.Instance.playSFX(SFXType.Dash);
         isDashing = true;
         Debug.Log("Dash Power: " + (base_DashPower * xDirection));
         rbBody.AddForce(new Vector2(base_DashPower * xDirection, 0), ForceMode2D.Force);
@@ -325,11 +327,17 @@ public class PlayerSpyke : PlayerUnit
             
             ballPower.AddForce(new Vector2((rbBody.velocity.x), base_ATKbase));
             
+            
             // create impact ring effect when striking the ball. only do this if ball's velocity is higher than a threshold
             if (!impactReleased) {
+                
                 if (ballPower.velocity.magnitude > ballImpactMin) {
+                    SoundHandler.Instance.playSFX(SFXType.SpikeHitHard);
                     EffectHandler.Instance.CreateEffectImpactRing(hitObject.gameObject.transform.position, 0.05f);
                     impactReleased = true;
+                }
+                else {
+                    SoundHandler.Instance.playSFX(SFXType.SpikeHit);
                 }
             }
         }

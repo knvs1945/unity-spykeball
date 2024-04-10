@@ -47,6 +47,7 @@ public class ScoreEffect : GameUnit
 
     public void addText(string _textToAdd ) {
         textrnd.text = _textToAdd;
+        SoundHandler.Instance.playSFX(SFXType.ScoreTarget); // add scoretarget sound
         startEffect = true;
     }
 

@@ -14,6 +14,10 @@ public class GameHandler : Handler
 
     [SerializeField]
     protected TargetHandler targetHandle;
+
+    [SerializeField]
+    protected SoundHandler soundHandle;
+    
     private bool stagePrepFlag;
 
     // Start is called before the first frame update
