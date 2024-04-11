@@ -14,6 +14,7 @@ public class PlayerBall : GameUnit
     public delegate void onLivesLeft(int livesleft);
     public delegate void onNoMoreLives();
     public event onHitTarget doOnHitTarget;
+    public event onHitTarget doOnHitFloor;
     public event onNoMoreLives doOnNoMoreLives;
     public event onLivesLeft doOnLivesLeft;
 
@@ -76,7 +77,7 @@ public class PlayerBall : GameUnit
 
     // if the ball hits 
     protected void OnCollisionEnter2D(Collision2D collision) {
-        int scoreToAdd, timeToAdd = 0;
+        int scoreToAdd = 0, timeToAdd = 0;
         if (collision.collider.tag == "Target") {
             scoreToAdd = baseScore + ((int)Mathf.Abs(rb.velocity.y) * 5);
 
@@ -98,6 +99,13 @@ public class PlayerBall : GameUnit
         }
         if (collision.collider.tag == "Floor") {
             if (mode == MODE_survival) deductLives();
+            
+            // deduct one second every time the ball hits the floor
+            if (mode == MODE_timeattack) {
+                timeToAdd = -1;
+                doOnHitFloor(scoreToAdd, timeToAdd); // report the score and time to add
+                EffectHandler.Instance.CreateEffectScoreText(transform.position, "" + timeToAdd + " secs");
+            }
             SoundHandler.Instance.playSFX(SFXType.Bounce); // play bouncing sound effect
         }
         if (rb.velocity.y > 3) anim.SetTrigger("bounce"); // only bounce the ball if its going faster than 1;

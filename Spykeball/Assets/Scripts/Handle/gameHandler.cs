@@ -95,6 +95,7 @@ public class GameHandler : Handler
         UIHandle.returnToMainMenu();
         playerHandle.returnToMainMenu();
         targetHandle.returnToMainMenu();
+        soundHandle.returnToMainMenu();
     }
 
     protected void doOnGetNewControls() {
@@ -103,6 +104,7 @@ public class GameHandler : Handler
     }
 
     protected void restartAllHandlers(int mode, string gameType) {
+        GameUnit.gameState = 1; // inform the units that we are in game mode
         switch(gameType) {
             case "survival":
                 Mode = Modes.Survival;
@@ -117,7 +119,7 @@ public class GameHandler : Handler
         targetHandle.restartHandler();
         freezeGame(false);
         gameLevel = 0;
-        GameUnit.gameState = 1; // inform the units that we are in game mode
+        soundHandle.restartHandler();
     }
 
     /* 

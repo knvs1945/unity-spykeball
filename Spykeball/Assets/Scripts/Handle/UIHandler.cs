@@ -61,6 +61,7 @@ public class UIHandler : Handler
         if (ball != null) {
             ball.doOnLivesLeft += updateLives;
             ball.doOnHitTarget += updateScore;
+            ball.doOnHitFloor += updateScore;
             ball.doOnHitTarget += updateGameLevel;
         }
 
@@ -73,8 +74,9 @@ public class UIHandler : Handler
             player.doOnHitBall -= updateScore;
         }
         if (ball != null) {
-            ball.doOnLivesLeft += updateLives;
+            ball.doOnLivesLeft -= updateLives;
             ball.doOnHitTarget -= updateScore;
+            ball.doOnHitFloor -= updateScore;
         }
     }
 

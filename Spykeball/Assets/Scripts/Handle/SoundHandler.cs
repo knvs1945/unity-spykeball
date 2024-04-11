@@ -22,6 +22,8 @@ public class SoundHandler : Handler
     public static SoundHandler Instance {get; private set; }
 
     public AudioClip[] SFXEntries;
+    public AudioClip[] TrackEntries;
+
     public AudioSource[] SFXSources;
     public AudioSource Tracks;
 
@@ -42,6 +44,22 @@ public class SoundHandler : Handler
         
     }
 
+    
+    public void restartHandler() {
+        for (int i = 0; i < SFXSources.Length; i++) {
+            SFXSources[i].Stop();
+        }
+        playGameTrack();
+    }
+
+    public override void returnToMainMenu() {
+        for (int i = 0; i < SFXSources.Length; i++) {
+            SFXSources[i].Stop();
+        }
+        Tracks.Stop();
+    }
+
+    // sfx tracks here
     // called by gameobjects who want to play a sound effect
     public void playSFX(SFXType SFXName) {
         AudioClip sfxToPlay = SFXEntries[(int) SFXName];
@@ -58,4 +76,21 @@ public class SoundHandler : Handler
             }
         }
     }
+
+    public void playGameTrack(int trackId = 0) {
+        if (gameState == states.inStage) {
+            if (trackId < TrackEntries.Length) {
+                Tracks.Stop();
+                Tracks.clip = TrackEntries[trackId];
+                Tracks.loop = true;
+                Tracks.Play();
+            }
+        }
+    }
+
+    public void stopGameTrack() {
+        Tracks.Stop();
+    }
+
+    // volume setters and getters
 }
