@@ -167,6 +167,7 @@ public class UIHandler : Handler
         else {
             // save the controls here before closing 
             doOnGetNewControls();
+            SoundHandler.Instance.setVolumeValues(panelControls.GetComponent<ControlPanel>().getCurrentVolumeUI());
             openSettingsPanel(false); // close the control panel;
         }
     }
@@ -174,6 +175,10 @@ public class UIHandler : Handler
     // set the controls from the player to display in the control panel
     public void setCurrentControls(PlayerControls controls) {
         panelControls.GetComponent<ControlPanel>().setCurrentControlUI(controls);
+    }
+
+    public void setCurrentVolumes(float[] values) {
+        panelControls.GetComponent<ControlPanel>().setCurrentVolumeUI(values);
     }
 
     public PlayerControls getNewControls() {

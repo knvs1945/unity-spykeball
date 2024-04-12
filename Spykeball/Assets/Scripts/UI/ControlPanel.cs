@@ -8,9 +8,10 @@ public class ControlPanel : Panel
 {
     // delegates and events
     public delegate void closeSettings(bool save);
-
     public static event closeSettings doOnCloseSettings;
 
+
+    public Slider trackSlider, SFXSlider;
 
     [SerializeField]
     protected Button[] controlSetUI;
@@ -22,8 +23,9 @@ public class ControlPanel : Panel
     protected string currentButton = "";
     protected bool isListening = false;
 
+
     public string[] NewControls {
-        get {return newControls; }
+        get { return newControls; }
     }
 
     void Awake()
@@ -53,6 +55,20 @@ public class ControlPanel : Panel
         PlayerControls newControl = new PlayerControls(newControls);
         Debug.Log("New Controls: " + newControl.MoveLeft + "-" + newControl.MoveRight + "-" + newControl.MoveUp + "-" + newControl.MoveDown + "-" + newControl.Attack);
         return newControl;
+    }
+
+    // get the current volumes from the sound handler
+    public void setCurrentVolumeUI(float[] values) {
+        if (values.Length >= 2) {
+            SFXSlider.value = values[0];
+            trackSlider.value = values[1];
+        }
+    }
+
+    public float[] getCurrentVolumeUI() {
+        Debug.Log("Returning Slider values: " + SFXSlider.value + " - " + trackSlider.value);
+        float[] values = new float[] {SFXSlider.value, trackSlider.value};
+        return values;
     }
 
     /// <summary>

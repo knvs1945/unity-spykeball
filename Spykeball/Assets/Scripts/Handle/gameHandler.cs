@@ -89,8 +89,9 @@ public class GameHandler : Handler
         gameState = states.MainMenu;
         doOnGamePaused(false);
         
-        // get the current controls used by the player
+        // get the current controls and volumes used by the player
         UIHandle.setCurrentControls(playerHandle.ControlPlayer1);
+        UIHandle.setCurrentVolumes(soundHandle.getVolumeValues());
 
         UIHandle.returnToMainMenu();
         playerHandle.returnToMainMenu();
@@ -105,6 +106,7 @@ public class GameHandler : Handler
 
     protected void restartAllHandlers(int mode, string gameType) {
         GameUnit.gameState = 1; // inform the units that we are in game mode
+        GameUnit.isGamePaused = false; // make sure the pause state is also restarted
         switch(gameType) {
             case "survival":
                 Mode = Modes.Survival;

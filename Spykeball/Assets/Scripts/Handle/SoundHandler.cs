@@ -27,6 +27,8 @@ public class SoundHandler : Handler
     public AudioSource[] SFXSources;
     public AudioSource Tracks;
 
+    protected float SFXVolume = 1, TrackVolume = 1;
+
     void Awake()
     {
         // make sure only one instance of this handler is present
@@ -36,6 +38,8 @@ public class SoundHandler : Handler
         }
         else Destroy(gameObject);
         
+        TrackVolume = Tracks.volume;
+        SFXVolume = SFXSources[0].volume;
     }
 
     // Update is called once per frame
@@ -93,4 +97,24 @@ public class SoundHandler : Handler
     }
 
     // volume setters and getters
+    public float[] getVolumeValues() {
+    
+        return new float[] {SFXVolume, TrackVolume};
+    }
+
+    public void setVolumeValues(float[] newVolumes) {
+        if (newVolumes.Length < 2) return;
+        SFXVolume = newVolumes[0];
+        TrackVolume = newVolumes[1];
+        applyVolumeValues();
+    }
+
+    // apply new volumes set from the UIHandler's control panel
+    protected void applyVolumeValues() {
+        Tracks.volume = TrackVolume;
+
+        for (int i = 0; i < SFXSources.Length; i++) {
+            SFXSources[i].volume = SFXVolume;
+        }
+    }
 }

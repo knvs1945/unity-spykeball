@@ -45,6 +45,14 @@ public class PlayerBall : GameUnit
         spriteRnd = GetComponent<SpriteRenderer>();
     }
 
+    // prevent the ball from getting stuck in a certain animation frame
+    protected void OnEnable() {
+        if (anim != null) {
+            Debug.Log("Resetting player ball");
+            anim.Update(0);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -70,6 +78,7 @@ public class PlayerBall : GameUnit
                 break;
         }
 
+        anim.Play("ball_idle");
         transform.position = new Vector2(startPosX, startPosY);
         rbRender.material.color = baseColor;
         rb.velocity = new Vector2(0,0);
@@ -131,7 +140,7 @@ public class PlayerBall : GameUnit
         if (transform.position.x >= 12f) transform.position = new Vector2(boundsRight, transform.position.y);
     }
 
-    // pause ball components to check if it is paused or not
+    // pause ball components and check if it is paused or not
     protected bool checkIfGamePaused() {
         
         if (isGamePaused) {
