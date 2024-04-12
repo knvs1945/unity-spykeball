@@ -18,6 +18,7 @@ public class PlayerBall : GameUnit
     public event onNoMoreLives doOnNoMoreLives;
     public event onLivesLeft doOnLivesLeft;
 
+    private Sprite baseSprite;
     public int baseScore;
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
 
@@ -30,6 +31,7 @@ public class PlayerBall : GameUnit
     private Rigidbody2D rb;
     private Renderer rbRender;
     private SpriteRenderer spriteRnd;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +45,7 @@ public class PlayerBall : GameUnit
         rb = GetComponent<Rigidbody2D>();
         rbRender = GetComponent<Renderer>();
         spriteRnd = GetComponent<SpriteRenderer>();
+        baseSprite = spriteRnd.sprite;
     }
 
     // prevent the ball from getting stuck in a certain animation frame
@@ -67,6 +70,12 @@ public class PlayerBall : GameUnit
         createSpdEffects();
     }
 
+    // force the animation to get back to "ball_idle" state before getting disabled
+    public void deactivate() {
+        spriteRnd.sprite = baseSprite;
+        anim.Play("ball_idle");
+    }
+
     public override void restartUnit(string gameMode) {    
         switch(gameMode) {
             case "Survival":
@@ -78,7 +87,6 @@ public class PlayerBall : GameUnit
                 break;
         }
 
-        anim.Play("ball_idle");
         transform.position = new Vector2(startPosX, startPosY);
         rbRender.material.color = baseColor;
         rb.velocity = new Vector2(0,0);

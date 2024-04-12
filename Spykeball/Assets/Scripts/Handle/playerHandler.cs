@@ -82,6 +82,7 @@ public class PlayerHandler : Handler
 
     public override void returnToMainMenu() {
         // hide the current target
+        ball.deactivate();
         ball.gameObject.SetActive(false);
         playerObj.IsControlDisabled = true;
     }
@@ -190,6 +191,7 @@ public class PlayerHandler : Handler
 
     // report game over when the ball has no more lives
     protected void doOnPlayerBallGone() {
+        ball.deactivate();
         ball.gameObject.SetActive(false);
         playerObj.IsControlDisabled = true;
         doOnGameOver();
