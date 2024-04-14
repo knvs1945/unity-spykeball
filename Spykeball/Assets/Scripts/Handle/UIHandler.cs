@@ -268,16 +268,44 @@ public class UIHandler : Handler
 
     // start the timer here
     protected void startTimer() {
-        StartCoroutine("countDownMsecs");
+        StartCoroutine("countDownSecs");
+        StartCoroutine("countDownMsecs"); // countdown milliseconds for pure aesthetic
     }
 
     // countDown milliseconds
+    IEnumerator countDownSecs() {
+        while (gameTimerSecs > 0) {        
+            while (pauseGame) yield return null;
+            timers[1]--; 
+            gameTimerSecs--;               
+            if (timers[1] < 0) {
+                timers[1] = 59;
+                timers[2]--; // update the minutes
+                if (timers[2] < 0) {
+                    timers[2] = 59;         // end game here
+                }
+                updateTimerTexts(2, timers[2].ToString("D2"));
+            }
+            updateTimerTexts(1, timers[1].ToString("D2"));
+            yield return new WaitForSeconds(1f); // return every 10 msecs
+        }
+        
+        if (gameTimerSecs <= 0) {
+            timers[0] = 0;
+            updateTimerTexts(0, timers[0].ToString("D2")); // fix display to 0
+            Debug.Log("Timer has ended");
+            doOnTimeRunOut();
+        }
+        yield return true;
+    }
+
+    // countDown milliseconds. Usedpurely for aesthetic
     IEnumerator countDownMsecs() {
         while (gameTimerSecs > 0) {        
             while (pauseGame) yield return null;
             timers[0]--; 
             if (timers[0] < 0) {
-                gameTimerSecs--;
+                /*gameTimerSecs--;
                 timers[1]--; // update the seconds
                 if (timers[1] < 0) {
                     timers[1] = 59;
@@ -288,19 +316,13 @@ public class UIHandler : Handler
                     }
                     updateTimerTexts(2, timers[2].ToString("D2"));
                 }
-                updateTimerTexts(1, timers[1].ToString("D2"));
+                updateTimerTexts(1, timers[1].ToString("D2"));*/
                 timers[0] = 9;
             }
             updateTimerTexts(0, timers[0].ToString("D2"));
             yield return new WaitForSeconds(0.1f); // return every 10 msecs
         }
 
-        if (gameTimerSecs <= 0) {
-            timers[0] = 0;
-            updateTimerTexts(0, timers[0].ToString("D2")); // fix display to 0
-            Debug.Log("Timer has ended");
-            doOnTimeRunOut();
-        }
         yield return true;
     }
 
