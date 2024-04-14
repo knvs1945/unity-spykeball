@@ -15,12 +15,12 @@ public class BallMarker : MonoBehaviour
     protected Image image;
     protected Transform bt;
     protected float fixedY, screenX;
-    protected bool isShowing = true;
+    protected bool isShowing = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        showMarker(false); // hide the marker by default
     }
 
     void Awake()
@@ -29,7 +29,6 @@ public class BallMarker : MonoBehaviour
         image = gameObject.GetComponent<Image>();
         fixedY = marker.anchoredPosition.y;
         screenX = Screen.width / 2;
-        showMarker(false); // hide the marker by default
     }
 
     // Update is called once per frame

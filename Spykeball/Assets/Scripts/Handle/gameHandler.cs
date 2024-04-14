@@ -17,7 +17,12 @@ public class GameHandler : Handler
 
     [SerializeField]
     protected SoundHandler soundHandle;
+
+    [SerializeField]
+    protected TransitionHandler transitionHandle;
     
+    private string currentGameType;
+    private int currentMode;
     private bool stagePrepFlag;
 
     // Start is called before the first frame update
@@ -27,9 +32,6 @@ public class GameHandler : Handler
         // fix framerate to default FPS (30);
         Application.targetFrameRate = FPS;
 
-        // test setBPM
-        // RhythmHandler.setBPM(60);
-
         // move this somewhere else once startLevel works
         freezeGame(true);
         doReturnToMainMenu("");
@@ -37,7 +39,6 @@ public class GameHandler : Handler
 
     void Awake() 
     {
-        // restartAllHandlers();
         registerEvents();
     }
 
@@ -63,7 +64,6 @@ public class GameHandler : Handler
     }
 
     public void checkExitGame() {
-        // if (Input.GetKeyDown("r")) restartAllHandlers(1, ""); // restart whatever game mode they were in
         if (Input.GetKeyDown("escape")) {
             Application.Quit();
         }
@@ -73,9 +73,13 @@ public class GameHandler : Handler
     protected void registerEvents() {
         
         // register events from MainMenu & Restart screen
-        ButtonMainMenu.doOnStartGame += restartAllHandlers;
+        // ButtonMainMenu.doOnStartGame += restartAllHandlers;
+        ButtonMainMenu.doOnStartGame += doOnStartTransition;
         ButtonMainMenu.doOnReturnToMain += doReturnToMainMenu;
         ButtonMainMenu.doOnUnpauseGame += doOnGamePaused;
+
+        // register transition event
+        TransPanel.doOnTransitionEvent += doOnTransition;
 
         Handler.doOnGameOver += GameEnded;
         UIHandler.doOnTimeRunOut += GameEnded;
@@ -100,11 +104,30 @@ public class GameHandler : Handler
     }
 
     protected void doOnGetNewControls() {
-        
         playerHandle.ControlPlayer1 = UIHandle.getNewControls();
     }
 
+    // listen to the start game button
+    protected void doOnStartTransition(int mode, string gameType) {
+        freezeGame(false);
+        currentMode = mode;
+        currentGameType = gameType;
+        transitionHandle.startStateTransition();
+    }
+
+    // listen to the transition panel sliding in
+    protected void doOnTransition(string eventName) {
+        
+        switch(eventName) {
+            case "prepareGame": freezeGame(true);
+                                restartAllHandlers(currentMode, currentGameType);
+                                break;
+        }
+    }
+
+    // initiate the preparation of the other handlers for the game
     protected void restartAllHandlers(int mode, string gameType) {
+        
         GameUnit.gameState = 1; // inform the units that we are in game mode
         GameUnit.isGamePaused = false; // make sure the pause state is also restarted
         switch(gameType) {
@@ -119,9 +142,10 @@ public class GameHandler : Handler
         playerHandle.restartHandler();
         UIHandle.restartHandler();
         targetHandle.restartHandler();
-        freezeGame(false);
         gameLevel = 0;
         soundHandle.restartHandler();
+        freezeGame(false);
+        transitionHandle.endStateTransition();
     }
 
     /* 
