@@ -291,8 +291,8 @@ public class UIHandler : Handler
         }
         
         if (gameTimerSecs <= 0) {
-            timers[0] = 0;
-            updateTimerTexts(0, timers[0].ToString("D2")); // fix msces display to 0
+            timers[1] = 0;
+            timers[2] = 0;
             Debug.Log("Timer has ended");
             doOnTimeRunOut();
         }
@@ -301,14 +301,20 @@ public class UIHandler : Handler
 
     // countDown milliseconds. Usedpurely for aesthetic
     IEnumerator countDownMsecs() {
-        while (gameTimerSecs > 0) {        
+        while (gameTimerSecs >= 0) {        
             while (pauseGame) yield return null;
             timers[0]--; 
             if (timers[0] < 0) timers[0] = 9;
             updateTimerTexts(0, timers[0].ToString("D2"));
             yield return new WaitForSeconds(0.1f); // return every 10 msecs
         }
-        yield return true;
+        
+        if (gameTimerSecs <= 0) {
+            timers[0] = 0;
+            updateTimerTexts(0, timers[0].ToString("D2")); // fix msces display to 0
+            yield return true;
+        }
+        
     }
 
 }

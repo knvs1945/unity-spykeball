@@ -5,12 +5,13 @@ using UnityEngine;
 // Dodges the ball indeterminately unless hit within a given time limit
 public class Target6 : Target
 {
+    protected const float spdEffectGap = 0.05f;
     public float minX, maxX, minY, maxY, maxDuration;
 
-    protected Renderer rbRender;
+    protected SpriteRenderer rbRender;
     protected Vector2 nextPos;
     protected Color baseColor = new Color(0,0,0,1), currentColor;
-    protected float dodgelessTimer, dodgelessTimerRem, currentDuration, fraction, turnRed;
+    protected float dodgelessTimer, dodgelessTimerRem, currentDuration, fraction, turnRed, spdEffectTimer;
     protected bool isMoving = false, canDodge = true;    
     protected Collider2D triggerArea;
 
@@ -24,6 +25,7 @@ public class Target6 : Target
     
     protected void moveToNextPos() {
         if (isMoving) {
+            createSpdEffects();
             if (Vector2.Distance(transform.position, nextPos) > 0.1f) {
                 transform.position = Vector2.MoveTowards(transform.position, nextPos, moveSpeed * Time.deltaTime);
             }
@@ -90,11 +92,10 @@ public class Target6 : Target
     }
 
     protected override void doOnApplyLevel() {
-        // The currentDuration minimum range will start decreasing at 1 second per 20 levels, e.g. at level 80 onwards, random.range is (1, maxDuration);
-
+        // The currentDuration minimum range will start decreasing at 1 second per 20 levels, e.g. at level 80 onwards, random.range is (1, maxDuration)
         currentDuration = Random.Range(Mathf.Min(maxDuration, Mathf.Max(2, 100f / Level)), maxDuration);
         Debug.Log("Current Duration: " + currentDuration);
-        rbRender = GetComponent<Renderer>();
+        rbRender = GetComponent<SpriteRenderer>();
         moveSpeed = 20f;
         generateNextPos();
         transform.position = nextPos;
@@ -105,13 +106,11 @@ public class Target6 : Target
         currentColor = new Color(1,0,0,1);
         rbRender.material.color = currentColor;
 
-        // take the collider with the trigger area
+        // take the collider with the trigger area. It should be the first trigger collider found
         Collider2D[] colliders = gameObject.GetComponents<Collider2D>();
         foreach (var collider in colliders) {
-            Debug.Log("Searching trigger collider...");
             if (collider.isTrigger) {
                 triggerArea = collider;
-                Debug.Log("trigger Collider found: " + triggerArea);
                 break;
             }
         }
@@ -120,6 +119,14 @@ public class Target6 : Target
     protected override void doOnTimersSaved(bool state) {
         if (state) dodgelessTimerRem = dodgelessTimer - Time.time; // get the difference between the moveTimer's currentTime
         else dodgelessTimer = Time.time + dodgelessTimerRem; // apply the difference between the moveTimer's currentTime
+    }
+
+    protected void createSpdEffects() {
+        if (!isMoving) return;
+        if (Time.time < spdEffectTimer) return;
+            
+        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, rbRender.sprite, false, rbRender.material.color);
+        spdEffectTimer = Time.time + spdEffectGap;
     }
 
 }

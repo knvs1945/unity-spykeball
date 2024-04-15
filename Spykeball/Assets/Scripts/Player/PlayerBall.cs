@@ -22,8 +22,9 @@ public class PlayerBall : GameUnit
     public int baseScore;
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
 
-    protected int lives, mode;
     protected Color baseColor = new Color(1,1,1,1);
+    protected Vector2 lastTargetPos;
+    protected int lives, mode;
     protected float effectTimer;
     protected bool isHighVelocity = false;
 
@@ -31,7 +32,6 @@ public class PlayerBall : GameUnit
     private Rigidbody2D rb;
     private Renderer rbRender;
     private SpriteRenderer spriteRnd;
-    
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +46,12 @@ public class PlayerBall : GameUnit
         rbRender = GetComponent<Renderer>();
         spriteRnd = GetComponent<SpriteRenderer>();
         baseSprite = spriteRnd.sprite;
+        registerEvents();
+    }
+
+    // register listeners
+    protected void registerEvents() {
+        Target.doOnDestroyTarget += addScoreOrTime;
     }
 
     // prevent the ball from getting stuck in a certain animation frame
@@ -95,24 +101,9 @@ public class PlayerBall : GameUnit
     // if the ball hits 
     protected void OnCollisionEnter2D(Collision2D collision) {
         int scoreToAdd = 0, timeToAdd = 0;
+        Target targetHit;
         if (collision.collider.tag == "Target") {
-            scoreToAdd = baseScore + ((int)Mathf.Abs(rb.velocity.y) * 5);
-
-            if (mode == MODE_survival) {
-                rbRender.material.color = baseColor; // reset the color back to max lives    
-                lives = COUNT_Lives; // restore the ball's lives back to maximum;
-                doOnLivesLeft(lives);
-                // show added score 
-                EffectHandler.Instance.CreateEffectScoreText(collision.collider.gameObject.transform.position, "+" + scoreToAdd);
-            }
-            else if (mode == MODE_timeattack) {
-                // add maximum of 6 seconds based on ball's speed capped at 6 seconds
-                timeToAdd = TIME_addTime + ((int) Mathf.Abs(rb.velocity.magnitude / 3)); 
-                // show added time
-                EffectHandler.Instance.CreateEffectScoreText(collision.collider.gameObject.transform.position, "+" + timeToAdd + " secs");
-            }
-
-            doOnHitTarget(scoreToAdd, timeToAdd); // report the score and time to add
+            lastTargetPos = collision.collider.gameObject.transform.position; // record the position of the last target to know where score effect appears
         }
         if (collision.collider.tag == "Floor") {
             if (mode == MODE_survival) deductLives();
@@ -126,6 +117,28 @@ public class PlayerBall : GameUnit
             SoundHandler.Instance.playSFX(SFXType.Bounce); // play bouncing sound effect
         }
         if (rb.velocity.y > 3) anim.SetTrigger("bounce"); // only bounce the ball if its going faster than 1;
+    }
+
+    // listens to target doOnDestroy event to add score, life or time depending on game mode
+    protected void addScoreOrTime() {
+        int scoreToAdd = 0, timeToAdd = 0;
+        scoreToAdd = baseScore + ((int)Mathf.Abs(rb.velocity.y) * 5);
+        
+        if (mode == MODE_survival) {
+            rbRender.material.color = baseColor; // reset the color back to max lives    
+            lives = COUNT_Lives; // restore the ball's lives back to maximum;
+            doOnLivesLeft(lives);
+            // show added score 
+            EffectHandler.Instance.CreateEffectScoreText(lastTargetPos, "+" + scoreToAdd);
+        }
+        else if (mode == MODE_timeattack) {
+            // add maximum of 6 seconds based on ball's speed capped at 6 seconds
+            timeToAdd = TIME_addTime + ((int) Mathf.Abs(rb.velocity.magnitude / 3)); 
+            // show added time
+            EffectHandler.Instance.CreateEffectScoreText(lastTargetPos, "+" + timeToAdd + " secs");
+        }
+
+        doOnHitTarget(scoreToAdd, timeToAdd); // report the score and time to add
     }
 
     // reduce the lives here
@@ -189,7 +202,7 @@ public class PlayerBall : GameUnit
         if (!isHighVelocity) return;
         if (Time.time < effectTimer) return;
 
-        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite);
+        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite, false, spriteRnd.material.color);
         effectTimer = Time.time + effectsGap; // reload the timer
     }
 }

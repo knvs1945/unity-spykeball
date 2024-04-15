@@ -51,6 +51,7 @@ public class ControlPanel : Panel
         newControls = controls.getControlSet();   
     }
 
+    // get current controls from the UI handler data passed from the player handler
     public PlayerControls getCurrentControl() {
         PlayerControls newControl = new PlayerControls(newControls);
         Debug.Log("New Controls: " + newControl.MoveLeft + "-" + newControl.MoveRight + "-" + newControl.MoveUp + "-" + newControl.MoveDown + "-" + newControl.Attack);

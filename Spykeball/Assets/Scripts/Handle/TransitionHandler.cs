@@ -30,6 +30,7 @@ public class TransitionHandler : Handler
                 panelCoverPos = new Vector2(screenPos.x, screenPos.y);
                 
                 tAnim = transitionPanel.GetComponent<Animator>();
+                transitionPanel.SetActive(true);
             }
         }
         else Destroy(gameObject);

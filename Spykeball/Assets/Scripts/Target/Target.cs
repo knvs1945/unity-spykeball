@@ -16,9 +16,15 @@ public class Target : GameUnit
     
     protected Rigidbody2D rb;
     protected Animator anim;
+    protected bool isBroken = false;
 
     // inherited timer flags
     protected bool timersSaved = false; // this will inform the class that the timer data have already been saved during a pause
+
+    public bool IsBroken {
+        get { return isBroken; }
+        private set { isBroken = value; }
+    }
 
     // Start is called before the first frame update
     void Awake()
@@ -37,9 +43,9 @@ public class Target : GameUnit
     protected void destroyTarget(bool noRespawn = false) {
         if (!noRespawn) {
             Instantiate(targetBreak, transform.position, Quaternion.identity);
-            doOnDestroyTarget();
+            doOnDestroyTarget(); // inform listeners that a target has broken
         }
-        Destroy(gameObject);
+        doOnBreak();
     }
     
     // restart target spawn by destroying the current one
@@ -53,9 +59,8 @@ public class Target : GameUnit
         doOnApplyLevel();
     }
 
-    protected virtual void doOnApplyLevel() {
-
-    }
+    // overrideable apply level method
+    protected virtual void doOnApplyLevel() {}
 
     // pause player components to check if it is paused or not
     protected bool checkIfGamePaused() {
@@ -89,5 +94,9 @@ public class Target : GameUnit
     }
 
     protected virtual void doOnTimersSaved(bool state) {}
+    protected void doOnBreak() {
+        isBroken = true;
+        Destroy(gameObject);
+    }
 
 }

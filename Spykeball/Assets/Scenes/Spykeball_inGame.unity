@@ -2723,10 +2723,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1555231736}
   - {fileID: 567840538}
   - {fileID: 1803864046}
   - {fileID: 209187698}
-  - {fileID: 1555231736}
   m_Father: {fileID: 1501864874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5314,7 +5314,7 @@ MonoBehaviour:
   ball: {fileID: 877619800}
   scoreboard: {fileID: 1930723003}
   targetText: {fileID: 1993989191}
-  timeAttackLimit: 180
+  timeAttackLimit: 10
   panelMainMenu: {fileID: 696045095}
   panelRestartMenu: {fileID: 804674042}
   panelTimer: {fileID: 1209170228}
@@ -5818,7 +5818,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1651149448
 RectTransform:
   m_ObjectHideFlags: 0

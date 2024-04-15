@@ -5,11 +5,13 @@ using UnityEngine;
 // Dodges the ball for N amount of times
 public class Target5 : Target
 {
+    protected const float spdEffectGap = 0.05f;
     public float minX, maxX, minY, maxY;
     public int maxDodges;
 
+    protected SpriteRenderer spriteRnd;
     protected Vector2 nextPos;
-    protected float currentDodges;
+    protected float currentDodges, spdEffectTimer;
     protected bool isMoving = false;
 
     // Update is called once per frame
@@ -21,6 +23,7 @@ public class Target5 : Target
 
     protected void moveToNextPos() {
         if (isMoving) {
+            createSpdEffects();
             if (Vector2.Distance(transform.position, nextPos) > 0.1f) {
                 transform.position = Vector2.MoveTowards(transform.position, nextPos, moveSpeed * Time.deltaTime);
                 Debug.Log("Now Moving from: " + transform.position + " towards: " + nextPos + " at speed: " + moveSpeed);
@@ -38,6 +41,8 @@ public class Target5 : Target
                 Debug.Log("Dodges Left: " + currentDodges);
                 generateNextPos();
                 isMoving = true;
+                // start the effect timer
+                spdEffectTimer = Time.time + spdEffectGap;
             }
             else destroyTarget();
         }
@@ -51,9 +56,18 @@ public class Target5 : Target
     }
 
     protected override void doOnApplyLevel() {
+        spriteRnd = GetComponent<SpriteRenderer>();
         currentDodges = maxDodges + (int) Mathf.Min(5, Level/10);
         Debug.Log("Dodges Set: " + currentDodges);
         moveSpeed = 20f;
         generateNextPos();
+    }
+
+    protected void createSpdEffects() {
+        if (!isMoving) return;
+        if (Time.time < spdEffectTimer) return;
+            
+        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite, false, Color.black);
+        spdEffectTimer = Time.time + spdEffectGap;
     }
 }

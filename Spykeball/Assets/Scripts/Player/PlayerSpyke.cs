@@ -310,7 +310,7 @@ public class PlayerSpyke : PlayerUnit
         // create new dashing mirage
         bool isFlipped = xDirection < 0? true: false;
         
-        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite, isFlipped);
+        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite, isFlipped, Color.green);
         dashEffectTimer = Time.time + dashEffectGap; // reload the timer
     }
 
