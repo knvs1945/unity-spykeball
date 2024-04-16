@@ -287,13 +287,22 @@ public class UIHandler : Handler
                 updateTimerTexts(2, timers[2].ToString("D2"));
             }
             updateTimerTexts(1, timers[1].ToString("D2"));
+
+            // start displaying time alerts
+            if (gameTimerSecs <= 10){
+                Debug.Log("Starting Timer Text");
+                EffectHandler.Instance.CreateEffectAlertText(new Vector2(0,0), gameTimerSecs.ToString());
+            }
             yield return new WaitForSeconds(1f); // return every 10 msecs
         }
         
         if (gameTimerSecs <= 0) {
             timers[1] = 0;
             timers[2] = 0;
+            updateTimerTexts(1, timers[1].ToString("D2"));
+            updateTimerTexts(2, timers[2].ToString("D2"));
             Debug.Log("Timer has ended");
+            SoundHandler.Instance.playGameTrack(1, false); // play gameend sound
             doOnTimeRunOut();
         }
         yield return true;
@@ -314,7 +323,6 @@ public class UIHandler : Handler
             updateTimerTexts(0, timers[0].ToString("D2")); // fix msces display to 0
             yield return true;
         }
-        
     }
 
 }

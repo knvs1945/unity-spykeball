@@ -3661,10 +3661,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 458a760a9421b0d4d8db4aedcecdf7f6, type: 3}
   - {fileID: 8300000, guid: 37f82c1cdf101f84c99a896fb7ce7303, type: 3}
   - {fileID: 8300000, guid: ed8caef4e6a2e754b820b8aa67b83dcb, type: 3}
-  - {fileID: 8300000, guid: 193620b9663a5ac43a1ffa64521bac96, type: 3}
   - {fileID: 8300000, guid: 1b48d7eea464d824f88f60c1bcb0cfa6, type: 3}
+  - {fileID: 8300000, guid: 193620b9663a5ac43a1ffa64521bac96, type: 3}
+  - {fileID: 8300000, guid: 0b8c0a21db1cecc4bb6a13b1a51fa0fa, type: 3}
   TrackEntries:
   - {fileID: 8300000, guid: ad1e9bf1347842f42b84c4036448e71b, type: 3}
+  - {fileID: 8300000, guid: 2dc5985b92a58d546b7110010682fd50, type: 3}
   SFXSources:
   - {fileID: 999850214}
   - {fileID: 999850218}
@@ -4482,6 +4484,7 @@ MonoBehaviour:
   VFXImpactRing: {fileID: 1887885597142821201, guid: 542c36c1bca25584dbc88271a6c648bf, type: 3}
   VFXSpeedMirage: {fileID: 2114855591386183464, guid: 4809c51a4e604e44c8a7f7f5fa1b8ca0, type: 3}
   VFXScoreText: {fileID: 5986097220500788278, guid: 8cba0accb9ab7d0469e3ac7edba3fe64, type: 3}
+  VFXAlertText: {fileID: 6476831081845776401, guid: 4aa31b11578593e448df1a7173281ca7, type: 3}
 --- !u!1 &1240220045
 GameObject:
   m_ObjectHideFlags: 0

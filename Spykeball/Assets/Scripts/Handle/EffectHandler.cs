@@ -10,9 +10,13 @@ public class EffectHandler : Handler
     
     public static EffectHandler Instance {get; private set; }
     
+    // in-game effects here
     public ImpactRing VFXImpactRing;
     public SpeedMirage VFXSpeedMirage;
+
+    // text effects here
     public ScoreEffect VFXScoreText;
+    public AlertTextEffect VFXAlertText;
     
     void Awake()
     {
@@ -46,6 +50,12 @@ public class EffectHandler : Handler
     // create effect for displaying scores and addedTime
     public void CreateEffectScoreText(Vector2 location, string textToAdd) {
         ScoreEffect temp = Instantiate(VFXScoreText, location, Quaternion.identity);
+        if (temp != null) temp.addText(textToAdd);
+    }
+
+    // create effect for displaying alert time effect
+    public void CreateEffectAlertText(Vector2 location, string textToAdd) {
+        AlertTextEffect temp = Instantiate(VFXAlertText, location, Quaternion.identity);
         if (temp != null) temp.addText(textToAdd);
     }
 }

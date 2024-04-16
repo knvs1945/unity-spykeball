@@ -11,7 +11,8 @@ public enum SFXType
     SpikeHitHard,
     TargetBreak,
     ScoreTarget,
-    ButtonClick
+    ButtonClick,
+    TimerSlam
 }
 
 /// <summary>
@@ -81,12 +82,12 @@ public class SoundHandler : Handler
         }
     }
 
-    public void playGameTrack(int trackId = 0) {
+    public void playGameTrack(int trackId = 0, bool isLooped = true) {
         if (gameState == states.inStage) {
             if (trackId < TrackEntries.Length) {
                 Tracks.Stop();
                 Tracks.clip = TrackEntries[trackId];
-                Tracks.loop = true;
+                Tracks.loop = isLooped;
                 Tracks.Play();
             }
         }

@@ -150,7 +150,10 @@ public class PlayerBall : GameUnit
         currentColor = currentColor - (colorfactor * (COUNT_Lives - lives));
         rbRender.material.color = new Color(1, currentColor, currentColor, 1); // color starts getting redder per bounce
         doOnLivesLeft(lives);
-        if (lives <= 0) doOnNoMoreLives();
+        if (lives <= 0) {
+            SoundHandler.Instance.playGameTrack(1, false); // play gameend sound
+            doOnNoMoreLives(); // fire noMoreLives event
+        }
     }
 
     // move the ball back within game bounds
