@@ -48,9 +48,9 @@ public class EffectHandler : Handler
     }
 
     // create effect for displaying scores and addedTime
-    public void CreateEffectScoreText(Vector2 location, string textToAdd) {
+    public void CreateEffectScoreText(Vector2 location, string textToAdd, bool badPing = false) {
         ScoreEffect temp = Instantiate(VFXScoreText, location, Quaternion.identity);
-        if (temp != null) temp.addText(textToAdd);
+        if (temp != null) temp.addText(textToAdd, badPing);
     }
 
     // create effect for displaying alert time effect

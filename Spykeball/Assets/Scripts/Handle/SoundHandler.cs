@@ -11,8 +11,9 @@ public enum SFXType
     SpikeHitHard,
     TargetBreak,
     ScoreTarget,
+    BadPing,
+    TimerSlam,
     ButtonClick,
-    TimerSlam
 }
 
 /// <summary>

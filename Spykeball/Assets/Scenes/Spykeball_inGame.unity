@@ -3662,8 +3662,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 37f82c1cdf101f84c99a896fb7ce7303, type: 3}
   - {fileID: 8300000, guid: ed8caef4e6a2e754b820b8aa67b83dcb, type: 3}
   - {fileID: 8300000, guid: 1b48d7eea464d824f88f60c1bcb0cfa6, type: 3}
-  - {fileID: 8300000, guid: 193620b9663a5ac43a1ffa64521bac96, type: 3}
+  - {fileID: 8300000, guid: 938f146a7b771d44d9f33cfbd031fd00, type: 3}
   - {fileID: 8300000, guid: 0b8c0a21db1cecc4bb6a13b1a51fa0fa, type: 3}
+  - {fileID: 8300000, guid: 193620b9663a5ac43a1ffa64521bac96, type: 3}
   TrackEntries:
   - {fileID: 8300000, guid: ad1e9bf1347842f42b84c4036448e71b, type: 3}
   - {fileID: 8300000, guid: 2dc5985b92a58d546b7110010682fd50, type: 3}
@@ -5317,7 +5318,7 @@ MonoBehaviour:
   ball: {fileID: 877619800}
   scoreboard: {fileID: 1930723003}
   targetText: {fileID: 1993989191}
-  timeAttackLimit: 10
+  timeAttackLimit: 150
   panelMainMenu: {fileID: 696045095}
   panelRestartMenu: {fileID: 804674042}
   panelTimer: {fileID: 1209170228}

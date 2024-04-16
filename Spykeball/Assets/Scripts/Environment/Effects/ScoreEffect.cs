@@ -45,9 +45,10 @@ public class ScoreEffect : GameUnit
 
     }
 
-    public void addText(string _textToAdd ) {
+    public void addText(string _textToAdd, bool badping = false ) {
         textrnd.text = _textToAdd;
-        SoundHandler.Instance.playSFX(SFXType.ScoreTarget); // add scoretarget sound
+        if (!badping) SoundHandler.Instance.playSFX(SFXType.ScoreTarget); // add scoretarget sound
+        else SoundHandler.Instance.playSFX(SFXType.BadPing); // add scoretarget sound
         startEffect = true;
     }
 

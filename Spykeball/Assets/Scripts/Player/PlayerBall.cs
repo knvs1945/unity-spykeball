@@ -112,7 +112,7 @@ public class PlayerBall : GameUnit
             if (mode == MODE_timeattack) {
                 timeToAdd = -1;
                 doOnHitFloor(scoreToAdd, timeToAdd); // report the score and time to add
-                EffectHandler.Instance.CreateEffectScoreText(transform.position, "" + timeToAdd + " secs");
+                EffectHandler.Instance.CreateEffectScoreText(transform.position, "" + timeToAdd + " sec", true);
             }
             SoundHandler.Instance.playSFX(SFXType.Bounce); // play bouncing sound effect
         }
