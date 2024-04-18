@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ScreenShader
+  m_Name: ScreenShader 2
   m_Shader: {fileID: 4800000, guid: 8a2d1439019c58946914c54576b9a155, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 8400000, guid: 6190c0f95c740604c8985ce9bfb24e8c, type: 2}
+        m_Texture: {fileID: 8400000, guid: 16cb2208127a4a04aa0fe17997fd83d1, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
