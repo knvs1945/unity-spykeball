@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4600151049984791033}
   - component: {fileID: 6087634357695679269}
   - component: {fileID: 5986097220500788278}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AddTimeEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
