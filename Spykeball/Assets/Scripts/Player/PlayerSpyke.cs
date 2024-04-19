@@ -124,9 +124,9 @@ public class PlayerSpyke : PlayerUnit
         int moveDir = 0;
 
         if (!isJumping) {
-            if (Input.GetKeyDown(controls.MoveUp) || Input.GetKeyDown(KeyCode.UpArrow)) setAnimationJumping();    
-
+            if (!isFalling && (Input.GetKeyDown(controls.MoveUp) || Input.GetKeyDown(KeyCode.UpArrow))) setAnimationJumping();    
             // move left OR right, or neither if both are pressed;
+            
             if (moveLeft && moveRight){
                 moveDir = 0;
             }
@@ -148,6 +148,13 @@ public class PlayerSpyke : PlayerUnit
                 moveDir = 0;
             }
 
+            // keep walking animation while any of the directions are pressed
+            if (Input.GetKey(controls.MoveLeft) || Input.GetKey(controls.MoveRight)) setAnimationWalking(0, true); 
+            else {
+                jumpXDirection = 0;
+                setAnimationWalking(0, false);
+            }
+
             moveInput = new Vector2(moveDir, 0);
             moveData = moveInput.normalized * moveSpeed;
             jumpXPower = moveSpeed * xDirection;
@@ -167,14 +174,6 @@ public class PlayerSpyke : PlayerUnit
             }
         }
         if (Input.GetKeyDown(controls.MoveDown) || Input.GetKeyDown(KeyCode.DownArrow)) animateDash();    
-        if (Input.GetKeyDown(controls.Attack)) animateAttack();    
-
-        // keep walking animation while any of the directions are pressed
-        if (Input.GetKey(controls.MoveLeft) || Input.GetKey(controls.MoveRight)) setAnimationWalking(0, true); 
-        else {
-            jumpXDirection = 0;
-            setAnimationWalking(0, false);
-        }
 
         // attack animation
         if (Input.GetKey(controls.Attack)) {
@@ -248,24 +247,35 @@ public class PlayerSpyke : PlayerUnit
     //  ================ collision sequences start here  ================ //
 
     protected void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.collider.tag == "Floor") {
+        if (!isGrounded && collision.collider.tag == "Floor") {
             isGrounded = true;
         }
         if (collision.collider.tag == "Ball") {
-            // Debug.Log("Pushing ball");
             collision.collider.GetComponent<Rigidbody2D>().AddForce(new Vector2(rbBody.velocity.x, base_PushPower));
             doOnHitBall(scoreOnHitBall); // update the score
         }
     }
 
+    
+    protected void OnCollisionStay2D(Collision2D collision) {
+        if (collision.collider.tag == "Floor") {
+            // makes sure the player is grounded when touching the floor
+            isGrounded = true;
+        }
+    }
+
+    protected void OnCollisionExit2D(Collision2D collision) {
+        if (collision.collider.tag == "Floor") {
+            isGrounded = false;
+        }
+    }
 
     //  ================ animation sequences start here  ================ //
     private void setAnimationWalking(int direction, bool isRunning) {
-        animBody.SetBool("isRunning", isRunning);
+        if (isGrounded) animBody.SetBool("isRunning", isRunning);
     }
 
     private void setAnimationJumping() {
-        // Debug.Log("Applying Jump Power: " + jumpXPower * jumpXDirection + " (" + xDirection + ")");
         rbBody.AddForce(new Vector2(jumpXPower * jumpXDirection, base_JumpPower), ForceMode2D.Impulse);
         isJumping = true;
         isGrounded = false;
