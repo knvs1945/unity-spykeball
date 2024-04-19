@@ -43,6 +43,7 @@ public class Target : GameUnit
     protected void destroyTarget(bool noRespawn = false) {
         if (!noRespawn) {
             Instantiate(targetBreak, transform.position, Quaternion.identity);
+            PlayerBall.lastTargetPos = transform.position;
             doOnDestroyTarget(); // inform listeners that a target has broken
         }
         doOnBreak();

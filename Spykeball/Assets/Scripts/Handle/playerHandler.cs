@@ -109,41 +109,6 @@ public class PlayerHandler : Handler
 
     }
 
-    // update HP Bar after getting damaged
-    protected void updatePlayerHPBar() {
-        if (playerObj.Player.IsDamageShldActive) {
-            playerHP.value = playerObj.Player.HP;
-            shakeHPBar();
-        }
-    }
-
-    // shake the HP bar when damaged
-    protected void shakeHPBar() {
-        StartCoroutine(shakeCoroutine(playerObj.Player.base_DMGdelay, 20f));
-        playerHP.transform.localPosition = HPBarPos;
-    }
-
-    // coroutine that handles the HPbar shake
-    private IEnumerator shakeCoroutine(float duration, float magnitude) {
-        Vector3 originalPos = playerHP.transform.localPosition;
-        float elapsed = 0.0f;
-        float shakeDirection = -1f;
-
-        while (elapsed < duration) {
-            // float y = Random.Range(-1f, 1f) * magnitude;
-            float y = shakeDirection * magnitude;
-            playerHP.transform.localPosition = new Vector3(originalPos.x, originalPos.y + y, originalPos.z);
-            elapsed += Time.deltaTime;
-            if (magnitude > 0) {
-                magnitude -= 0.5f;
-                shakeDirection *= -1f; // flip direction
-            }
-            // else magnitude = 0;
-            yield return null;
-        }
-
-        playerHP.transform.localPosition = originalPos;
-    }
 
     /* 
     *

@@ -48,10 +48,7 @@ public class TargetHandler : Handler
 
         // generate a target randomly but gradually based on game level
         maxRange = Mathf.Min(targetList.Count, (gameLevel / levelUp) + 1);
-        Debug.Log("Spawning between " + 0 + " and " + maxRange);
-
         index = Random.Range(0, maxRange);        
-        Debug.Log("Spawning target index: " + index);
 
         spawnPoint = new Vector2( Random.Range(spawnBoundMinX, spawnBoundMaxX), Random.Range(spawnBoundMinY, spawnBoundMaxY) );
         temp = Instantiate(targetList[index], spawnPoint, Quaternion.identity);

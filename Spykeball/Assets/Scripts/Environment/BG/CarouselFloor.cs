@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
 
 /// <summary>
 /// Script for moving the floor like a carousel
@@ -14,7 +16,7 @@ public class CarouselFloor : GameUnit
     
     protected PlayerControls controls;
     protected Vector2 spawnPos;
-    protected float leftLimit, rightLimit;
+    protected float leftLimit, rightLimit, panelWidth;
     protected int direction = 0;
     protected bool playerActive = false;
     
@@ -22,12 +24,18 @@ public class CarouselFloor : GameUnit
     // Start is called before the first frame update
     void Awake()
     {
+        
         // get the base position of the outside frame. make sure it's at least 22 panels
         if (carouselPanels.Length >= 22) {
+            
             spawnPos = carouselPanels[carouselPanels.Length - 1].position;
             rightLimit = spawnPos.x;
             spawnPos = carouselPanels[0].position;
             leftLimit = spawnPos.x;
+            
+            panelWidth = carouselPanels[0].GetComponent<Renderer>().bounds.size.x;
+            // leftLimit += panelWidth;
+            // rightLimit -= panelWidth;
             
             Debug.Log("Limits: " + leftLimit + " - " + rightLimit);
         }
@@ -68,13 +76,15 @@ public class CarouselFloor : GameUnit
             newPos = new Vector2(pos.x + (moveAmt * direction), pos.y);
             // check if newPosition breaches left or right limits
             if (direction == 1){
-                if (newPos.x >= rightLimit) {
-                    newPos = new Vector2(leftLimit, pos.y); // transfer the panel to the leftmost side
+                if (newPos.x > rightLimit) {
+                    float leftMostX = carouselPanels.Min(panel => panel.position.x);
+                    newPos = new Vector2(leftMostX - panelWidth + (moveAmt * direction), pos.y); // transfer the panel to the leftmost side
                 } 
             }
             else if (direction == -1){
                 if (newPos.x <= leftLimit) {
-                    newPos = new Vector2(rightLimit, pos.y); // transfer the panel to the rightmost side
+                    float rightMostX = carouselPanels.Max(panel => panel.position.x);
+                    newPos = new Vector2(rightMostX + panelWidth, pos.y); // transfer the panel to the rightmost side
                 } 
             }
             carouselPanels[i].position = newPos;

@@ -9,6 +9,8 @@ public class PlayerBall : GameUnit
     protected const int COUNT_Lives = 4, TIME_addTime = 3;
     protected const int MODE_survival = 1, MODE_timeattack = 2;
     
+    public static Vector2 lastTargetPos;
+
     // delegates and events
     public delegate void onHitTarget(int score, int timeToAdd = 0);
     public delegate void onLivesLeft(int livesleft);
@@ -23,7 +25,6 @@ public class PlayerBall : GameUnit
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
 
     protected Color baseColor = new Color(1,1,1,1);
-    protected Vector2 lastTargetPos;
     protected int lives, mode;
     protected float effectTimer;
     protected bool isHighVelocity = false;
@@ -102,9 +103,6 @@ public class PlayerBall : GameUnit
     protected void OnCollisionEnter2D(Collision2D collision) {
         int scoreToAdd = 0, timeToAdd = 0;
         Target targetHit;
-        if (collision.collider.tag == "Target") {
-            lastTargetPos = collision.collider.gameObject.transform.position; // record the position of the last target to know where score effect appears
-        }
         if (collision.collider.tag == "Floor") {
             if (mode == MODE_survival) deductLives();
             

@@ -11,7 +11,7 @@ using UnityEngine;
 public class PlayerSpyke : PlayerUnit
 {
 
-    protected const float startPosX = 0f, startPosY = -4.3f, dashEffectGap = 0.05f, ballImpactMin = 15f;
+    protected const float startPosX = 0f, startPosY = -2.3f, dashEffectGap = 0.05f, ballImpactMin = 15f;
     
     // Delegates and Events
     public delegate void onHitBall(int score, int timeToAdd = 0);
