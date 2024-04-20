@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 /// <summary>
-/// Script for moving the floor like a carousel
+/// Script for moving objects like a carousel
 /// </summary>
-public class CarouselFloor : GameUnit
+public class CarouselBG : GameUnit
 {
-    protected const float moveAmt = 0.15f;
-
     public Transform[] carouselPanels;
     public PlayerSpyke player;
+    public float moveAmt = 0.15f;
     
     protected PlayerControls controls;
     protected Vector2 spawnPos;
@@ -20,13 +18,12 @@ public class CarouselFloor : GameUnit
     protected int direction = 0;
     protected bool playerActive = false;
     
-
     // Start is called before the first frame update
     void Awake()
     {
         
         // get the base position of the outside frame. make sure it's at least 22 panels
-        if (carouselPanels.Length >= 22) {
+        if (carouselPanels.Length > 0) {
             
             spawnPos = carouselPanels[carouselPanels.Length - 1].position;
             rightLimit = spawnPos.x;
@@ -36,7 +33,6 @@ public class CarouselFloor : GameUnit
             panelWidth = carouselPanels[0].GetComponent<Renderer>().bounds.size.x;
             leftLimit -= (panelWidth / 2);
             rightLimit += (panelWidth / 2);
-            
         }
     }
 

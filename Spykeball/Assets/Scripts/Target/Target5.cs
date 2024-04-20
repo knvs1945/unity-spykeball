@@ -67,7 +67,7 @@ public class Target5 : Target
         if (!isMoving) return;
         if (Time.time < spdEffectTimer) return;
             
-        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite, false, Color.black);
+        EffectHandler.Instance.CreateEffectSpeedMirage(transform.position, spriteRnd.sprite, false, Color.magenta);
         spdEffectTimer = Time.time + spdEffectGap;
     }
 }

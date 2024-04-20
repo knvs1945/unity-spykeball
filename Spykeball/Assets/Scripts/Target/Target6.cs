@@ -10,7 +10,7 @@ public class Target6 : Target
 
     protected SpriteRenderer rbRender;
     protected Vector2 nextPos;
-    protected Color baseColor = new Color(0,0,0,1), currentColor;
+    protected Color baseColor = new Color(1,1,1,1), currentColor;
     protected float dodgelessTimer, dodgelessTimerRem, currentDuration, fraction, turnRed, spdEffectTimer;
     protected bool isMoving = false, canDodge = true;    
     protected Collider2D triggerArea;
@@ -77,8 +77,8 @@ public class Target6 : Target
     // slowly turn red while the dodge timer is still ticking yet
     protected void changeTargetColors() {
         fraction = (Time.time - (dodgelessTimer - currentDuration)) / currentDuration;
-        turnRed = Mathf.Lerp(0, 1 , fraction);
-        currentColor = new Color(turnRed, baseColor.g, baseColor.b, 1);
+        turnRed = Mathf.Lerp(1, 0 , fraction);
+        currentColor = new Color(1, turnRed, turnRed, 1);
         rbRender.material.color = currentColor;
     }
 

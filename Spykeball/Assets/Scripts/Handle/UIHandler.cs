@@ -225,19 +225,16 @@ public class UIHandler : Handler
 
     // Set timer texts
     protected void setTimerTexts() {
-        int mintext = (int) timeAttackLimit / 60;
-
-        // set the timer
-        gameTimerSecs = (int)timeAttackLimit;
-
-        // set the timer counters
-        timers[0] = 9;
+        // refresh the timer counters
+        timers[0] = 0;
         timers[1] = 0;
-        timers[2] = mintext;
+        timers[2] = 0;
 
         timerText[0].text = "00"; // msecs
         timerText[1].text = "00"; // secs
-        timerText[2].text = mintext.ToString("D2");
+        timerText[2].text = "00"; // mins
+
+        addTime((int) timeAttackLimit);
     }
 
     // Add time here when ball hits a target
