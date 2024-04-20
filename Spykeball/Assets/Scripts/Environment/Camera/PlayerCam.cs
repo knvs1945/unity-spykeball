@@ -7,8 +7,9 @@ using UnityEngine;
 /// </summary>
 public class PlayerCam : MonoBehaviour
 {
-    protected const float offsetY = 1.2f;
     public Transform player;
+    public float offsetY = 1.2f;
+
     // Start is called before the first frame update
     void Start()
     {

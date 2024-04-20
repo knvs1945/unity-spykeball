@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -14,7 +15,7 @@ public class CarouselWall : GameUnit
     
     protected PlayerControls controls;
     protected Vector2 spawnPos;
-    protected float leftLimit, rightLimit;
+    protected float leftLimit, rightLimit, panelWidth;
     protected int direction = 0;
     protected bool playerActive = false;
     
@@ -26,7 +27,12 @@ public class CarouselWall : GameUnit
         if (carouselPanels.Length >= 2) {
             spawnPos = carouselPanels[carouselPanels.Length - 1].position;
             rightLimit = spawnPos.x;
-            leftLimit = spawnPos.x * -1;
+            spawnPos = carouselPanels[0].position;
+            leftLimit = spawnPos.x;
+            
+            panelWidth = carouselPanels[0].GetComponent<Renderer>().bounds.size.x;
+            leftLimit -= (panelWidth / 2);
+            rightLimit += (panelWidth / 2);
         }
     }
 
@@ -35,9 +41,12 @@ public class CarouselWall : GameUnit
     {
         if (gameState == 0) return;
         getControls();
-        
-
         getKeyPress();
+        
+    }
+
+    void FixedUpdate()
+    {
         movePanels();
     }
 
@@ -61,22 +70,29 @@ public class CarouselWall : GameUnit
     protected void movePanels() {
         if (!playerActive) return;
         Vector2 pos, newPos;
-        for (int i = 0; i < carouselPanels.Length; i++) {
-            pos = carouselPanels[i].position;
-            newPos = new Vector2(pos.x + (moveAmt * direction), pos.y);
-            // check if newPosition breaches left or right limits
-            if (direction == 1){
+        if (direction == 1){
+            for (int i = 0; i < carouselPanels.Length; i++) {
+                pos = carouselPanels[i].position;
+                newPos = new Vector2(pos.x + (moveAmt * direction), pos.y);
+                // check if newPosition breaches left or right limits
                 if (newPos.x >= rightLimit) {
-                    newPos = new Vector2(leftLimit, pos.y); // transfer the panel to the leftmost side
+                    float leftMostX = carouselPanels.Min(panel => panel.position.x);
+                    newPos = new Vector2(leftMostX - panelWidth + (moveAmt * direction), pos.y); // transfer the panel to the leftmost side
                 } 
+                carouselPanels[i].position = newPos;
             }
-            else if (direction == -1){
+        }
+        else if (direction == -1){
+            // reverse the loop order to prevent gap bug
+            for (int i = carouselPanels.Length - 1; i >= 0; i--) {
+                pos = carouselPanels[i].position;
+                newPos = new Vector2(pos.x + (moveAmt * direction), pos.y);
                 if (newPos.x <= leftLimit) {
-                    newPos = new Vector2(rightLimit, pos.y); // transfer the panel to the rightmost side
-                } 
+                    float rightMostX = carouselPanels.Max(panel => panel.position.x);
+                    newPos = new Vector2(rightMostX + panelWidth + (moveAmt * direction), pos.y); // transfer the panel to the rightmost side
+                }
+                carouselPanels[i].position = newPos;
             }
-            carouselPanels[i].position = newPos;
-
         }
     }
 
