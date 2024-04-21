@@ -9771,7 +9771,7 @@ MonoBehaviour:
   ball: {fileID: 877619800}
   scoreboard: {fileID: 1930723003}
   targetText: {fileID: 1993989191}
-  timeAttackLimit: 10
+  timeAttackLimit: 150
   ballMarker: {fileID: 1916948656}
   panelMainMenu: {fileID: 696045095}
   panelRestartMenu: {fileID: 804674042}

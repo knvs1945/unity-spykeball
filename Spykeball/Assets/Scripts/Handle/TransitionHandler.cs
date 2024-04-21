@@ -13,9 +13,6 @@ public class TransitionHandler : Handler
     protected Vector2 panelStartPos, panelCoverPos;
     protected Animator tAnim;
 
-    void Start() {
-    }
-
     void Awake()
     {
         if (Instance == null) {

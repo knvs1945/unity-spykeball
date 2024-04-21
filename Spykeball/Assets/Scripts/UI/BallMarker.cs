@@ -17,12 +17,6 @@ public class BallMarker : MonoBehaviour
     protected float fixedY, screenX;
     protected bool isShowing = true;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     void Awake()
     {
         if (ball != null) bt = ball.transform;

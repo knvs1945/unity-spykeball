@@ -30,7 +30,6 @@ public class ControlPanel : Panel
 
     void Awake()
     {
-        newControls = new string[btText.Length];
     }
 
     // Update is called once per frame
@@ -54,7 +53,6 @@ public class ControlPanel : Panel
     // get current controls from the UI handler data passed from the player handler
     public PlayerControls getCurrentControl() {
         PlayerControls newControl = new PlayerControls(newControls);
-        Debug.Log("New Controls: " + newControl.MoveLeft + "-" + newControl.MoveRight + "-" + newControl.MoveUp + "-" + newControl.MoveDown + "-" + newControl.Attack);
         return newControl;
     }
 
@@ -67,7 +65,6 @@ public class ControlPanel : Panel
     }
 
     public float[] getCurrentVolumeUI() {
-        Debug.Log("Returning Slider values: " + SFXSlider.value + " - " + trackSlider.value);
         float[] values = new float[] {SFXSlider.value, trackSlider.value};
         return values;
     }
@@ -125,7 +122,10 @@ public class ControlPanel : Panel
                                      controlindex = 4;
                                      break;
                     }
-                    newControls[controlindex] = keyPresses[0].ToString().ToLower(); // just get the first character recorded
+                    keyPresses = filterSpecialKeyPress(keyPresses[0].ToString().ToLower());
+                    // newControls[controlindex] = keyPresses[0].ToString().ToLower(); // just get the first character recorded
+                    newControls[controlindex] = keyPresses; // just get the first character recorded
+                    
                     btText[UIindex].text = newControls[controlindex].ToString().ToUpper();
                     isListening = false;
                 }
@@ -135,8 +135,20 @@ public class ControlPanel : Panel
                 }
             }
         }
-
     }
+
+    // filter for any special non alphanumeric key pressed
+    protected string filterSpecialKeyPress(string keypressed) {
+        string newKey = keypressed;
+        Debug.Log("Key Pressed: " + newKey);
+        switch(keypressed) {
+            // check if spacebar
+            case " ": newKey = "space";
+                      break;
+        }
+        return newKey;
+    }
+
 
 
 
