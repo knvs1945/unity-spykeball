@@ -72,26 +72,24 @@ public class PlayerHandler : Handler
         if (playerObj != null) {
             PlayerUnit.doOnPausePressed += playerPressedPause;
         }
+
+        UIHandler.doOnTimeRunOut += doOnTimeRunOut;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public override void returnToMainMenu() {
         // hide the current target
         ball.deactivate();
         ball.gameObject.SetActive(false);
-        playerObj.IsControlDisabled = true;
+        // playerObj.IsControlDisabled = true;
+        playerObj.Player.IsControlDisabled = true;
     }
 
     // Restart the game sets
     protected override void doOnRestartHandler() {
         
         ball.gameObject.SetActive(true);
-        if (playerObj != null) playerObj.IsControlDisabled = false;
+        if (playerObj != null) playerObj.Player.IsControlDisabled = false;
         
         if (Mode == Modes.Survival) {
             playerObj.restartUnit("Survival");       
@@ -156,10 +154,20 @@ public class PlayerHandler : Handler
 
     // report game over when the ball has no more lives
     protected void doOnPlayerBallGone() {
+        Debug.Log("Disabling player...");
+        playerObj.Player.IsControlDisabled = true;
+        // playerObj.IsControlDisabled = true;
         ball.deactivate();
         ball.gameObject.SetActive(false);
-        playerObj.IsControlDisabled = true;
+        gameState = states.GameEnd;
         doOnGameOver();
+    }
+
+    protected void doOnTimeRunOut() {
+        playerObj.Player.IsControlDisabled = true;
+        ball.deactivate();
+        ball.gameObject.SetActive(false);
+        gameState = states.GameEnd;
     }
 
     // report game pause entries from player unit

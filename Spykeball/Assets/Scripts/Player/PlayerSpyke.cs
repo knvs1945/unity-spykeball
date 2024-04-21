@@ -46,8 +46,6 @@ public class PlayerSpyke : PlayerUnit
     [SerializeField]
     protected GameObject body;
     protected Animator animBody;
-
-    // Testing items here;
     
     // Start is called before the first frame update
     protected override void Start()
@@ -60,13 +58,9 @@ public class PlayerSpyke : PlayerUnit
         spriteRnd = body.GetComponent<SpriteRenderer>();
         currentGravity = Physics2D.gravity;
 
-        Debug.Log("Gravity Check: " + currentGravity);
-
         width = render.bounds.size.x;
         height = render.bounds.size.y;
-        
-        // temporarily enable god mode;
-        // isImmune = true;
+
     }
 
     // Update is called once per frame
@@ -82,6 +76,8 @@ public class PlayerSpyke : PlayerUnit
 
     void FixedUpdate()
     {
+        if (gameState == 0 || isControlDisabled) return;
+
         // move the rigidbody here. 
         if (isGrounded && !isJumping && !isFalling && !isDashing) rbBody.MovePosition(rbBody.position + new Vector2(moveData.x, 0) * Time.fixedDeltaTime);
         createDashEffects();
@@ -103,7 +99,10 @@ public class PlayerSpyke : PlayerUnit
     // ================ Input action sequences start here  ================ //
     // Input for moving player
     private void inputMovement() {
-        if (isControlDisabled) return;
+        int moveDir = 0;
+        if (isControlDisabled) {
+            return;
+        }
 
         if (Input.GetKeyDown(controls.Pause)) {
             if (!isGamePaused) {
@@ -121,12 +120,10 @@ public class PlayerSpyke : PlayerUnit
 
         bool moveLeft = (Input.GetKey(controls.MoveLeft) || Input.GetKey(KeyCode.LeftArrow));
         bool moveRight = (Input.GetKey(controls.MoveRight) || Input.GetKey(KeyCode.RightArrow));
-        int moveDir = 0;
-
         if (!isJumping) {
             if (!isFalling && (Input.GetKeyDown(controls.MoveUp) || Input.GetKeyDown(KeyCode.UpArrow))) setAnimationJumping();    
-            // move left OR right, or neither if both are pressed;
             
+            // move left OR right, or neither if both are pressed;
             if (moveLeft && moveRight){
                 moveDir = 0;
             }
@@ -227,6 +224,8 @@ public class PlayerSpyke : PlayerUnit
     protected void resetDashState() {
         isDashing = false;
         rbBody.velocity = new Vector2(0, rbBody.velocity.y); // remove any force currently in it
+        applyXForce(moveSpeed);
+        
     }
 
     // pause player components to check if it is paused or not
@@ -302,12 +301,13 @@ public class PlayerSpyke : PlayerUnit
         atkTimer = Time.time + base_ATKdelay; // add a cooldown to the atk button to prevent spamming
     }
 
+    // does a dash and animates the player
     private void animateDash() {
         if (Time.time <= dashTimer) return;
+        isDashing = true;
+
         animBody.SetTrigger("dash");
         SoundHandler.Instance.playSFX(SFXType.Dash);
-        isDashing = true;
-        Debug.Log("Dash Power: " + (base_DashPower * xDirection));
         rbBody.AddForce(new Vector2(base_DashPower * xDirection, 0), ForceMode2D.Force);
         dashTimer = Time.time + base_DashDelay;
         dashEffectTimer = Time.time + dashEffectGap; // start creating dashes

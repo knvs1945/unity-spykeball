@@ -174,7 +174,6 @@ public class GameHandler : Handler
 
     // game end sequence
     protected void GameEnded() {
-        freezeGame(true);
         UIHandle.showEndGamePanel();
     }
 
