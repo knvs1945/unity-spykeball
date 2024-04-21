@@ -30,6 +30,7 @@ public class UIHandler : Handler
     protected Text targetText;
 
     public float timeAttackLimit;
+    public BallMarker ballMarker;
     public GameObject panelMainMenu, panelRestartMenu;
     public GameObject panelTimer, panelLives, panelScore, panelTargets, panelPauseMenu, panelControls; // ingame panels
     public Image[] livesCount;
@@ -261,7 +262,6 @@ public class UIHandler : Handler
         TimeSpan convertedTime; // .Net class for changing time given an integer
 
         // first, add the time to the current timer;
-        Debug.Log("Adding Time: " + timeToAdd);
         gameTimerSecs += timeToAdd;
 
         // then, convert the timer to both minutes and seconds using FromSeconds

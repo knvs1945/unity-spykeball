@@ -166,8 +166,8 @@ public class PlayerBall : GameUnit
 
     // move the ball back within game bounds
     protected void checkIfOutOfBounds() {
-        if (transform.position.y >= 10f) transform.position = new Vector2(transform.position.x, boundsFloor);
-        if (transform.position.y <= -10f) transform.position = new Vector2(transform.position.x, boundsCeiling);
+        if (transform.position.y >= 15f) transform.position = new Vector2(transform.position.x, boundsFloor);
+        if (transform.position.y <= -15f) transform.position = new Vector2(transform.position.x, boundsCeiling);
         if (transform.position.x <= -12f) transform.position = new Vector2(boundsRight, transform.position.y);
         if (transform.position.x >= 12f) transform.position = new Vector2(boundsRight, transform.position.y);
     }

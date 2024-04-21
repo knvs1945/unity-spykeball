@@ -20,6 +20,9 @@ public class GameHandler : Handler
 
     [SerializeField]
     protected TransitionHandler transitionHandle;
+
+    [SerializeField]
+    protected EnvHandler envHandle;
     
     private string currentGameType;
     private int currentMode;

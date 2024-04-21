@@ -15,12 +15,12 @@ public class BallMarker : MonoBehaviour
     protected Image image;
     protected Transform bt;
     protected float fixedY, screenX;
-    protected bool isShowing = false;
+    protected bool isShowing = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        showMarker(false); // hide the marker by default
+        
     }
 
     void Awake()
@@ -29,18 +29,18 @@ public class BallMarker : MonoBehaviour
         image = gameObject.GetComponent<Image>();
         fixedY = marker.anchoredPosition.y;
         screenX = Screen.width / 2;
+        showMarker(false); // hide the marker by default
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ball != null) {
-            trackBall();
-        }
+        trackBall();
     }
 
     // tracks the ball's movement and show it on the UI if it is above a certain threshold
     protected void trackBall() {
+        if (ball == null) return;
         Vector3 screenPos = mainCamera.WorldToScreenPoint(bt.position); // convert the ball's position;
         marker.anchoredPosition = new Vector2(screenPos.x - screenX, fixedY);
 

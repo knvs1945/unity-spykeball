@@ -12,9 +12,9 @@ public class TargetHandler : Handler
     protected Target currentTarget;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        initializeStats();
+        registerEvents();
         // doOnRestartHandler();
     }
 
@@ -25,7 +25,7 @@ public class TargetHandler : Handler
     }
 
     // Register event behaviors
-    protected void initializeStats() {
+    protected void registerEvents() {
         Target.doOnDestroyTarget += spawnNewTarget;
     }
 
