@@ -5068,6 +5068,12 @@ MonoBehaviour:
   - {fileID: 1055837240}
   - {fileID: 2014689967}
   - {fileID: 19337061}
+  BGCrowd:
+  - {fileID: 1839437108}
+  - {fileID: 1575848336}
+  - {fileID: 1125355481}
+  BGWall: {fileID: 17120335}
+  BGFloor: {fileID: 575490544}
 --- !u!1 &786444945
 GameObject:
   m_ObjectHideFlags: 0
@@ -6233,7 +6239,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!212 &877619798
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -9,6 +9,9 @@ public class EnvHandler : Handler
 {
     private static EnvHandler Instance;
     public GameObject[] CrowdSet;
+
+    public CarouselBG[] BGCrowd;
+    public CarouselBG BGWall, BGFloor;
     
     void Awake()
     {
@@ -32,6 +35,17 @@ public class EnvHandler : Handler
         Target.doOnDestroyTarget += bgCrowdCheer;
     }
 
+    // restarts the envhandler and its items
+    protected override void doOnRestartHandler() {
+        BGFloor.resetCarousel();
+        BGWall.resetCarousel();
+
+        for (int i = 0; i < BGCrowd.Length; i++) {
+            BGCrowd[i].resetCarousel();
+        }
+    }
+    
+    // makes the audience background animate a cheer when a target breaks
     protected void bgCrowdCheer() {
         Animator anim;
         for (int i = 0; i < CrowdSet.Length; i++) {

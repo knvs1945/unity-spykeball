@@ -13,6 +13,7 @@ public class CarouselBG : GameUnit
     public float moveAmt = 0.15f;
     
     protected PlayerControls controls;
+    protected Vector2[] originalPos;
     protected Vector2 spawnPos;
     protected float leftLimit, rightLimit, panelWidth;
     protected int direction = 0;
@@ -21,11 +22,11 @@ public class CarouselBG : GameUnit
     // Start is called before the first frame update
     void Awake()
     {
-        
+        int l = carouselPanels.Length;
         // get the base position of the outside frame. make sure it's at least 22 panels
-        if (carouselPanels.Length > 0) {
+        if (l > 0) {
             
-            spawnPos = carouselPanels[carouselPanels.Length - 1].position;
+            spawnPos = carouselPanels[l - 1].position;
             rightLimit = spawnPos.x;
             spawnPos = carouselPanels[0].position;
             leftLimit = spawnPos.x;
@@ -33,7 +34,14 @@ public class CarouselBG : GameUnit
             panelWidth = carouselPanels[0].GetComponent<Renderer>().bounds.size.x;
             leftLimit -= (panelWidth / 2);
             rightLimit += (panelWidth / 2);
+
+            // then get the original positions of the elements in the carousel
+            originalPos = new Vector2[carouselPanels.Length];
+            for (int i = 0; i < originalPos.Length; i++) {
+                originalPos[i] = carouselPanels[i].position;
+            }
         }
+
     }
 
     // Update is called once per frame
@@ -41,7 +49,6 @@ public class CarouselBG : GameUnit
     {
         if (gameState == 0) return;
         getControls();
-
         getKeyPress();
     }
 
@@ -50,6 +57,7 @@ public class CarouselBG : GameUnit
         movePanels();
     }
 
+    // detects player keypress and adds movement data for movePanels accordingly
     protected void getKeyPress() {
         if (!playerActive) return;
         bool moveLeft = (Input.GetKey(controls.MoveLeft));
@@ -67,6 +75,7 @@ public class CarouselBG : GameUnit
         else direction = 0;
     }
 
+    // moves panels according to key pressed
     protected void movePanels() {
         if (!playerActive) return;
         Vector2 pos, newPos;
@@ -99,12 +108,20 @@ public class CarouselBG : GameUnit
     // only get controls when player recently has them
     protected void getControls() {
         if (playerActive) return;
-        
+
         if (player != null) {
             controls = player.Controls;
             if (controls != null) {
                 playerActive = true;
             }
+        }
+    }
+
+    // resets the position of the carousel panels
+    public void resetCarousel() {
+        // then get the original positions of the elements in the carousel
+        for (int i = 0; i < originalPos.Length; i++) {
+            carouselPanels[i].position = originalPos[i];
         }
     }
 }

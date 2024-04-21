@@ -145,8 +145,10 @@ public class GameHandler : Handler
         playerHandle.restartHandler();
         UIHandle.restartHandler();
         targetHandle.restartHandler();
-        gameLevel = 0;
         soundHandle.restartHandler();
+        envHandle.restartHandler();
+        
+        gameLevel = 0;
         freezeGame(false);
         transitionHandle.endStateTransition();
     }
