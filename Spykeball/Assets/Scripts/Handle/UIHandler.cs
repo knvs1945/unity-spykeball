@@ -261,6 +261,7 @@ public class UIHandler : Handler
         TimeSpan convertedTime; // .Net class for changing time given an integer
 
         // first, add the time to the current timer;
+        Debug.Log("Adding Time: " + timeToAdd);
         gameTimerSecs += timeToAdd;
 
         // then, convert the timer to both minutes and seconds using FromSeconds

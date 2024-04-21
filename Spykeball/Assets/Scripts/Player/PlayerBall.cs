@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerBall : GameUnit
 {
 
-    protected const float startPosX = 0, startPosY = 4, MAX_velocity = 17.5f, MIN_effectSpd = 13f, effectsGap = 0.05f;
+    protected const float startPosX = 0, startPosY = 4, MAX_velocity = 17.5f, MAX_velocity_unli = 20f, MIN_effectSpd = 13f, effectsGap = 0.05f;
     protected const int COUNT_Lives = 4, TIME_addTime = 3;
     protected const int MODE_survival = 1, MODE_timeattack = 2;
     
@@ -20,14 +20,17 @@ public class PlayerBall : GameUnit
     public event onNoMoreLives doOnNoMoreLives;
     public event onLivesLeft doOnLivesLeft;
 
+    // hashset is used to store a gameobject that the ball already collided with. This is used for floors
     private Sprite baseSprite;
+    
     public int baseScore;
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
+
 
     protected Color baseColor = new Color(1,1,1,1);
     protected int lives, mode;
     protected float effectTimer;
-    protected bool isHighVelocity = false;
+    protected bool isHighVelocity = false, hasHitAFloor = false;
 
     private Animator anim;
     private Rigidbody2D rb;
@@ -99,13 +102,13 @@ public class PlayerBall : GameUnit
         rb.velocity = new Vector2(0,0);
     }
 
-    // if the ball hits 
+    // if the ball hits something
     protected void OnCollisionEnter2D(Collision2D collision) {
         int scoreToAdd = 0, timeToAdd = 0;
         Target targetHit;
-        if (collision.collider.tag == "Floor") {
+        if (!hasHitAFloor && collision.collider.tag == "Floor") {
+            hasHitAFloor = true;
             if (mode == MODE_survival) deductLives();
-            
             // deduct one second every time the ball hits the floor
             if (mode == MODE_timeattack) {
                 timeToAdd = -1;
@@ -115,6 +118,13 @@ public class PlayerBall : GameUnit
             SoundHandler.Instance.playSFX(SFXType.Bounce); // play bouncing sound effect
         }
         if (rb.velocity.y > 3) anim.SetTrigger("bounce"); // only bounce the ball if its going faster than 1;
+    }
+
+    // if the ball exits a collision from something
+    protected void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Floor")) {
+            hasHitAFloor = false;
+        }
     }
 
     // listens to target doOnDestroy event to add score, life or time depending on game mode
@@ -180,9 +190,15 @@ public class PlayerBall : GameUnit
     // Cap the ball's maximum velocity if it is on time attack 
     protected void checkBallVelocity() {
         
-        if (mode == MODE_timeattack) {
+        if (mode == MODE_survival) {
+            if (rb.velocity.magnitude > MAX_velocity_unli) {
+                rb.velocity = rb.velocity.normalized * MAX_velocity_unli; // cap the velocity to the max velocity on time attack
+            }
+        }
+        
+        else if (mode == MODE_timeattack) {
             if (rb.velocity.magnitude > MAX_velocity) {
-            rb.velocity = rb.velocity.normalized * MAX_velocity; // cap the velocity to the max velocity on time attack
+                rb.velocity = rb.velocity.normalized * MAX_velocity; // cap the velocity to the max velocity on time attack
             }
         }
 

@@ -99,12 +99,10 @@ public class CarouselBG : GameUnit
     // only get controls when player recently has them
     protected void getControls() {
         if (playerActive) return;
-
-        Debug.Log("Controls check: " + controls);
+        
         if (player != null) {
             controls = player.Controls;
             if (controls != null) {
-                Debug.Log("Player found..." + controls);
                 playerActive = true;
             }
         }
