@@ -83,6 +83,9 @@ public class UIHandler : Handler
     // restart handler and elements here
     protected override void doOnRestartHandler() {
 
+        // Stop the previous timer if it was ever started
+        stopTimer();
+
         // enable needed panels and set up the UI
         if (Mode == Modes.Survival) {
             panelScore.SetActive(true);
@@ -133,6 +136,8 @@ public class UIHandler : Handler
         panelRestartMenu.SetActive(false);
         panelPauseMenu.SetActive(false);
         panelControls.SetActive(false);
+
+        playPanelIntro(panelMainMenu);
     }
 
     // show the end game panel
@@ -217,6 +222,17 @@ public class UIHandler : Handler
         scoreboard.text = currentScore.ToString();
     }
 
+    ///
+    /// Play animations here
+    ///
+
+    protected void playPanelIntro(GameObject panel) {
+        Panel temp = panel.GetComponent<Panel>();
+        if (temp != null) {
+            temp.playPanelIntro();
+        }
+    }
+
     /// <summary>
     /// 
     /// Timer functions here
@@ -225,10 +241,12 @@ public class UIHandler : Handler
 
     // Set timer texts
     protected void setTimerTexts() {
-        // refresh the timer counters
+        
+        // refresh the timer & timer counters
         timers[0] = 0;
         timers[1] = 0;
         timers[2] = 0;
+        gameTimerSecs = 0;
 
         timerText[0].text = "00"; // msecs
         timerText[1].text = "00"; // secs
@@ -267,6 +285,11 @@ public class UIHandler : Handler
     protected void startTimer() {
         StartCoroutine("countDownSecs");
         StartCoroutine("countDownMsecs"); // countdown milliseconds for pure aesthetic
+    }
+
+    protected void stopTimer() {
+        StopCoroutine("countDownSecs");
+        StopCoroutine("countDownMsecs"); // countdown milliseconds for pure aesthetic
     }
 
     // countDown milliseconds

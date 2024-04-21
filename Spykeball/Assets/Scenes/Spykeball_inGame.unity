@@ -4283,6 +4283,8 @@ GameObject:
   - component: {fileID: 657182129}
   - component: {fileID: 657182131}
   - component: {fileID: 657182130}
+  - component: {fileID: 657182132}
+  - component: {fileID: 657182133}
   m_Layer: 5
   m_Name: Title Card
   m_TagString: Untagged
@@ -4347,6 +4349,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657182128}
   m_CullTransparentMesh: 1
+--- !u!95 &657182132
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657182128}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8da992050030cc545ae5e450b75b0bd7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &657182133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657182128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0819411bc26dc2b47aae1ffd14af9c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleCard: {fileID: 0}
 --- !u!1 &676203918
 GameObject:
   m_ObjectHideFlags: 0
@@ -4442,6 +4478,7 @@ GameObject:
   m_Component:
   - component: {fileID: 696045096}
   - component: {fileID: 696045097}
+  - component: {fileID: 696045098}
   m_Layer: 5
   m_Name: TitlePanel
   m_TagString: Untagged
@@ -4484,6 +4521,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7619612647bb40247827a0dd073b0a65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &696045098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696045095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0819411bc26dc2b47aae1ffd14af9c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleCard: {fileID: 657182130}
 --- !u!1 &701571827
 GameObject:
   m_ObjectHideFlags: 0

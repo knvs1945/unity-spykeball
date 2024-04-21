@@ -59,9 +59,9 @@ public class SoundHandler : Handler
     }
 
     public override void returnToMainMenu() {
-        for (int i = 0; i < SFXSources.Length; i++) {
+        /*for (int i = 0; i < SFXSources.Length; i++) {
             SFXSources[i].Stop();
-        }
+        }*/
         Tracks.Stop();
     }
 

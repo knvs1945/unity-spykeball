@@ -33,7 +33,7 @@ public class GameHandler : Handler
         Application.targetFrameRate = FPS;
 
         // move this somewhere else once startLevel works
-        freezeGame(true);
+        // freezeGame(true);
         doReturnToMainMenu("");
     }
 
