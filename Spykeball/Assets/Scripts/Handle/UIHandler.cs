@@ -99,7 +99,6 @@ public class UIHandler : Handler
             panelLives.SetActive(false);
             panelTimer.SetActive(true);
             setTimerTexts();
-            startTimer();
         }
 
         panelTargets.SetActive(true);
@@ -111,7 +110,11 @@ public class UIHandler : Handler
 
         // game is starting, set the game state as needed
         gameState = states.inStage;
-        
+    }
+
+    // restarts the attack timer after the intro
+    public void restartTimeAttackTimer() {
+        startTimer();
     }
 
     // paused UI objects

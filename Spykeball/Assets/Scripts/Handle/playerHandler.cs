@@ -15,13 +15,11 @@ public class PlayerHandler : Handler
     public delegate void onPausePressed(bool paused);
     public static event onPausePressed doOnPlayerPaused;
 
-    public Transform[] playerSpawns;
     protected Slider playerHP;
     protected Vector3 HPBarPos; 
 
     [SerializeField]
     protected PlayerUnit playerObj;
-    protected Transform currentPlayerSpawn;
 
     [SerializeField]
     protected PlayerBall ball;
@@ -85,21 +83,29 @@ public class PlayerHandler : Handler
         playerObj.Player.IsControlDisabled = true;
     }
 
-    // Restart the game sets
-    protected override void doOnRestartHandler() {
-        
-        ball.gameObject.SetActive(true);
-        if (playerObj != null) playerObj.Player.IsControlDisabled = false;
-        
+    // starts the game start intro;
+    public void startGameIntro() {
+        string mode = "Survival";
         if (Mode == Modes.Survival) {
-            playerObj.restartUnit("Survival");       
-            ball.restartUnit("Survival");
+            mode = "Survival";       
         }
         else if (Mode == Modes.TimeAttack) {
-            playerObj.restartUnit("Time Attack");       
-            ball.restartUnit("Time Attack");
+            mode = "Time Attack";       
         }
         
+        ball.gameObject.SetActive(true);
+        playerObj.gameObject.SetActive(true);
+        playerObj.restartUnit(mode);       
+        ball.restartUnit(mode);
+
+        if (playerObj != null) playerObj.Player.IsControlDisabled = false;
+    }
+
+    // Restart the game sets
+    protected override void doOnRestartHandler() {
+        // hide the player entries first
+        ball.gameObject.SetActive(false);
+        playerObj.gameObject.SetActive(false);
     }
 
     // paused player objects
@@ -107,50 +113,6 @@ public class PlayerHandler : Handler
 
     }
 
-
-    /* 
-    *
-    *   Start stage sequences 
-    *
-    */
-    public bool startStageSequence() {
-        
-        // check if player spawns are present and assign the current player spawn to the first one if not yet done
-        if (playerSpawns.Length > 0) {
-            if (!currentPlayerSpawn) currentPlayerSpawn = playerSpawns[0];
-        }
-        else {
-            // unassigned player spawn array will return false
-            Debug.Log("currentPlayerSpawn is currently unassigned.");
-            return false;
-        }
-
-        // start the animation for the intro sequence and transfer the player to the playerSpawn
-        if (playerObj) {
-            playerObj.Player.IsControlDisabled = true;
-            playerObj.Player.transform.position = currentPlayerSpawn.position;
-            StartCoroutine(prepPlayerForStage());   // countdown before starting the stage
-            Debug.Log("Player now able to use controls");
-        }
-        
-        return true;
-    }
-
-    // IEnumerator for setting up the stage for the player
-    IEnumerator prepPlayerForStage() {
-
-        // stageIntroTimer is a static value 
-        float Timer = stageIntroTimer;
-        
-        while (Timer >= 0) {
-            yield return new WaitForSeconds(1);
-            Timer--;            
-        }
-        
-        playerObj.Player.IsControlDisabled = false;
-
-        // get the player object ang transfer it to the current player spawn
-    }
 
     // report game over when the ball has no more lives
     protected void doOnPlayerBallGone() {

@@ -19,7 +19,6 @@ public class PlayerUnit : GameUnit
     protected bool isControlDisabled = true, isdamageShldActive = false;
     
     public float base_DMGdelay; // damage shield between damage instances
-    public bool isPaused = false;
 
     [SerializeField]
     private PlayerUnit player;
@@ -74,7 +73,8 @@ public class PlayerUnit : GameUnit
     }
     
     protected void playerPressedPause(bool pauseEvent) {
-        isPaused = pauseEvent;
+        // isPaused = pauseEvent;
+        isGamePaused = pauseEvent;
         doOnPausePressed?.Invoke(pauseEvent);
     }
 

@@ -60,7 +60,7 @@ public class CarouselBG : GameUnit
     // detects player keypress and adds movement data for movePanels accordingly
     protected void getKeyPress() {
         if (!playerActive) return;
-        if (player.IsControlDisabled || player.isPaused) {
+        if (player.IsControlDisabled || isGamePaused) {
             direction = 0;
             return;
         }

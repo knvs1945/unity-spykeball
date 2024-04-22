@@ -33,6 +33,11 @@ public class TransitionHandler : Handler
         else Destroy(gameObject);
     }
 
+    // sets the next event before doing transitions
+    public void setNextTransition(string _nextEvent) {
+        transitionPanel.GetComponent<TransPanel>().nextEvent = _nextEvent;
+    }
+
     // cover the game while doing transitions
     public void startStateTransition() {
         Debug.Log("Starting Transition: " + tAnim);

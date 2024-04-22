@@ -15,6 +15,7 @@ public class PlayerSpyke : PlayerUnit
     
     // Delegates and Events
     public delegate void onHitBall(int score, int timeToAdd = 0);
+    public Vector2 startPosition;
     public event onHitBall doOnHitBall;
 
     // public entries
@@ -30,9 +31,10 @@ public class PlayerSpyke : PlayerUnit
 
     // objects 
     private Rigidbody2D rbBody;
+    private Vector2 moveInput, moveData, currentGravity;
     protected Renderer render;
     protected SpriteRenderer spriteRnd;
-    private Vector2 moveInput, moveData, currentGravity;
+    protected Animator animBody;
 
     // primitives    
     private int castCounter = 0, xDirection = 1, jumpXDirection = 0;
@@ -45,7 +47,6 @@ public class PlayerSpyke : PlayerUnit
 
     [SerializeField]
     protected GameObject body;
-    protected Animator animBody;
     
     // Start is called before the first frame update
     protected override void Start()
@@ -93,7 +94,9 @@ public class PlayerSpyke : PlayerUnit
         rbBody.velocity = new Vector2(0,0);
         atkTimer = 0f;
         dashTimer = 0f;
-        transform.position = new Vector2(startPosX, startPosY);
+        transform.position = startPosition;
+        animBody.SetTrigger("intro");
+        
     }
 
     // ================ Input action sequences start here  ================ //

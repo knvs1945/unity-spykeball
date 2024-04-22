@@ -115,6 +115,7 @@ public class GameHandler : Handler
         freezeGame(false);
         currentMode = mode;
         currentGameType = gameType;
+        transitionHandle.setNextTransition("prepareGame");
         transitionHandle.startStateTransition();
     }
 
@@ -125,6 +126,9 @@ public class GameHandler : Handler
             case "prepareGame": freezeGame(true);
                                 restartAllHandlers(currentMode, currentGameType);
                                 break;
+            case "startRoundIntro": startRoundIntro();
+                                    break;
+            
         }
     }
 
@@ -142,15 +146,26 @@ public class GameHandler : Handler
                 break;
         }
 
-        playerHandle.restartHandler();
         UIHandle.restartHandler();
-        targetHandle.restartHandler();
         soundHandle.restartHandler();
         envHandle.restartHandler();
+        playerHandle.restartHandler();
         
         gameLevel = 0;
         freezeGame(false);
+
+        // set the next transition event to start round
+        transitionHandle.setNextTransition("startRoundIntro");
         transitionHandle.endStateTransition();
+    }
+
+    // initiate the round intro start after the transition
+    protected void startRoundIntro() {
+        playerHandle.startGameIntro();
+        targetHandle.restartHandler();
+        if (Mode == Modes.TimeAttack) {
+            UIHandle.restartTimeAttackTimer();
+        }
     }
 
     /* 

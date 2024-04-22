@@ -8,7 +8,15 @@ public class TransPanel : Panel
     public delegate void transitionEvent(string eventName);
     public static event transitionEvent doOnTransitionEvent;
 
-    public void fireTransitionEvent(string eventName) {
-        doOnTransitionEvent(eventName);
+    public static event transitionEvent doOnEndTransitionEvent;
+    public string nextEvent = "";
+
+    public void fireTransitionEvent() {
+        doOnTransitionEvent(nextEvent);
     }
+
+    public void fireTransitionEndEvent() {
+        doOnEndTransitionEvent(nextEvent);
+    }
+
 }
