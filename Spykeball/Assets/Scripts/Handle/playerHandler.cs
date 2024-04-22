@@ -13,7 +13,9 @@ public class PlayerHandler : Handler
 
     // events and delegates
     public delegate void onPausePressed(bool paused);
+    public delegate void onIntroSequenceDone();
     public static event onPausePressed doOnPlayerPaused;
+    public static event onIntroSequenceDone doOnIntroSequenceDone;
 
     protected Slider playerHP;
     protected Vector3 HPBarPos; 
@@ -69,6 +71,7 @@ public class PlayerHandler : Handler
         }
         if (playerObj != null) {
             PlayerUnit.doOnPausePressed += playerPressedPause;
+            PlayerUnit.doOnIntroSequenceDone += introSequenceDone;
         }
 
         UIHandler.doOnTimeRunOut += doOnTimeRunOut;
@@ -93,12 +96,9 @@ public class PlayerHandler : Handler
             mode = "Time Attack";       
         }
         
-        ball.gameObject.SetActive(true);
+
         playerObj.gameObject.SetActive(true);
         playerObj.restartUnit(mode);       
-        ball.restartUnit(mode);
-
-        if (playerObj != null) playerObj.Player.IsControlDisabled = false;
     }
 
     // Restart the game sets
@@ -110,7 +110,22 @@ public class PlayerHandler : Handler
 
     // paused player objects
     protected override void doOnPauseHandler(bool state) {
+    }
 
+    // fire doOnintroSequenceDone event
+    protected void introSequenceDone() {
+        string mode = "Survival";
+        if (Mode == Modes.Survival) {
+            mode = "Survival";       
+        }
+        else if (Mode == Modes.TimeAttack) {
+            mode = "Time Attack";       
+        }
+        ball.gameObject.SetActive(true);
+        ball.restartUnit(mode);
+
+        if (playerObj != null) playerObj.Player.IsControlDisabled = false;
+        doOnIntroSequenceDone();
     }
 
 

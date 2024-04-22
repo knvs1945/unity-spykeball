@@ -12,7 +12,10 @@ public class PlayerUnit : GameUnit
 {    
     // events and delegates
     public delegate void onPausePressed(bool state);
+    public delegate void onIntroSequenceDone();
+    
     public static event onPausePressed doOnPausePressed;
+    public static event onIntroSequenceDone doOnIntroSequenceDone;
     
     // Managers
     protected PlayerControls controls;
@@ -76,6 +79,10 @@ public class PlayerUnit : GameUnit
         // isPaused = pauseEvent;
         isGamePaused = pauseEvent;
         doOnPausePressed?.Invoke(pauseEvent);
+    }
+
+    protected void fireIntroSequenceEvent() {
+        doOnIntroSequenceDone();
     }
 
 }

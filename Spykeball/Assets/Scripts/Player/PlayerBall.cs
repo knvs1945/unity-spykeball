@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerBall : GameUnit
 {
 
-    protected const float startPosX = 0, startPosY = 4, MAX_velocity = 17.5f, MAX_velocity_unli = 20f, MIN_effectSpd = 13f, effectsGap = 0.05f;
+    protected const float MAX_velocity = 17.5f, MAX_velocity_unli = 20f, MIN_effectSpd = 13f, effectsGap = 0.05f;
     protected const int COUNT_Lives = 4, TIME_addTime = 3;
     protected const int MODE_survival = 1, MODE_timeattack = 2;
     
@@ -23,10 +23,10 @@ public class PlayerBall : GameUnit
     // hashset is used to store a gameobject that the ball already collided with. This is used for floors
     private Sprite baseSprite;
     
+    public Vector2 startPosition;
     public int baseScore;
     public float boundsFloor, boundsCeiling, boundsLeft, boundsRight;
-
-
+    
     protected Color baseColor = new Color(1,1,1,1);
     protected int lives, mode;
     protected float effectTimer;
@@ -97,7 +97,7 @@ public class PlayerBall : GameUnit
                 break;
         }
 
-        transform.position = new Vector2(startPosX, startPosY);
+        transform.position = startPosition;
         rbRender.material.color = baseColor;
         rb.velocity = new Vector2(0,0);
     }

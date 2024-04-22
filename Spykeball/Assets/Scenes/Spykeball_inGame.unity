@@ -4696,7 +4696,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a000c1794cf16cd4db19d2e734da7d1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpawns: []
   playerObj: {fileID: 1042091389}
   ball: {fileID: 877619800}
 --- !u!4 &701571829
@@ -6172,7 +6171,7 @@ Transform:
   m_GameObject: {fileID: 877619794}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.32, y: 4.01, z: 0}
+  m_LocalPosition: {x: 0, y: 1.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6328,6 +6327,7 @@ MonoBehaviour:
   HP: 3
   moveSpeed: 0
   unitName: player ball
+  startPosition: {x: 0, y: 6}
   baseScore: 5
   boundsFloor: -5
   boundsCeiling: 9
@@ -7677,7 +7677,6 @@ MonoBehaviour:
   moveSpeed: 0
   unitName: 
   base_DMGdelay: 0
-  isPaused: 0
   player: {fileID: 2101165956}
 --- !u!1 &1055837240
 GameObject:
@@ -10580,6 +10579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054103846031e4d4fbb87e6e30abe8c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextEvent: 
 --- !u!1 &1671208269
 GameObject:
   m_ObjectHideFlags: 0
@@ -13346,12 +13346,12 @@ MonoBehaviour:
   moveSpeed: 5
   unitName: 
   base_DMGdelay: 0
-  isPaused: 0
   player: {fileID: 0}
   frontSide: {fileID: 0}
   attackPoint: {fileID: 0}
   notePoint: {fileID: 0}
   bodyPoint: {fileID: 0}
+  startPosition: {x: 0, y: 0}
   base_ATKbase: 40
   base_ATKmax: 0
   base_ATKdelay: 0.5

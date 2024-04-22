@@ -11,16 +11,16 @@ using UnityEngine;
 public class PlayerSpyke : PlayerUnit
 {
 
-    protected const float startPosX = 0f, startPosY = -2.3f, dashEffectGap = 0.05f, ballImpactMin = 15f;
+    protected const float dashEffectGap = 0.05f, ballImpactMin = 15f;
     
     // Delegates and Events
-    public delegate void onHitBall(int score, int timeToAdd = 0);
-    public Vector2 startPosition;
+    public delegate void onHitBall(int score, int timeToAdd = 0);    
     public event onHitBall doOnHitBall;
 
     // public entries
     // public Projectiles attackEffect;
     public Transform frontSide, attackPoint, notePoint, bodyPoint;
+    public Vector2 startPosition;
     
     // Arrays and Lists
     
@@ -84,19 +84,22 @@ public class PlayerSpyke : PlayerUnit
         createDashEffects();
     }
 
-    // ================ Stats and Status sequences start here  ================ //
     public override void restartUnit(string gameMode) {
         initializeStats();
     }
 
-    // use this class at the start of every game
+    public void animateIntroSequenceDone() {
+        fireIntroSequenceEvent();
+    }
+
+    // ================ Stats and Status sequences start here  ================ //
+    // use this function at the start of every game
     private void initializeStats() {
         rbBody.velocity = new Vector2(0,0);
         atkTimer = 0f;
         dashTimer = 0f;
         transform.position = startPosition;
-        animBody.SetTrigger("intro");
-        
+        animBody.SetTrigger("intro");   
     }
 
     // ================ Input action sequences start here  ================ //

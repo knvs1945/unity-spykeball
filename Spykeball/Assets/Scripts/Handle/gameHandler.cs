@@ -88,6 +88,7 @@ public class GameHandler : Handler
         UIHandler.doOnTimeRunOut += GameEnded;
         UIHandler.doOnGetNewControls += doOnGetNewControls;
         PlayerHandler.doOnPlayerPaused += doOnGamePaused;
+        PlayerHandler.doOnIntroSequenceDone += startRound;
         
     }
 
@@ -162,6 +163,10 @@ public class GameHandler : Handler
     // initiate the round intro start after the transition
     protected void startRoundIntro() {
         playerHandle.startGameIntro();
+    }
+
+    // officially starts the round after the intro sequence is done
+    protected void startRound() {
         targetHandle.restartHandler();
         if (Mode == Modes.TimeAttack) {
             UIHandle.restartTimeAttackTimer();
