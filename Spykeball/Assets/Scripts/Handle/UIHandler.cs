@@ -127,6 +127,9 @@ public class UIHandler : Handler
     
     // show the main menu panel coming from other buttons
     public override void returnToMainMenu() {
+        // stop the timer if it was originally playing
+        stopTimer();
+
         // hide the ingame panels
         panelScore.SetActive(false);
         panelLives.SetActive(false);

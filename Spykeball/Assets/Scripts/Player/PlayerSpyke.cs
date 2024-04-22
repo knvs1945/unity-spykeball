@@ -105,13 +105,8 @@ public class PlayerSpyke : PlayerUnit
         }
 
         if (Input.GetKeyDown(controls.Pause)) {
-            if (!isGamePaused) {
-                playerPressedPause(true);
-            }
-            else {
-                Debug.Log("Unpausing game...");
-                playerPressedPause(false);
-            }
+            if (!isGamePaused) playerPressedPause(true);
+            else               playerPressedPause(false);
         }
         if (isGamePaused) return; // reject every other control unless the game is unpaused
 

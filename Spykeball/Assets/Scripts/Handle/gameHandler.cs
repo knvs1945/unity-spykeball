@@ -165,7 +165,6 @@ public class GameHandler : Handler
 
     // pause the game 
     protected void doOnGamePaused(bool paused) {
-        Debug.Log("Pausing the game...");
         GameUnit.isGamePaused = paused;
         playerHandle.pauseHandler(paused);
         targetHandle.pauseHandler(paused);

@@ -123,7 +123,6 @@ public class ControlPanel : Panel
                                      break;
                     }
                     keyPresses = filterSpecialKeyPress(keyPresses[0].ToString().ToLower());
-                    // newControls[controlindex] = keyPresses[0].ToString().ToLower(); // just get the first character recorded
                     newControls[controlindex] = keyPresses; // just get the first character recorded
                     
                     btText[UIindex].text = newControls[controlindex].ToString().ToUpper();

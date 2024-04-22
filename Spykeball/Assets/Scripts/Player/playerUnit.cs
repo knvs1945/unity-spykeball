@@ -19,6 +19,7 @@ public class PlayerUnit : GameUnit
     protected bool isControlDisabled = true, isdamageShldActive = false;
     
     public float base_DMGdelay; // damage shield between damage instances
+    public bool isPaused = false;
 
     [SerializeField]
     private PlayerUnit player;
@@ -30,11 +31,7 @@ public class PlayerUnit : GameUnit
     public static event onPlayerTakesDamage updatePlayerHPBar; 
 
     // Start is called before the first frame update
-    protected virtual void Start()
-    {
-        isImmune = false;
-        Debug.Log("Player check: " + player);
-    }
+    protected virtual void Start(){}
 
     public PlayerControls Controls {
         get { return controls; }
@@ -77,10 +74,8 @@ public class PlayerUnit : GameUnit
     }
     
     protected void playerPressedPause(bool pauseEvent) {
-        Debug.Log("Pausing game... " + pauseEvent);
+        isPaused = pauseEvent;
         doOnPausePressed?.Invoke(pauseEvent);
     }
-
-    // overridden methods from gameUnit. factor should be -1 if removing a buff
 
 }

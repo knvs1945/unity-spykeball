@@ -7677,6 +7677,7 @@ MonoBehaviour:
   moveSpeed: 0
   unitName: 
   base_DMGdelay: 0
+  isPaused: 0
   player: {fileID: 2101165956}
 --- !u!1 &1055837240
 GameObject:
@@ -13345,6 +13346,7 @@ MonoBehaviour:
   moveSpeed: 5
   unitName: 
   base_DMGdelay: 0
+  isPaused: 0
   player: {fileID: 0}
   frontSide: {fileID: 0}
   attackPoint: {fileID: 0}
