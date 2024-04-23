@@ -95,11 +95,11 @@ public class PlayerSpyke : PlayerUnit
     // ================ Stats and Status sequences start here  ================ //
     // use this function at the start of every game
     private void initializeStats() {
+        animBody.SetTrigger("intro");   
         rbBody.velocity = new Vector2(0,0);
         atkTimer = 0f;
         dashTimer = 0f;
         transform.position = startPosition;
-        animBody.SetTrigger("intro");   
     }
 
     // ================ Input action sequences start here  ================ //

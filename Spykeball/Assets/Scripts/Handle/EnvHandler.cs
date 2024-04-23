@@ -7,11 +7,13 @@ using UnityEngine;
 /// </summary>
 public class EnvHandler : Handler
 {
-    private static EnvHandler Instance;
-    public GameObject[] CrowdSet;
-
+    public static EnvHandler Instance;
     public CarouselBG[] BGCrowd;
     public CarouselBG BGWall, BGFloor;
+    public GameObject[] CrowdSet;
+    public GameObject panelDoor;
+    
+    private Animator doorAnim;
     
     void Awake()
     {
@@ -33,6 +35,7 @@ public class EnvHandler : Handler
     // Register event behaviors
     protected void registerEvents() {
         Target.doOnDestroyTarget += bgCrowdCheer;
+        if (panelDoor) doorAnim = panelDoor.GetComponent<Animator>();
     }
 
     // restarts the envhandler and its items
@@ -54,5 +57,10 @@ public class EnvHandler : Handler
                 anim.SetTrigger("cheer");
             }
         }
+    }
+
+    // misc - open the panel door on intro
+    public void introDoorOpen() {
+        doorAnim.SetTrigger("open");
     }
 }

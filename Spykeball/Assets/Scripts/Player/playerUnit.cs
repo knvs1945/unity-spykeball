@@ -59,7 +59,6 @@ public class PlayerUnit : GameUnit
 
     // restart player unit    
     public override void restartUnit(string gameMode) {
-        Debug.Log("Restarting player unit");
         player.restartUnit(gameMode);
     }
 

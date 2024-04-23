@@ -124,7 +124,7 @@ public class GameHandler : Handler
     protected void doOnTransition(string eventName) {
         
         switch(eventName) {
-            case "prepareGame": freezeGame(true);
+            case "prepareGame": // freezeGame(true);
                                 restartAllHandlers(currentMode, currentGameType);
                                 break;
             case "startRoundIntro": startRoundIntro();

@@ -88,6 +88,7 @@ public class PlayerHandler : Handler
 
     // starts the game start intro;
     public void startGameIntro() {
+
         string mode = "Survival";
         if (Mode == Modes.Survival) {
             mode = "Survival";       
@@ -96,7 +97,7 @@ public class PlayerHandler : Handler
             mode = "Time Attack";       
         }
         
-
+        EnvHandler.Instance.introDoorOpen();
         playerObj.gameObject.SetActive(true);
         playerObj.restartUnit(mode);       
     }
