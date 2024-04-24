@@ -39,7 +39,9 @@ public class Target4 : Target
         float ypos = Random.Range(minY, maxY);
         nextPos = new Vector2(xpos, ypos);
         transform.position = nextPos;
-
+        // redo flashing intro
+        gameObject.GetComponent<Animator>().Play("target_intro");
+        
         rbRender.material.color = baseColor;
         currentColor = rbRender.material.color;
     }

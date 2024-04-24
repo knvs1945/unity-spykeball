@@ -26,6 +26,11 @@ public class Target : GameUnit
         private set { isBroken = value; }
     }
 
+    void Start()
+    {
+        gameObject.GetComponent<Animator>().Play("target_intro");
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
