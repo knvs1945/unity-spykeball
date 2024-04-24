@@ -2231,7 +2231,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5384616, y: 1.5384616}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -7033,6 +7033,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 193620b9663a5ac43a1ffa64521bac96, type: 3}
   TrackEntries:
   - {fileID: 8300000, guid: 7d2fe3fbcce96b34e8850d1a87db3bcb, type: 3}
+  - {fileID: 8300000, guid: e15843cb1e94b1740aed61d42b2ad399, type: 3}
   - {fileID: 8300000, guid: 2dc5985b92a58d546b7110010682fd50, type: 3}
   - {fileID: 8300000, guid: ad1e9bf1347842f42b84c4036448e71b, type: 3}
   SFXSources:
@@ -13460,7 +13461,7 @@ MonoBehaviour:
   attackPoint: {fileID: 0}
   notePoint: {fileID: 0}
   bodyPoint: {fileID: 0}
-  startPosition: {x: 0, y: -3.85}
+  startPosition: {x: 0, y: -3.9}
   base_ATKbase: 40
   base_ATKmax: 0
   base_ATKdelay: 0.5
