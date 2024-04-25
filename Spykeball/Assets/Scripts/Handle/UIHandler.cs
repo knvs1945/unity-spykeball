@@ -188,7 +188,7 @@ public class UIHandler : Handler
     // set the controls from the player to display in the control panel
     public void setCurrentControls(PlayerControls controls) {
         panelControls.GetComponent<ControlPanel>().setCurrentControlUI(controls);
-        panelMainMenu.GetComponent<TitlePanel>().controls = controls;
+        Panel.controls = controls;
     }
 
     public void setCurrentVolumes(float[] values) {
@@ -197,7 +197,7 @@ public class UIHandler : Handler
 
     public PlayerControls getNewControls() {
         PlayerControls newControl = panelControls.GetComponent<ControlPanel>().getCurrentControl();
-        panelMainMenu.GetComponent<TitlePanel>().controls = newControl;
+        Panel.controls = newControl;
         return newControl;
     }
 

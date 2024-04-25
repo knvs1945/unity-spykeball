@@ -28,6 +28,7 @@ public class ControlPanel : Panel
         get { return newControls; }
     }
 
+
     void Awake()
     {
     }
@@ -37,7 +38,6 @@ public class ControlPanel : Panel
     {
         listenToControlUpdates();
     }
-
     public void setCurrentControlUI(PlayerControls controls) {
         if (btText.Length > 0) {
             btText[0].text = controls.MoveLeft.ToUpper();
