@@ -77,8 +77,9 @@ public class GameHandler : Handler
         
         // register events from MainMenu & Restart screen
         // ButtonMainMenu.doOnStartGame += restartAllHandlers;
+        // ButtonMainMenu.doOnReturnToMain += doReturnToMainMenu;
         ButtonMainMenu.doOnStartGame += doOnStartTransition;
-        ButtonMainMenu.doOnReturnToMain += doReturnToMainMenu;
+        ButtonMainMenu.doOnReturnToMain += doOnReturnTransition;
         ButtonMainMenu.doOnUnpauseGame += doOnGamePaused;
 
         // register transition event
@@ -120,6 +121,13 @@ public class GameHandler : Handler
         transitionHandle.startStateTransition();
     }
 
+    // listen to return main menu button
+    protected void doOnReturnTransition(string gameType) {
+        currentGameType = gameType;
+        transitionHandle.setNextTransition("startReturnToMainMenu");
+        transitionHandle.startStateTransition();
+    }
+
     // listen to the transition panel sliding in
     protected void doOnTransition(string eventName) {
         
@@ -129,6 +137,11 @@ public class GameHandler : Handler
                                 break;
             case "startRoundIntro": startRoundIntro();
                                     break;
+            case "startReturnToMainMenu": doReturnToMainMenu("");
+                                          transitionHandle.setNextTransition("returnToMainMenu");
+                                          transitionHandle.endStateTransition();
+                                          break;
+            case "returnToMainMenu":    break;
             
         }
     }
