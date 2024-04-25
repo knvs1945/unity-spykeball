@@ -35,6 +35,7 @@ public class UIHandler : Handler
     public GameObject panelTimer, panelLives, panelScore, panelTargets, panelPauseMenu, panelControls; // ingame panels
     public Image[] livesCount;
     public Text[] timerText;
+    public int playerLives;
     
 
     protected int currentScore = 0, gameTimerSecs = 0;
@@ -92,7 +93,7 @@ public class UIHandler : Handler
             panelScore.SetActive(true);
             panelLives.SetActive(true);
             panelTimer.SetActive(false);
-            updateLives(4);
+            updateLives(playerLives);
         }
         else if (Mode == Modes.TimeAttack) {
             panelScore.SetActive(true);
@@ -187,6 +188,7 @@ public class UIHandler : Handler
     // set the controls from the player to display in the control panel
     public void setCurrentControls(PlayerControls controls) {
         panelControls.GetComponent<ControlPanel>().setCurrentControlUI(controls);
+        panelMainMenu.GetComponent<TitlePanel>().controls = controls;
     }
 
     public void setCurrentVolumes(float[] values) {
@@ -195,6 +197,7 @@ public class UIHandler : Handler
 
     public PlayerControls getNewControls() {
         PlayerControls newControl = panelControls.GetComponent<ControlPanel>().getCurrentControl();
+        panelMainMenu.GetComponent<TitlePanel>().controls = newControl;
         return newControl;
     }
 

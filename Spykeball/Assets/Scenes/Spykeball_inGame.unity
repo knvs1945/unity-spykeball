@@ -942,7 +942,6 @@ GameObject:
   - component: {fileID: 239317269}
   - component: {fileID: 239317268}
   - component: {fileID: 239317267}
-  - component: {fileID: 239317266}
   m_Layer: 5
   m_Name: settings button
   m_TagString: Untagged
@@ -969,18 +968,6 @@ RectTransform:
   m_AnchoredPosition: {x: 241, y: -218}
   m_SizeDelta: {x: 140, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &239317266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 239317264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7619612647bb40247827a0dd073b0a65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &239317267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,7 +999,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 115392992, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
     m_PressedSprite: {fileID: 183651389, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 115392992, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -4442,6 +4429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleCard: {fileID: 0}
+  buttonSelection: []
 --- !u!1 &671549420
 GameObject:
   m_ObjectHideFlags: 0
@@ -4668,6 +4656,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleCard: {fileID: 657182130}
+  buttonSelection:
+  - {fileID: 1686900658}
+  - {fileID: 716115689}
+  - {fileID: 239317267}
 --- !u!1 &701571827
 GameObject:
   m_ObjectHideFlags: 0
@@ -4878,7 +4870,6 @@ GameObject:
   - component: {fileID: 716115691}
   - component: {fileID: 716115690}
   - component: {fileID: 716115689}
-  - component: {fileID: 716115688}
   m_Layer: 5
   m_Name: time attack button
   m_TagString: Untagged
@@ -4905,18 +4896,6 @@ RectTransform:
   m_AnchoredPosition: {x: 241, y: -144}
   m_SizeDelta: {x: 140, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &716115688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716115686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7619612647bb40247827a0dd073b0a65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &716115689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4948,7 +4927,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: -893751404, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
     m_PressedSprite: {fileID: 920549001, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: -893751404, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -9899,6 +9878,7 @@ MonoBehaviour:
   - {fileID: 1240220047}
   - {fileID: 364738704}
   - {fileID: 1648135389}
+  playerLives: 0
 --- !u!1 &1508822464
 GameObject:
   m_ObjectHideFlags: 0
@@ -10632,7 +10612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1651149448
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10777,7 +10757,6 @@ GameObject:
   - component: {fileID: 1686900660}
   - component: {fileID: 1686900659}
   - component: {fileID: 1686900658}
-  - component: {fileID: 1686900661}
   m_Layer: 5
   m_Name: survival button
   m_TagString: Untagged
@@ -10835,7 +10814,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: -1768684293, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
     m_PressedSprite: {fileID: -1754606313, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: -1768684293, guid: 30408223ad753dc4692c0c09967df3a0, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -10898,18 +10877,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686900656}
   m_CullTransparentMesh: 1
---- !u!114 &1686900661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1686900656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7619612647bb40247827a0dd073b0a65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1704481236
 GameObject:
   m_ObjectHideFlags: 0
