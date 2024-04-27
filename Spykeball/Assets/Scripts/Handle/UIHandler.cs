@@ -327,6 +327,7 @@ public class UIHandler : Handler
         }
         
         if (gameTimerSecs <= 0) {
+            stopTimer();
             timers[1] = 0;
             timers[2] = 0;
             updateTimerTexts(1, timers[1].ToString("D2"));
