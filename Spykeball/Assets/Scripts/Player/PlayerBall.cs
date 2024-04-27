@@ -82,8 +82,9 @@ public class PlayerBall : GameUnit
 
     // force the animation to get back to "ball_idle" state before getting disabled
     public void deactivate() {
-        spriteRnd.sprite = baseSprite;
         anim.Play("ball_idle");
+        spriteRnd.sprite = baseSprite;
+        gameObject.SetActive(false);
     }
 
     public override void restartUnit(string gameMode) {    

@@ -359,6 +359,14 @@ public class PlayerSpyke : PlayerUnit
         sfxBallHit = false;
     }
 
+    // do Outro animation here
+    protected override void doOnOutroanimation() {
+        isControlDisabled = true;
+        animBody.Play("player_idle");   // force the player into player_idle state
+        animBody.SetTrigger("isTired");   
+    }
+
+
     //  ================ testing sequences start here  ================ //
 
     private void initSkillTesting() {

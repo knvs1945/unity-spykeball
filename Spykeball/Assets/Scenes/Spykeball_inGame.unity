@@ -13710,7 +13710,7 @@ MonoBehaviour:
   attackPoint: {fileID: 0}
   notePoint: {fileID: 0}
   bodyPoint: {fileID: 0}
-  startPosition: {x: 0, y: -3.9}
+  startPosition: {x: 0, y: -3.8}
   base_ATKbase: 40
   base_ATKmax: 0
   base_ATKdelay: 0.5

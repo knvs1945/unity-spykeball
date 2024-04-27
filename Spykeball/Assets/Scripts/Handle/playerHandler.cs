@@ -132,19 +132,17 @@ public class PlayerHandler : Handler
 
     // report game over when the ball has no more lives
     protected void doOnPlayerBallGone() {
-        Debug.Log("Disabling player...");
+        playerObj.Player.startOutroanimation();
         playerObj.Player.IsControlDisabled = true;
-        // playerObj.IsControlDisabled = true;
         ball.deactivate();
-        ball.gameObject.SetActive(false);
         gameState = states.GameEnd;
         doOnGameOver();
     }
 
     protected void doOnTimeRunOut() {
+        playerObj.Player.startOutroanimation();
         playerObj.Player.IsControlDisabled = true;
         ball.deactivate();
-        ball.gameObject.SetActive(false);
         gameState = states.GameEnd;
     }
 

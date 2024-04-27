@@ -84,4 +84,9 @@ public class PlayerUnit : GameUnit
         doOnIntroSequenceDone();
     }
 
+    public void startOutroanimation() {
+        doOnOutroanimation();
+    }
+    protected virtual void doOnOutroanimation() {}
+
 }
