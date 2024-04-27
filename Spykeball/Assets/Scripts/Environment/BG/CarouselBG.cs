@@ -10,7 +10,8 @@ public class CarouselBG : GameUnit
 {
     public Transform[] carouselPanels;
     public PlayerSpyke player;
-    public float moveAmt = 0.15f;
+    public float moveAmt = 0.15f, panelGap = 0f;
+    public bool enableDebug = false;
     
     protected PlayerControls controls;
     protected Vector2[] originalPos;
@@ -91,7 +92,9 @@ public class CarouselBG : GameUnit
                 // check if newPosition breaches left or right limits
                 if (newPos.x > rightLimit) {
                     float leftMostX = carouselPanels.Min(panel => panel.position.x);
-                    newPos = new Vector2(leftMostX - panelWidth + (moveAmt * direction), pos.y); // transfer the panel to the leftmost side
+                    panelWidth = carouselPanels[i].GetComponent<Renderer>().bounds.size.x;
+                    newPos = new Vector2(leftMostX - panelWidth + (moveAmt * direction) - panelGap, pos.y); // transfer the panel to the leftmost side
+                    if (enableDebug) Debug.Log("Panel Data of Panel [" + i + "]: " + "Width: " + panelWidth + " - New Pos" + newPos);
                 } 
                 carouselPanels[i].position = newPos;
             }
@@ -103,7 +106,9 @@ public class CarouselBG : GameUnit
                 newPos = new Vector2(pos.x + (moveAmt * direction), pos.y);
                 if (newPos.x < leftLimit) {
                     float rightMostX = carouselPanels.Max(panel => panel.position.x);
-                    newPos = new Vector2(rightMostX + panelWidth + (moveAmt * direction), pos.y); // transfer the panel to the rightmost side
+                    panelWidth = carouselPanels[i].GetComponent<Renderer>().bounds.size.x;
+                    newPos = new Vector2(rightMostX + panelWidth + (moveAmt * direction) + panelGap, pos.y); // transfer the panel to the rightmost side
+                    if (enableDebug) Debug.Log("Panel Data of Panel [" + i + "]: " + "Width: " + panelWidth + " - New Pos" + newPos);
                 }
                 carouselPanels[i].position = newPos;
             }
