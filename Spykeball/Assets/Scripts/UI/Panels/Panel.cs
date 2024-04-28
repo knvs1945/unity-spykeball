@@ -12,6 +12,7 @@ public class Panel : MonoBehaviour
     public Button[] buttonSelection;
 
     public static PlayerControls controls = null;
+    public static string gameMode;
     protected Animator titleAnim;
     protected int buttonIndex = 0;
 

@@ -31,7 +31,7 @@ public class UIHandler : Handler
 
     public float timeAttackLimit;
     public BallMarker ballMarker;
-    public GameObject panelMainMenu, panelRestartMenu;
+    public GameObject panelMainMenu, panelRestartMenu, panelRoundPanel;
     public GameObject panelTimer, panelLives, panelScore, panelTargets, panelPauseMenu, panelControls; // ingame panels
     public Image[] livesCount;
     public Text[] timerText;
@@ -90,12 +90,14 @@ public class UIHandler : Handler
 
         // enable needed panels and set up the UI
         if (Mode == Modes.Survival) {
+            Panel.gameMode = "Survival";
             panelScore.SetActive(true);
             panelLives.SetActive(true);
             panelTimer.SetActive(false);
             updateLives(playerLives);
         }
         else if (Mode == Modes.TimeAttack) {
+            Panel.gameMode = "Time Attack";
             panelScore.SetActive(true);
             panelLives.SetActive(false);
             panelTimer.SetActive(true);
@@ -107,6 +109,8 @@ public class UIHandler : Handler
         panelRestartMenu.SetActive(false);
         panelPauseMenu.SetActive(false);
         panelControls.SetActive(false);
+        panelRoundPanel.SetActive(true);
+        playPanelIntro(panelRoundPanel);
         resetUIStats();   
 
         // game is starting, set the game state as needed
@@ -139,6 +143,7 @@ public class UIHandler : Handler
         panelLives.SetActive(false);
         panelTimer.SetActive(false);
         panelTargets.SetActive(false);
+        panelRoundPanel.SetActive(false);
 
         panelMainMenu.SetActive(true);
         panelRestartMenu.SetActive(false);
