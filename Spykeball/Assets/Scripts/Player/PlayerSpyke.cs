@@ -100,6 +100,7 @@ public class PlayerSpyke : PlayerUnit
         atkTimer = 0f;
         dashTimer = 0f;
         transform.position = startPosition;
+        isDashing = false;
     }
 
     // ================ Input action sequences start here  ================ //
