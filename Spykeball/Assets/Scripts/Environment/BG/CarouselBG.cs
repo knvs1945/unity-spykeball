@@ -50,11 +50,12 @@ public class CarouselBG : GameUnit
     {
         if (gameState == 0) return;
         getControls();
-        getKeyPress();
     }
 
     void FixedUpdate()
     {
+        if (gameState == 0) return;
+        getKeyPress();
         movePanels();
     }
 
