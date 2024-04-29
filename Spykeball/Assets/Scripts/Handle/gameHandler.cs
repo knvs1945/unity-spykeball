@@ -68,7 +68,7 @@ public class GameHandler : Handler
 
     public void checkExitGame() {
         if (Input.GetKeyDown("escape")) {
-            Application.Quit();
+            // Application.Quit();
         }
     }
 

@@ -112,7 +112,7 @@ public class PlayerSpyke : PlayerUnit
             return;
         }
 
-        if (Input.GetKeyDown(controls.Pause)) {
+        if (Input.GetKeyDown(controls.Pause) || Input.GetKeyDown("escape")) {
             if (!isGamePaused) playerPressedPause(true);
             else               playerPressedPause(false);
         }
@@ -149,7 +149,8 @@ public class PlayerSpyke : PlayerUnit
             }
 
             // keep walking animation while any of the directions are pressed
-            if (Input.GetKey(controls.MoveLeft) || Input.GetKey(controls.MoveRight)) setAnimationWalking(0, true); 
+            // if (Input.GetKey(controls.MoveLeft) || Input.GetKey(controls.MoveRight)) setAnimationWalking(0, true); 
+            if (moveDir != 0) setAnimationWalking(0, true); 
             else {
                 jumpXDirection = 0;
                 setAnimationWalking(0, false);

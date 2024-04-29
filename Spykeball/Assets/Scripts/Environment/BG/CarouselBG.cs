@@ -67,8 +67,8 @@ public class CarouselBG : GameUnit
             return;
         }
 
-        bool moveLeft = (Input.GetKey(controls.MoveLeft));
-        bool moveRight = (Input.GetKey(controls.MoveRight));
+        bool moveLeft = (Input.GetKey(controls.MoveLeft) || Input.GetKey(KeyCode.LeftArrow));
+        bool moveRight = (Input.GetKey(controls.MoveRight) || Input.GetKey(KeyCode.RightArrow));
 
         if (moveLeft && moveRight) {
             direction = 0;
