@@ -101,6 +101,7 @@ public class PlayerSpyke : PlayerUnit
         dashTimer = 0f;
         transform.position = startPosition;
         isDashing = false;
+        resetImpactReleased();
     }
 
     // ================ Input action sequences start here  ================ //
@@ -340,7 +341,6 @@ public class PlayerSpyke : PlayerUnit
 
             // create kickslash effect when the ball is hit
             if (!kickSlashReleased) {
-                Debug.Log("Creating Kickslash");
                 bool isFlipped = xDirection < 0? true: false;
                 EffectHandler.Instance.CreateKickSlash(transform.position, isFlipped);
                 kickSlashReleased = true;
@@ -371,6 +371,12 @@ public class PlayerSpyke : PlayerUnit
 
     // do Outro animation here
     protected override void doOnOutroanimation() {
+        rbBody.velocity = new Vector2(0,0);
+        atkTimer = 0f;
+        dashTimer = 0f;
+        isDashing = false;
+        resetImpactReleased();
+
         isControlDisabled = true;
         animBody.Play("player_idle");   // force the player into player_idle state
         animBody.SetTrigger("isTired");   

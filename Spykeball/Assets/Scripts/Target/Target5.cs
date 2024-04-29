@@ -26,7 +26,6 @@ public class Target5 : Target
             createSpdEffects();
             if (Vector2.Distance(transform.position, nextPos) > 0.1f) {
                 transform.position = Vector2.MoveTowards(transform.position, nextPos, moveSpeed * Time.deltaTime);
-                Debug.Log("Now Moving from: " + transform.position + " towards: " + nextPos + " at speed: " + moveSpeed);
             }
             else isMoving = false;
         }
@@ -38,7 +37,6 @@ public class Target5 : Target
         if (collision.collider.tag == "Ball") {
             if (currentDodges > 0) {
                 currentDodges--;
-                Debug.Log("Dodges Left: " + currentDodges);
                 generateNextPos();
                 isMoving = true;
                 // start the effect timer
@@ -57,7 +55,7 @@ public class Target5 : Target
 
     protected override void doOnApplyLevel() {
         spriteRnd = GetComponent<SpriteRenderer>();
-        currentDodges = maxDodges + (int) Mathf.Min(5, Level/10);
+        currentDodges = maxDodges + (int) Mathf.Min(3, Level/12);
         Debug.Log("Dodges Set: " + currentDodges);
         moveSpeed = 20f;
         generateNextPos();

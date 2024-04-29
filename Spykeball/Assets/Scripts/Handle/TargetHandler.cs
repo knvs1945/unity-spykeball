@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TargetHandler : Handler
 {
-    protected const int levelUp = 4; // increase target choices based on every N levels of this constant
+    protected const int levelUp = 3; // increase target choices based on every N levels of this constant
     public float spawnBoundMinX, spawnBoundMaxX, spawnBoundMinY, spawnBoundMaxY;
     [SerializeField]
     protected List<Target> targetList;

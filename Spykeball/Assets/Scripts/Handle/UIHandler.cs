@@ -109,18 +109,23 @@ public class UIHandler : Handler
         panelRestartMenu.SetActive(false);
         panelPauseMenu.SetActive(false);
         panelControls.SetActive(false);
-        panelRoundPanel.SetActive(true);
-        playPanelIntro(panelRoundPanel);
         resetUIStats();   
 
         // game is starting, set the game state as needed
         gameState = states.inStage;
     }
 
+    // play round intro planel
+    public void startRoundIntro() {
+        panelRoundPanel.SetActive(true);
+        playPanelIntro(panelRoundPanel);
+    }
+
     // restarts the attack timer after the intro
     public void restartTimeAttackTimer() {
         startTimer();
     }
+
 
     // paused UI objects
     protected override void doOnPauseHandler(bool state) {

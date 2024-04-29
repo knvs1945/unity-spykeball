@@ -176,6 +176,7 @@ public class GameHandler : Handler
     // initiate the round intro start after the transition
     protected void startRoundIntro() {
         playerHandle.startGameIntro();
+        UIHandle.startRoundIntro();
     }
 
     // officially starts the round after the intro sequence is done

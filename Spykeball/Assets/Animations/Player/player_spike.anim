@@ -162,7 +162,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
+  - time: 0.35
     functionName: resetImpactReleased
     data: 
     objectReferenceParameter: {fileID: 0}
