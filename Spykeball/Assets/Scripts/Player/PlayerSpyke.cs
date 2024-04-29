@@ -27,7 +27,7 @@ public class PlayerSpyke : PlayerUnit
     // will contain the stats for the character to be set on the UI
     public float base_ATKbase, base_ATKmax, base_ATKdelay, base_ATKRange, base_DashDelay, base_DashPower, base_JumpPower, base_PushPower, attackRadius; 
     public int scoreOnHitBall, scoreOnStrikeBall, scoreOnHitTarget;
-    public bool impactReleased = false, sfxBallHit = false;
+    public bool impactReleased = false, sfxBallHit = false, kickSlashReleased = false;
 
     // objects 
     private Rigidbody2D rbBody;
@@ -335,8 +335,16 @@ public class PlayerSpyke : PlayerUnit
             // apply upward force to the ball 
             ballPower = hitObject.gameObject.GetComponent<Rigidbody2D>();
             power = Mathf.Max(Mathf.Abs(ballPower.velocity.y) * base_ATKbase, base_ATKbase);
-            
             ballPower.AddForce(new Vector2((rbBody.velocity.x), base_ATKbase));
+
+            // create kickslash effect when the ball is hit
+            if (!kickSlashReleased) {
+                Debug.Log("Creating Kickslash");
+                bool isFlipped = xDirection < 0? true: false;
+                EffectHandler.Instance.CreateKickSlash(transform.position, isFlipped);
+                kickSlashReleased = true;
+            }
+
             // create impact ring effect when striking the ball. only do this if ball's velocity is higher than a threshold
             if (!impactReleased) {
                 
@@ -357,6 +365,7 @@ public class PlayerSpyke : PlayerUnit
     public void resetImpactReleased() {
         impactReleased = false;
         sfxBallHit = false;
+        kickSlashReleased = false;
     }
 
     // do Outro animation here

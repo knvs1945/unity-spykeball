@@ -13,6 +13,7 @@ public class EffectHandler : Handler
     // in-game effects here
     public ImpactRing VFXImpactRing;
     public SpeedMirage VFXSpeedMirage;
+    public KickSlashEffect VFXKickSlash;
 
     // text effects here
     public ScoreEffect VFXScoreText;
@@ -47,6 +48,13 @@ public class EffectHandler : Handler
         if (temp != null) temp.applySprite(_sprite, _isFlipped, _spriteColor);
     }
 
+    public void CreateKickSlash(Vector2 location, bool isFlipped = false) {
+        KickSlashEffect temp = Instantiate(VFXKickSlash, location, Quaternion.identity);
+        if (temp != null) {
+            if (isFlipped) temp.transform.localScale = new Vector2(-1,1);
+        }
+    }
+
     // create effect for displaying scores and addedTime
     public void CreateEffectScoreText(Vector2 location, string textToAdd, bool badPing = false) {
         ScoreEffect temp = Instantiate(VFXScoreText, location, Quaternion.identity);
@@ -58,4 +66,5 @@ public class EffectHandler : Handler
         AlertTextEffect temp = Instantiate(VFXAlertText, location, Quaternion.identity);
         if (temp != null) temp.addText(textToAdd);
     }
+
 }

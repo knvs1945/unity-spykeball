@@ -9191,6 +9191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VFXImpactRing: {fileID: 1887885597142821201, guid: 542c36c1bca25584dbc88271a6c648bf, type: 3}
   VFXSpeedMirage: {fileID: 2114855591386183464, guid: 4809c51a4e604e44c8a7f7f5fa1b8ca0, type: 3}
+  VFXKickSlash: {fileID: 1276062383492952360, guid: 2423e38e985427b439e4cf6f531ea656, type: 3}
   VFXScoreText: {fileID: 5986097220500788278, guid: 8cba0accb9ab7d0469e3ac7edba3fe64, type: 3}
   VFXAlertText: {fileID: 6476831081845776401, guid: 4aa31b11578593e448df1a7173281ca7, type: 3}
 --- !u!1 &1240220045
@@ -10526,7 +10527,7 @@ MonoBehaviour:
   - {fileID: 1240220047}
   - {fileID: 364738704}
   - {fileID: 1648135389}
-  playerLives: 0
+  playerLives: 4
 --- !u!1 &1508822464
 GameObject:
   m_ObjectHideFlags: 0
@@ -14282,6 +14283,7 @@ MonoBehaviour:
   scoreOnHitTarget: 10
   impactReleased: 0
   sfxBallHit: 0
+  kickSlashReleased: 0
   SFXCast: {fileID: 0}
   body: {fileID: 450869958}
 --- !u!50 &2101165958
