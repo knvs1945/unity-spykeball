@@ -10,7 +10,6 @@ public class ControlPanel : Panel
     public delegate void closeSettings(bool save);
     public static event closeSettings doOnCloseSettings;
 
-
     public Slider trackSlider, SFXSlider;
 
     [SerializeField]

@@ -31,7 +31,7 @@ public class UIHandler : Handler
 
     public float timeAttackLimit;
     public BallMarker ballMarker;
-    public GameObject panelMainMenu, panelRestartMenu, panelRoundPanel;
+    public GameObject panelMainMenu, panelRestartMenu, panelRoundPanel, panelScoreboard;
     public GameObject panelTimer, panelLives, panelScore, panelTargets, panelPauseMenu, panelControls; // ingame panels
     public Image[] livesCount;
     public Text[] timerText;
@@ -68,7 +68,9 @@ public class UIHandler : Handler
         }
 
         ButtonMainMenu.doOnOpenSettings += openSettingsPanel;
+        ButtonMainMenu.doOnOpenScoreboard += openScorePanel;
         ControlPanel.doOnCloseSettings += saveSettingsAndClose;
+        ScorePanel.doOnCloseScoreboard += openScorePanel;
     }
 
     protected void unRegisterEvents() {
@@ -109,6 +111,7 @@ public class UIHandler : Handler
         panelRestartMenu.SetActive(false);
         panelPauseMenu.SetActive(false);
         panelControls.SetActive(false);
+        panelScoreboard.SetActive(false);
         resetUIStats();   
 
         // game is starting, set the game state as needed
@@ -154,6 +157,7 @@ public class UIHandler : Handler
         panelRestartMenu.SetActive(false);
         panelPauseMenu.SetActive(false);
         panelControls.SetActive(false);
+        panelScoreboard.SetActive(false);
 
         playPanelIntro(panelMainMenu);
     }
@@ -166,19 +170,17 @@ public class UIHandler : Handler
 
     // show the controls panel. Set to true if open and false if close
     public void openSettingsPanel(bool open) {
-        
-        if (open) {
-            if (gameState == states.MainMenu) {
-                panelMainMenu.SetActive(false); // hide the main menu if entering settings
-            }
-        }
-        else {
-            if (gameState == states.MainMenu) {
-                panelMainMenu.SetActive(true); // show the main menu if exiting settings
-            }
-        }
-
+        if (gameState != states.MainMenu) return;
+        if (open) panelMainMenu.SetActive(false); // hide the main menu if entering settings
+        else panelMainMenu.SetActive(true); // show the main menu if exiting settings
         panelControls.SetActive(open);
+    }
+
+    public void openScorePanel(bool open) {
+        if (gameState != states.MainMenu) return;
+        if (open) panelMainMenu.SetActive(false); // hide the main menu if entering settings
+        else panelMainMenu.SetActive(true); // show the main menu if exiting settings
+        panelScoreboard.SetActive(open);
     }
 
     // close the settings panel with or without saving the changes

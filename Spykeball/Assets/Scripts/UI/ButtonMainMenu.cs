@@ -9,11 +9,13 @@ public class ButtonMainMenu : MonoBehaviour
     public delegate void onReturnToMain(string evt);
     public delegate void onUnpauseGame(bool paused);
     public delegate void onOpenSettings(bool open);
+    public delegate void onOpenScoreboard(bool open);
     
     public static event onMainMenuButton doOnStartGame;
     public static event onReturnToMain doOnReturnToMain;
     public static event onUnpauseGame doOnUnpauseGame;
     public static event onOpenSettings doOnOpenSettings;
+    public static event onOpenScoreboard doOnOpenScoreboard;
 
     // Start is called before the first frame update
     void Start()
@@ -50,5 +52,10 @@ public class ButtonMainMenu : MonoBehaviour
     public void btOpenSettings(bool open) {
         SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         doOnOpenSettings(open);
+    }
+
+    public void btOpenScoreboard(bool open) {
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
+        doOnOpenScoreboard(open);
     }
 }
