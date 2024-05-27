@@ -31,12 +31,26 @@ public class ScorePanel : Panel
     public delegate void closeScoreboard(bool close);
     public static event closeScoreboard doOnCloseScoreboard;
     public Text errorText;
-    
-    private int loadTextSequence = 1;
 
+    [SerializeField]
+    protected GameObject scoreFields;
+    [SerializeField]
+    protected Text rankText;
+    [SerializeField]
+    protected Text nameText;
+    [SerializeField]
+    protected Text scoreText;
+    [SerializeField]
+    protected Text targetsText;
+    [SerializeField]
+    protected Text timeText;
+    [SerializeField]
+    protected Text dateText;
+    
     protected HSList highscores;
     protected float loadTextTimer = 0;
     protected bool isCheckingConn = true, isConnected = false;
+    private int loadTextSequence = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +65,12 @@ public class ScorePanel : Panel
     void OnEnable() {
         isCheckingConn = true;
         connectToServer();
+    }
+
+    void OnDisable() {
+        rankText.text = nameText.text = scoreText.text = targetsText.text = timeText.text = dateText.text = "";
+        scoreFields.SetActive(false);
+        isCheckingConn = false;
     }
 
     // Update is called once per frame
@@ -81,27 +101,50 @@ public class ScorePanel : Panel
     }
 
     private IEnumerator checkConnectionToServer() {
-        Debug.Log("Connecting to server: " + LOCAL_READHS + READHS_PARAMS);
+        //string ReadURL = LOCAL_READHS + READHS_PARAMS;
+        string ReadURL = LIVE_READHS + READHS_PARAMS;
+        
+        Debug.Log("Connecting to server: " + ReadURL);
 
         // first, create a web request using "Get"
-        UnityWebRequest req = UnityWebRequest.Get(LOCAL_READHS + READHS_PARAMS);
+        UnityWebRequest req = UnityWebRequest.Get(ReadURL);
         req.timeout = 10;
         yield return req.SendWebRequest();
         if (req.isNetworkError || req.isHttpError) {
             Debug.Log("Connection Error: " + req.error);
+            errorText.text = req.downloadHandler.text;
             isConnected = false;
         }
         else {
             isCheckingConn = false;
+            scoreFields.SetActive(true);
             highscores = JsonUtility.FromJson<HSList>(req.downloadHandler.text);
+            errorText.text = "";
+            writeHSList();
             Debug.Log(highscores);
-            errorText.text = req.downloadHandler.text;
         }
     }
 
     // read highscores from server
     protected void readHighScores() {
 
+
+    }
+
+    // write highscores into rank texts
+    protected void writeHSList() {
+        if (highscores.highscores.Length <= 0) return; // we have highscores to write
+
+        rankText.text = nameText.text = scoreText.text = targetsText.text = timeText.text = dateText.text = "";
+
+        for (int i = 0; i < highscores.highscores.Length; i++) {
+            rankText.text += (i+1) + "\r\n";
+            nameText.text += highscores.highscores[i].name + "\r\n";
+            scoreText.text += highscores.highscores[i].score + "\r\n";
+            targetsText.text += highscores.highscores[i].targets + "\r\n";
+            timeText.text += highscores.highscores[i].time + "\r\n";
+            dateText.text += highscores.highscores[i].date + "\r\n";
+        }
 
     }
 
