@@ -26,7 +26,7 @@ public class ScorePanel : Panel
     const string LOCAL_READHS = "http://localhost:5000/sbreadhs";
     const string LIVE_READHS = "https://bitknvs-30e00398cef5.herokuapp.com/sbreadhs";
 
-    protected string READHS_PARAMS = "?mode=ul&sort=targets&order=asc";
+    protected string READHS_PARAMS = "?sort=targets&order=asc";
 
     public delegate void closeScoreboard(bool close);
     public static event closeScoreboard doOnCloseScoreboard;
@@ -46,8 +46,14 @@ public class ScorePanel : Panel
     protected Text timeText;
     [SerializeField]
     protected Text dateText;
+
+    [SerializeField]
+    protected Button btModeUL;
+    [SerializeField]
+    protected Button btModeTA;
     
     protected HSList highscores;
+    protected string currentMode = "ul";
     protected float loadTextTimer = 0;
     protected bool isCheckingConn = true, isConnected = false;
     private int loadTextSequence = 1;
@@ -97,12 +103,14 @@ public class ScorePanel : Panel
 
     // server connection functions here
     protected void connectToServer() {
-        StartCoroutine(checkConnectionToServer());
+        StartCoroutine(readHighScores());
     }
 
-    private IEnumerator checkConnectionToServer() {
+    private IEnumerator readHighScores() {
+        
+        string searchMode = "&mode=" + currentMode;
         //string ReadURL = LOCAL_READHS + READHS_PARAMS;
-        string ReadURL = LIVE_READHS + READHS_PARAMS;
+        string ReadURL = LIVE_READHS + READHS_PARAMS + searchMode;
         
         Debug.Log("Connecting to server: " + ReadURL);
 
@@ -126,10 +134,6 @@ public class ScorePanel : Panel
     }
 
     // read highscores from server
-    protected void readHighScores() {
-
-
-    }
 
     // write highscores into rank texts
     protected void writeHSList() {
@@ -148,10 +152,27 @@ public class ScorePanel : Panel
 
     }
 
-    
+    // Button behaviors here
     // button close panel
     public void btCloseScoreboard(bool close) {
         SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         doOnCloseScoreboard(false);
+    }
+
+    // button change mode to use
+    public void btChangeMode(string mode) {
+        // change mode from unlimited to time attack
+        if (currentMode == "ul" && mode == "ta") {
+            btModeUL.gameObject.SetActive(false);
+            btModeTA.gameObject.SetActive(true);
+        }
+        else if (currentMode == "ta" && mode == "ul") {
+            btModeUL.gameObject.SetActive(true);
+            btModeTA.gameObject.SetActive(false);
+        }
+        
+        currentMode = mode;
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
+        connectToServer();
     }
 }
