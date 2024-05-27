@@ -23,10 +23,10 @@ public class HSList
 /// </summary>
 public class ScorePanel : Panel
 {
-    const string LOCAL_READHS = "http://localhost:5000/sbreadhs";
-    const string LIVE_READHS = "https://bitknvs-30e00398cef5.herokuapp.com/sbreadhs";
+    const string LOCAL_READHS = "http://localhost:5000/sbreadhs?";
+    const string LIVE_READHS = "https://bitknvs-30e00398cef5.herokuapp.com/sbreadhs?";
 
-    protected string READHS_PARAMS = "?sort=targets&order=asc";
+    protected string READHS_PARAMS = "?sort=score&order=asc";
 
     public delegate void closeScoreboard(bool close);
     public static event closeScoreboard doOnCloseScoreboard;
@@ -53,7 +53,7 @@ public class ScorePanel : Panel
     protected Button btModeTA;
     
     protected HSList highscores;
-    protected string currentMode = "ul";
+    protected string currentMode = "ul", currentSort = "score", currentOrder = "desc";
     protected float loadTextTimer = 0;
     protected bool isCheckingConn = true, isConnected = false;
     private int loadTextSequence = 1;
@@ -70,7 +70,7 @@ public class ScorePanel : Panel
 
     void OnEnable() {
         isCheckingConn = true;
-        connectToServer();
+        readFromServer();
     }
 
     void OnDisable() {
@@ -102,15 +102,20 @@ public class ScorePanel : Panel
     }
 
     // server connection functions here
-    protected void connectToServer() {
+    protected void readFromServer() {
         StartCoroutine(readHighScores());
     }
 
     private IEnumerator readHighScores() {
         
+        //set parameters here
         string searchMode = "&mode=" + currentMode;
-        //string ReadURL = LOCAL_READHS + READHS_PARAMS;
-        string ReadURL = LIVE_READHS + READHS_PARAMS + searchMode;
+        string searchSort = "&sort=" + currentSort;
+        string searchOrder = "&order=" + currentOrder;
+
+
+        //string ReadURL = LOCAL_READHS + READHS_PARAMS + searchMode;
+        string ReadURL = LIVE_READHS + searchMode + searchSort + searchOrder;
         
         Debug.Log("Connecting to server: " + ReadURL);
 
@@ -142,7 +147,10 @@ public class ScorePanel : Panel
         rankText.text = nameText.text = scoreText.text = targetsText.text = timeText.text = dateText.text = "";
 
         for (int i = 0; i < highscores.highscores.Length; i++) {
-            rankText.text += (i+1) + "\r\n";
+            // reverse the order of the rank if it's ascending
+            if (currentOrder == "desc") rankText.text += (i+1) + "\r\n";
+            else if (currentOrder == "asc") rankText.text += (highscores.highscores.Length-i) + "\r\n";
+            
             nameText.text += highscores.highscores[i].name + "\r\n";
             scoreText.text += highscores.highscores[i].score + "\r\n";
             targetsText.text += highscores.highscores[i].targets + "\r\n";
@@ -173,6 +181,22 @@ public class ScorePanel : Panel
         
         currentMode = mode;
         SoundHandler.Instance.playSFX(SFXType.ButtonClick);
-        connectToServer();
+        readFromServer();
+    }
+
+    // button change sort & order
+    public void btChangeSort(string sort) {
+        // check first if the current sort is just the same with the passed value, then just switch the order
+        if (currentSort == sort) {
+            currentOrder = (currentOrder == "desc") ? "asc" : "desc";
+        }
+        // default the order to desc and change the sort value
+        else {
+            currentSort = sort;
+            currentOrder = "desc";
+        }
+
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
+        readFromServer();
     }
 }
