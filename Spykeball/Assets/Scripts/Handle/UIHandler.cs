@@ -17,6 +17,12 @@ public class UIHandler : Handler
     public static event onTimeRunOut doOnTimeRunOut;
     public static event onGetNewControls doOnGetNewControls;
 
+    // struct to pass round data into scoreboard
+    public struct RoundData {
+        public string gameMode;
+        public int score, targets, time;
+    }
+
     [SerializeField]
     protected PlayerSpyke player;
 
@@ -36,8 +42,12 @@ public class UIHandler : Handler
     public Image[] livesCount;
     public Text[] timerText;
     public int playerLives;
-    
 
+    private static RoundData _roundData = new RoundData{ gameMode = "Survival", score = 0, targets = 0, time = 0 };
+    public static RoundData roundData { 
+        get { return _roundData; } 
+    }
+    
     protected int currentScore = 0, gameTimerSecs = 0;
     protected int[] timers = new int[] {0,0,0};
 
@@ -223,7 +233,10 @@ public class UIHandler : Handler
     protected void updateLives(int lives) {
         bool active = true;
         int currentLives = Mathf.Abs(lives - 1);
-        if (lives <= 0) return;
+        if (lives <= 0) {
+            updateRoundData();
+            return;
+        }
 
         for (int i = 0; i < livesCount.Length; i++ ) {
             if (i >= currentLives) active = false; // if lives reported is 0, then diff
@@ -242,6 +255,15 @@ public class UIHandler : Handler
         gameLevel = 0;
         targetText.text = "Targets: " + gameLevel.ToString("D2");
         scoreboard.text = currentScore.ToString();
+    }
+
+    // save round data here on every game end:
+    protected void updateRoundData() {
+        _roundData = new RoundData {
+            score = currentScore,
+            targets = gameLevel,
+            time = 0
+        };
     }
 
     ///
@@ -346,6 +368,7 @@ public class UIHandler : Handler
             updateTimerTexts(2, timers[2].ToString("D2"));
             Debug.Log("Timer has ended");
             SoundHandler.Instance.playGameTrack(1, false); // play gameend sound
+            updateRoundData();
             doOnTimeRunOut();
         }
         yield return true;
@@ -367,5 +390,7 @@ public class UIHandler : Handler
             yield return true;
         }
     }
+
+
 
 }

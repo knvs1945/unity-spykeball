@@ -35,9 +35,9 @@ public class RestartPanel : Panel
 
         // Use JSON format for the records instead using ScoreSet class;
         record.name = name;
-        record.score = score;
-        record.targets = targets;
-        record.time = time;
+        record.score = UIHandler.roundData.score;
+        record.targets = UIHandler.roundData.targets;
+        record.time = UIHandler.roundData.time;
         record.date = date;
         
         StartCoroutine(submitNewRecord(record));
@@ -47,7 +47,10 @@ public class RestartPanel : Panel
     private IEnumerator submitNewRecord(ScoreSet hsrecord) {
 
         // string UpdateURL = LOCAL_UPDATEHS + GAMEMODEUL;
-        string UpdateURL = LIVE_UPDATEHS + GAMEMODEUL;
+        string gamemodeURL = GAMEMODEUL;
+        if (Panel.gameMode == "Time Attack") gamemodeURL = GAMEMODETA;
+
+        string UpdateURL = LIVE_UPDATEHS + gamemodeURL;
         Debug.Log("Connecting to DB using URL: " + UpdateURL);
         
         // convert the received scoreset into JSON data here

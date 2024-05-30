@@ -23,13 +23,15 @@ public class HSList
 /// </summary>
 public class Panel : MonoBehaviour
 {
+    // string constants for child panels inheriting from Panel class
     protected const string LOCAL_READHS = "http://localhost:5000/sbreadhs?";
     protected const string LOCAL_UPDATEHS = "http://localhost:5000/sbupdatehs";
-
+    
     protected const string LIVE_READHS = "https://bitknvs-30e00398cef5.herokuapp.com/sbreadhs?";
     protected const string LIVE_UPDATEHS = "https://bitknvs-30e00398cef5.herokuapp.com/sbupdatehs";
-    protected string GAMEMODEUL = "/ul";
-    protected string GAMEMODETA = "/ta";
+
+    protected const string GAMEMODEUL = "/ul";
+    protected const string GAMEMODETA = "/ta";
 
     public Button[] buttonSelection;
 
