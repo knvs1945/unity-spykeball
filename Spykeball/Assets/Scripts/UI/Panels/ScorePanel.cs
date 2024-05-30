@@ -4,28 +4,12 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine;
 
-[System.Serializable]
-public class ScoreSet
-{
-    public string name, date;
-    public int score, targets;
-    public float time;
-}
-
-[System.Serializable]
-public class HSList
-{
-    public ScoreSet[] highscores;
-}
 
 /// <summary>
 ///  Panel that handles displaying the scoreboard
 /// </summary>
 public class ScorePanel : Panel
 {
-    const string LOCAL_READHS = "http://localhost:5000/sbreadhs?";
-    const string LIVE_READHS = "https://bitknvs-30e00398cef5.herokuapp.com/sbreadhs?";
-
     protected string READHS_PARAMS = "?sort=score&order=asc";
 
     public delegate void closeScoreboard(bool close);
@@ -134,7 +118,6 @@ public class ScorePanel : Panel
             highscores = JsonUtility.FromJson<HSList>(req.downloadHandler.text);
             errorText.text = "";
             writeHSList();
-            Debug.Log(highscores);
         }
     }
 
