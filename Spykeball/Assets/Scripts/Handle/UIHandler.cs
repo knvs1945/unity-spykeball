@@ -19,8 +19,8 @@ public class UIHandler : Handler
 
     // struct to pass round data into scoreboard
     public struct RoundData {
-        public string gameMode;
-        public int score, targets, time;
+        public string gameMode, time;
+        public int score, targets;
     }
 
     [SerializeField]
@@ -43,12 +43,12 @@ public class UIHandler : Handler
     public Text[] timerText;
     public int playerLives;
 
-    private static RoundData _roundData = new RoundData{ gameMode = "Survival", score = 0, targets = 0, time = 0 };
+    private static RoundData _roundData = new RoundData{ gameMode = "Survival", score = 0, targets = 0, time = "0" };
     public static RoundData roundData { 
         get { return _roundData; } 
     }
     
-    protected int currentScore = 0, gameTimerSecs = 0;
+    protected int currentScore = 0, gameTimerSecs = 0, roundTimeSecs = 0;
     protected int[] timers = new int[] {0,0,0};
 
     // Start is called before the first frame update
@@ -259,10 +259,14 @@ public class UIHandler : Handler
 
     // save round data here on every game end:
     protected void updateRoundData() {
+
+        TimeSpan totalTime = TimeSpan.FromSeconds(roundTimeSecs);
+        string timeFormat = @"mm\:ss";
+        string timeString = totalTime.ToString(timeFormat); // convert the time into hour format
         _roundData = new RoundData {
             score = currentScore,
             targets = gameLevel,
-            time = 0
+            time = timeString
         };
     }
 
@@ -291,6 +295,7 @@ public class UIHandler : Handler
         timers[1] = 0;
         timers[2] = 0;
         gameTimerSecs = 0;
+        roundTimeSecs = 0;
 
         timerText[0].text = "00"; // msecs
         timerText[1].text = "00"; // secs
@@ -338,7 +343,8 @@ public class UIHandler : Handler
 
     // countDown milliseconds
     IEnumerator countDownSecs() {
-        while (gameTimerSecs > 0) {        
+        while (gameTimerSecs > 0) {
+            roundTimeSecs++;        
             while (pauseGame) yield return null;
             timers[1]--; 
             gameTimerSecs--;               

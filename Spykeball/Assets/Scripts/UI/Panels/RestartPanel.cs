@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Panel that displays after finishing a game
@@ -17,11 +18,32 @@ public class RestartPanel : Panel
     [SerializeField]
     protected InputField tbName;
 
+    protected bool isInSubmitMode = false, isSubmittingScore = false;
+
     // do on awake 
     void OnEnable()
     {
+        preventNavigation = true;
+        isInSubmitMode = true;
         submitSubpanel.SetActive(true);
         returnSubpanel.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(tbName.gameObject);
+    }
+
+    // we check if the text field is currently selected and prevent panel button press detection when so
+    protected override void Update() {
+        if (isInSubmitMode) {
+
+            // cancel high score submission if escape is pressed
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                preventNavigation = false;
+                btCancelSubmit();
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) {
+                btSubmitScore();
+            }
+        }
+        else if (!preventNavigation) highlightNextButton();
     }
 
     // gather game info then connect to server to record entry
@@ -46,10 +68,10 @@ public class RestartPanel : Panel
     // send the gathered game info to the server
     private IEnumerator submitNewRecord(ScoreSet hsrecord) {
 
-        // string UpdateURL = LOCAL_UPDATEHS + GAMEMODEUL;
         string gamemodeURL = GAMEMODEUL;
         if (Panel.gameMode == "Time Attack") gamemodeURL = GAMEMODETA;
 
+        // string UpdateURL = LOCAL_UPDATEHS + gamemodeURL;
         string UpdateURL = LIVE_UPDATEHS + gamemodeURL;
         Debug.Log("Connecting to DB using URL: " + UpdateURL);
         
@@ -75,20 +97,28 @@ public class RestartPanel : Panel
         else {
             Debug.Log("Record successfully added!");
             // display the return subpanel if successful, otherwise let the player retry as many times as they want
+            isInSubmitMode = false;
+            isSubmittingScore = false;
             submitSubpanel.SetActive(false);
             returnSubpanel.SetActive(true);
+            preventNavigation = false;
         }
     }
 
     // button behaviors here
     // button cancel submit behavior
     public void btCancelSubmit() {
+        isInSubmitMode = false;
+        isSubmittingScore = false;
         submitSubpanel.SetActive(false);
         returnSubpanel.SetActive(true);
     }
 
     // button submit record behavior
     public void btSubmitScore() {
-        createNewRecord();
+        if (!isSubmittingScore) {  // prevent sending score multiple times with multiple keypresses
+            isSubmittingScore = true;
+            createNewRecord();
+        }
     }
 }

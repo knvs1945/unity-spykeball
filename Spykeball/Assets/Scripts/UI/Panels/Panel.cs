@@ -7,9 +7,8 @@ using UnityEngine.EventSystems;
 [System.Serializable]
 public class ScoreSet
 {
-    public string name, date;
+    public string name, date, time;
     public int score, targets;
-    public float time;
 }
 
 [System.Serializable]
@@ -32,6 +31,7 @@ public class Panel : MonoBehaviour
 
     protected const string GAMEMODEUL = "/ul";
     protected const string GAMEMODETA = "/ta";
+    protected static bool preventNavigation = false;
 
     public Button[] buttonSelection;
 
@@ -43,7 +43,7 @@ public class Panel : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        highlightNextButton();
+        if (!preventNavigation) highlightNextButton();
     }
 
     // highlight the first button in the buttonSelection when the panel is open
