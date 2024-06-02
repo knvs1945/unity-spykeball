@@ -52,7 +52,7 @@ public class RestartPanel : Panel
 
         int score = 0, targets = 0, time = 0;
         string name = tbName.text;
-        string date = System.DateTime.Today.ToString("dd/MM/yy");
+        string date = System.DateTime.Today.ToString("MM/dd/yy");
         ScoreSet record = new ScoreSet();
 
         // Use JSON format for the records instead using ScoreSet class;

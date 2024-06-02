@@ -97,8 +97,7 @@ public class ScorePanel : Panel
         string searchSort = "&sort=" + currentSort;
         string searchOrder = "&order=" + currentOrder;
 
-
-        //string ReadURL = LOCAL_READHS + READHS_PARAMS + searchMode;
+        // string ReadURL = LOCAL_READHS + searchMode + searchSort + searchOrder;
         string ReadURL = LIVE_READHS + searchMode + searchSort + searchOrder;
         
         Debug.Log("Connecting to server: " + ReadURL);

@@ -261,7 +261,7 @@ public class UIHandler : Handler
     protected void updateRoundData() {
 
         TimeSpan totalTime = TimeSpan.FromSeconds(roundTimeSecs);
-        string timeFormat = @"mm\:ss";
+        string timeFormat = @"hh\:mm\:ss";
         string timeString = totalTime.ToString(timeFormat); // convert the time into hour format
         _roundData = new RoundData {
             score = currentScore,
