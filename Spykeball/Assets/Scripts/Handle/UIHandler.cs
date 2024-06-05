@@ -17,6 +17,8 @@ public class UIHandler : Handler
     public static event onTimeRunOut doOnTimeRunOut;
     public static event onGetNewControls doOnGetNewControls;
 
+    public static UIHandler instance;
+
     // struct to pass round data into scoreboard
     public struct RoundData {
         public string gameMode, time;
@@ -39,6 +41,7 @@ public class UIHandler : Handler
     public BallMarker ballMarker;
     public GameObject panelMainMenu, panelRestartMenu, panelRoundPanel, panelScoreboard;
     public GameObject panelTimer, panelLives, panelScore, panelTargets, panelPauseMenu, panelControls; // ingame panels
+    public AlertPanel modalConfirm, modalWarning;
     public Image[] livesCount;
     public Text[] timerText;
     public int playerLives;
@@ -56,6 +59,16 @@ public class UIHandler : Handler
     {
         resetUIStats();
         registerEvents();
+    }
+
+    void Awake()
+    {
+        // set only one instance of the UIHandler
+        if (instance != null) {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(this);
+        instance = this;
     }
 
     // Update is called once per frame
@@ -91,6 +104,26 @@ public class UIHandler : Handler
             ball.doOnLivesLeft -= updateLives;
             ball.doOnHitTarget -= updateScore;
             ball.doOnHitFloor -= updateScore;
+        }
+    }
+
+    // Create popup panels globally here
+    public static void createModal(string type, string msg) {
+        instance.createAlertPanel(type, msg);
+    }
+
+    public void createAlertPanel(string type, string msg) {
+        AlertPanel popup = null;
+        if (type == "") {
+            Debug.Log("createPopup error: no type specified");
+            return;
+        }
+        if (type == "confirm") popup = Instantiate(modalConfirm);
+        else if (type == "warning") popup = Instantiate(modalConfirm);
+
+        if (popup) {
+            popup.transform.SetParent(instance.transform, false);
+            popup.createPanel(msg);
         }
     }
 

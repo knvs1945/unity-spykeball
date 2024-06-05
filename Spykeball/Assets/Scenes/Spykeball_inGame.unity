@@ -6055,7 +6055,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &696045096
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12702,6 +12702,8 @@ MonoBehaviour:
   panelTargets: {fileID: 1105563630}
   panelPauseMenu: {fileID: 1191451116}
   panelControls: {fileID: 786444945}
+  modalConfirm: {fileID: 3622632157882599366, guid: feb23164f3e9dba42866d19ea6db4a20, type: 3}
+  modalWarning: {fileID: 7133150288688635952, guid: f0f16dcf46107f24ca03dd160119e126, type: 3}
   livesCount:
   - {fileID: 466668987}
   - {fileID: 439257148}

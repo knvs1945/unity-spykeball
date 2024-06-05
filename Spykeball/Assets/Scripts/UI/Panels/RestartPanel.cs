@@ -93,9 +93,11 @@ public class RestartPanel : Panel
         yield return req.SendWebRequest();
         if (req.result != UnityWebRequest.Result.Success) {
             Debug.Log("Connection Error: " + req.error);
+            UIHandler.createModal("Warning", "Connection Error:\r\n" + req.error);
         }
         else {
             Debug.Log("Record successfully added!");
+            UIHandler.createModal("confirm", "Your score has been added! \r\n\r\n Your Rank: ");
             // display the return subpanel if successful, otherwise let the player retry as many times as they want
             isInSubmitMode = false;
             isSubmittingScore = false;
