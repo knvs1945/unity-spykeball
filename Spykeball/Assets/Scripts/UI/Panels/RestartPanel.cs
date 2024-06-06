@@ -71,8 +71,8 @@ public class RestartPanel : Panel
         string gamemodeURL = GAMEMODEUL;
         if (Panel.gameMode == "Time Attack") gamemodeURL = GAMEMODETA;
 
-        // string UpdateURL = LOCAL_UPDATEHS + gamemodeURL;
-        string UpdateURL = LIVE_UPDATEHS + gamemodeURL;
+        string UpdateURL = LOCAL_UPDATEHS + gamemodeURL;
+        // string UpdateURL = LIVE_UPDATEHS + gamemodeURL;
         Debug.Log("Connecting to DB using URL: " + UpdateURL);
         
         // convert the received scoreset into JSON data here
@@ -96,8 +96,9 @@ public class RestartPanel : Panel
             UIHandler.createModal("Warning", "Connection Error:\r\n" + req.error);
         }
         else {
-            Debug.Log("Record successfully added!");
-            UIHandler.createModal("confirm", "Your score has been added! \r\n\r\n Your Rank: ");
+            string rankResult = req.downloadHandler.text;
+            Debug.Log("Record successfully added! " + rankResult);
+            UIHandler.createModal("confirm", "Your score has been added! \r\n\r\n Score Ranking: " + rankResult);
             // display the return subpanel if successful, otherwise let the player retry as many times as they want
             isInSubmitMode = false;
             isSubmittingScore = false;

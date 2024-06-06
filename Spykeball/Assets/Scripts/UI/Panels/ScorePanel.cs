@@ -10,11 +10,12 @@ using UnityEngine;
 /// </summary>
 public class ScorePanel : Panel
 {
+    protected const int pagelimit = 10;
     protected string READHS_PARAMS = "?sort=score&order=asc";
 
     public delegate void closeScoreboard(bool close);
     public static event closeScoreboard doOnCloseScoreboard;
-    public Text errorText;
+    public Text errorText, pageText;
 
     [SerializeField]
     protected GameObject scoreFields;
@@ -40,7 +41,7 @@ public class ScorePanel : Panel
     protected string currentMode = "ul", currentSort = "score", currentOrder = "desc";
     protected float loadTextTimer = 0;
     protected bool isCheckingConn = true, isConnected = false;
-    private int loadTextSequence = 1;
+    private int loadTextSequence = 1, currentPage = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +55,8 @@ public class ScorePanel : Panel
 
     void OnEnable() {
         isCheckingConn = true;
+        currentPage = 1; // reset the page every time the window is reopened
+        pageText.text = currentPage.ToString();
         readFromServer();
     }
 
@@ -93,12 +96,14 @@ public class ScorePanel : Panel
     private IEnumerator readHighScores() {
         
         //set parameters here
+        int limit = pagelimit;
         string searchMode = "&mode=" + currentMode;
         string searchSort = "&sort=" + currentSort;
         string searchOrder = "&order=" + currentOrder;
+        string searchPages = "&page=" + currentPage + "&limit=" + limit;
 
-        // string ReadURL = LOCAL_READHS + searchMode + searchSort + searchOrder;
-        string ReadURL = LIVE_READHS + searchMode + searchSort + searchOrder;
+        string ReadURL = LOCAL_READHS + searchMode + searchSort + searchOrder + searchPages;
+        // string ReadURL = LIVE_READHS + searchMode + searchSort + searchOrder + searchPages;
         
         Debug.Log("Connecting to server: " + ReadURL);
 
@@ -125,13 +130,17 @@ public class ScorePanel : Panel
     // write highscores into rank texts
     protected void writeHSList() {
         if (highscores.highscores.Length <= 0) return; // we have highscores to write
-
+        Debug.Log("rewriting highscore list at page: " + currentPage);
+        int rank = currentPage;
         rankText.text = nameText.text = scoreText.text = targetsText.text = timeText.text = dateText.text = "";
-
         for (int i = 0; i < highscores.highscores.Length; i++) {
+
+            // use the current page as the rank label's base count
+            rank = ((currentPage - 1) * pagelimit);
+
             // reverse the order of the rank if it's ascending
-            if (currentOrder == "desc") rankText.text += (i+1) + "\r\n";
-            else if (currentOrder == "asc") rankText.text += (highscores.highscores.Length-i) + "\r\n";
+            if (currentOrder == "desc") rankText.text += (rank + (i+1)) + "\r\n";
+            else if (currentOrder == "asc") rankText.text += ((highscores.highscores.Length + rank)-i) + "\r\n";
             
             nameText.text += highscores.highscores[i].name + "\r\n";
             scoreText.text += highscores.highscores[i].score + "\r\n";
@@ -171,13 +180,31 @@ public class ScorePanel : Panel
         // check first if the current sort is just the same with the passed value, then just switch the order
         if (currentSort == sort) {
             currentOrder = (currentOrder == "desc") ? "asc" : "desc";
+            // reset the current page back to 1 to prevent complications
+            currentPage = 1;
         }
         // default the order to desc and change the sort value
         else {
             currentSort = sort;
             currentOrder = "desc";
+            currentPage = 1;
+        }
+        
+        pageText.text = currentPage.ToString();
+        SoundHandler.Instance.playSFX(SFXType.ButtonClick);
+        readFromServer();
+    }
+
+    // button change page
+    public void btMovePage(string order) {
+        if (order == "back") {
+            currentPage = (currentPage > 1) ? currentPage - 1 : currentPage;
+        }
+        else if (order == "next") {
+            currentPage++;
         }
 
+        pageText.text = currentPage.ToString();
         SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         readFromServer();
     }
