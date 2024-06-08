@@ -37,7 +37,6 @@ public class EffectHandler : Handler
 
     // create impact rings from spiking or hard attacks
     public void CreateEffectImpactRing(Vector2 location, float rateOfFade) {
-        Debug.Log("Creating impact ring...");
         ImpactRing temp = Instantiate(VFXImpactRing, location, Quaternion.identity);
         if (temp != null) temp.applyEffect(rateOfFade);
     }

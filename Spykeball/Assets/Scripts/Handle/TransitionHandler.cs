@@ -40,7 +40,6 @@ public class TransitionHandler : Handler
 
     // cover the game while doing transitions
     public void startStateTransition() {
-        Debug.Log("Starting Transition: " + tAnim);
         tAnim.SetTrigger("start");
     }
 

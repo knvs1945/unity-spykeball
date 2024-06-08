@@ -104,15 +104,12 @@ public class ScorePanel : Panel
 
         string ReadURL = LOCAL_READHS + searchMode + searchSort + searchOrder + searchPages;
         // string ReadURL = LIVE_READHS + searchMode + searchSort + searchOrder + searchPages;
-        
-        Debug.Log("Connecting to server: " + ReadURL);
 
         // first, create a web request using "Get"
         UnityWebRequest req = UnityWebRequest.Get(ReadURL);
         req.timeout = 10;
         yield return req.SendWebRequest();
         if (req.isNetworkError || req.isHttpError) {
-            Debug.Log("Connection Error: " + req.error);
             UIHandler.createModal("warning", "Connection Error:\r\n" + req.error);
             errorText.text = req.error;
             isCheckingConn = false;
@@ -131,7 +128,6 @@ public class ScorePanel : Panel
     // write highscores into rank texts
     protected void writeHSList() {
         if (hsLength <= 0) return; // we have highscores to write
-        Debug.Log("rewriting highscore list at page: " + currentPage);
         int rank = currentPage;
         rankText.text = nameText.text = scoreText.text = targetsText.text = timeText.text = dateText.text = "";
         for (int i = 0; i < highscores.highscores.Length; i++) {

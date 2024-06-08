@@ -73,7 +73,6 @@ public class RestartPanel : Panel
 
         string UpdateURL = LOCAL_UPDATEHS + gamemodeURL;
         // string UpdateURL = LIVE_UPDATEHS + gamemodeURL;
-        Debug.Log("Connecting to DB using URL: " + UpdateURL);
         
         // convert the received scoreset into JSON data here
         string jsondata = JsonUtility.ToJson(hsrecord);
@@ -92,13 +91,11 @@ public class RestartPanel : Panel
         // send web request and check if it was successful
         yield return req.SendWebRequest();
         if (req.result != UnityWebRequest.Result.Success) {
-            Debug.Log("Connection Error: " + req.error);
             UIHandler.createModal("warning", "Connection Error:\r\n" + req.error);
         }
         else {
             string rankResult = req.downloadHandler.text;
             rankResult = rankResult.Trim('\"');
-            Debug.Log("Record successfully added! " + rankResult);
             UIHandler.createModal("confirm", "Your score has been added! \r\n\r\n Score Ranking: " + rankResult);
             // display the return subpanel if successful, otherwise let the player retry as many times as they want
             isInSubmitMode = false;

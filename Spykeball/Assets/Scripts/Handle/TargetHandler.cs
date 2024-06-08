@@ -35,7 +35,6 @@ public class TargetHandler : Handler
     }
 
     protected override void doOnRestartHandler() {
-        Debug.Log("Restarting Target handler");
         if (currentTarget != null) currentTarget.restartTarget();
         spawnNewTarget();
     }

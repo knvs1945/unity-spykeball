@@ -49,15 +49,6 @@ public class PlayerHandler : Handler
         
         // assign the control set to player 1
         playerObj.Controls = controlPlayer1;
-
-        do {
-            if (playerObj != null) {
-                // register to event when player gets damaged
-                playerObj.Player.IsControlDisabled = false;
-                Debug.Log("Registering updatePlayerHPBar event...");
-            }
-        } while (playerObj == null);
-
     }
 
     void Awake() {

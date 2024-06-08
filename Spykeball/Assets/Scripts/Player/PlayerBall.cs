@@ -61,7 +61,6 @@ public class PlayerBall : GameUnit
     // prevent the ball from getting stuck in a certain animation frame
     protected void OnEnable() {
         if (anim != null) {
-            Debug.Log("Resetting player ball");
             anim.Update(0);
         }
     }
@@ -155,7 +154,6 @@ public class PlayerBall : GameUnit
         float currentColor = 1, colorfactor = 0.25f;
 
         lives--;
-        Debug.Log("Lives Left: " + lives);
         currentColor = currentColor - (colorfactor * (COUNT_Lives - lives));
         rbRender.material.color = new Color(1, currentColor, currentColor, 1); // color starts getting redder per bounce
         doOnLivesLeft(lives);

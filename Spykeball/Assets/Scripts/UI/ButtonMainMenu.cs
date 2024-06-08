@@ -32,14 +32,12 @@ public class ButtonMainMenu : MonoBehaviour
     // starts the game
     public void btStartGame(string gameMode) {
         SoundHandler.Instance.playSFX(SFXType.ButtonClick);
-        Debug.Log("Start game Button Clicked");
         doOnStartGame(1, gameMode);
     }
 
     // returns to the main menu
     public void btReturnToMain(string evt) {
         SoundHandler.Instance.playSFX(SFXType.ButtonClick);
-        Debug.Log("Returning to Main menu");
         doOnReturnToMain(evt);
     }
 

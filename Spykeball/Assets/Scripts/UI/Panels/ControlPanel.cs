@@ -79,7 +79,6 @@ public class ControlPanel : Panel
     }
 
     public void btControlButtonClicked(string buttonClicked) {
-        Debug.Log("Setting button clicked: " + buttonClicked);
         currentButton = buttonClicked;
         SoundHandler.Instance.playSFX(SFXType.ButtonClick);
         isListening = true;
@@ -96,45 +95,6 @@ public class ControlPanel : Panel
     /// Listen for control updates here
     /// 
     /// </summary>
-    /* protected void listenToControlUpdates() {
-        if (!isListening) return;
-        int controlindex = 0, UIindex = 0;
-
-        if (Input.anyKeyDown) {
-            string keyPresses = Input.inputString; // get all the keys prseed during the time
-            if (!string.IsNullOrEmpty(keyPresses)){
-                if (keyPresses.ToLower() != "escape") {        
-                    switch(currentButton) {
-                        case "left": UIindex = 0;
-                                     controlindex = 2;
-                                     break;
-                        case "right": UIindex = 1;
-                                     controlindex = 3;
-                                     break;
-                        case "jump": UIindex = 2;
-                                     controlindex = 0;
-                                     break;
-                        case "dash": UIindex = 3;
-                                     controlindex = 1;
-                                     break;
-                        case "spike": UIindex = 4;
-                                     controlindex = 4;
-                                     break;
-                    }
-                    keyPresses = filterSpecialKeyPress(keyPresses[0].ToString().ToLower());
-                    newControls[controlindex] = keyPresses; // just get the first character recorded
-                    
-                    btText[UIindex].text = newControls[controlindex].ToString().ToUpper();
-                    isListening = false;
-                }
-                else {
-                    Debug.Log("Canceling button update");
-                    isListening = false;
-                }
-            }
-        }
-    } */
-
     protected void listenToControlUpdates() {
         if (!isListening) return;
         int controlindex = 0, UIindex = 0;
@@ -226,7 +186,6 @@ public class ControlPanel : Panel
     // filter for any special non alphanumeric key pressed
     protected string filterSpecialKeyPress(string keypressed) {
         string newKey = keypressed;
-        Debug.Log("Key Pressed: " + newKey);
         switch(keypressed) {
             // check if spacebar
             case " ": newKey = "space";
