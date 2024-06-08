@@ -4,7 +4,6 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine;
 
-
 /// <summary>
 ///  Panel that handles displaying the scoreboard
 /// </summary>
@@ -41,7 +40,7 @@ public class ScorePanel : Panel
     protected string currentMode = "ul", currentSort = "score", currentOrder = "desc";
     protected float loadTextTimer = 0;
     protected bool isCheckingConn = true, isConnected = false;
-    private int loadTextSequence = 1, currentPage = 1;
+    private int loadTextSequence = 1, currentPage = 1, hsLength = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -93,6 +92,7 @@ public class ScorePanel : Panel
         StartCoroutine(readHighScores());
     }
 
+    // read highscores from server
     private IEnumerator readHighScores() {
         
         //set parameters here
@@ -119,17 +119,16 @@ public class ScorePanel : Panel
         else {
             isCheckingConn = false;
             scoreFields.SetActive(true);
-            highscores = JsonUtility.FromJson<HSList>(req.downloadHandler.text);
+            highscores = JsonUtility.FromJson<HSList>(req.downloadHandler.text);    // convert from json to object using JsonUtility
+            hsLength = highscores.length;                                           // get total amt of highscores from converted json
             errorText.text = "";
             writeHSList();
         }
     }
 
-    // read highscores from server
-
     // write highscores into rank texts
     protected void writeHSList() {
-        if (highscores.highscores.Length <= 0) return; // we have highscores to write
+        if (hsLength <= 0) return; // we have highscores to write
         Debug.Log("rewriting highscore list at page: " + currentPage);
         int rank = currentPage;
         rankText.text = nameText.text = scoreText.text = targetsText.text = timeText.text = dateText.text = "";
@@ -140,7 +139,8 @@ public class ScorePanel : Panel
 
             // reverse the order of the rank if it's ascending
             if (currentOrder == "desc") rankText.text += (rank + (i+1)) + "\r\n";
-            else if (currentOrder == "asc") rankText.text += ((highscores.highscores.Length + rank)-i) + "\r\n";
+            else if (currentOrder == "asc") rankText.text += calcDescRankings(i) + "\r\n";
+            //else if (currentOrder == "asc") rankText.text += ((highscores.highscores.Length + rank)-i) + "\r\n";
             
             nameText.text += highscores.highscores[i].name + "\r\n";
             scoreText.text += highscores.highscores[i].score + "\r\n";
@@ -148,8 +148,15 @@ public class ScorePanel : Panel
             timeText.text += highscores.highscores[i].time + "\r\n";
             dateText.text += highscores.highscores[i].date + "\r\n";
         }
-
     }
+
+    // calculate the rank texts here if the entry is ascending. 
+    // It is harder to count ranking as ascending than desc so let's dedicate a function to it
+    protected string calcDescRankings(int id) {
+        // current rank text to display if id is 1 should be:
+        int x = (hsLength - id) - (pagelimit * (currentPage - 1));
+        return "" + x + "";
+    } 
 
     // Button behaviors here
     // button close panel
@@ -201,7 +208,9 @@ public class ScorePanel : Panel
             currentPage = (currentPage > 1) ? currentPage - 1 : currentPage;
         }
         else if (order == "next") {
-            currentPage++;
+            //get the total hslength and divide it by page limit to get the maximum pages
+            int maxPages = Mathf.CeilToInt((float) hsLength / pagelimit);
+            currentPage = (currentPage < maxPages) ? currentPage + 1 : currentPage;
         }
 
         pageText.text = currentPage.ToString();

@@ -15,6 +15,7 @@ public class ScoreSet
 public class HSList
 {
     public ScoreSet[] highscores;
+    public int length;
 }
 
 /// <summary>
