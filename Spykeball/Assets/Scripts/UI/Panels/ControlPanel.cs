@@ -168,50 +168,50 @@ public class ControlPanel : Panel
                 keyChanged = true;
                 // btText[UIindex].text = newControls[controlindex].ToString().ToUpper();
             }
-            // handle non-character special keys pressed here
+            // handle non-character special keys pressed here - just show warning if special keys are selected
             else if (Input.GetKeyDown(KeyCode.LeftShift)) {
-                newControls[controlindex] = KeyCode.LeftShift.ToString();
+                UIHandler.createModal("warning", "Special Keys are not supported: " + KeyCode.LeftShift);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.RightShift)) {
-                newControls[controlindex] = KeyCode.RightShift.ToString();
+                UIHandler.createModal("warning", "Special Keys are not supported: " + KeyCode.RightShift);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.LeftAlt)) {
-                newControls[controlindex] = KeyCode.LeftAlt.ToString();
+                UIHandler.createModal("warning", "Special Keys are not supported: " + KeyCode.LeftAlt);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.RightAlt)) {
-                newControls[controlindex] = KeyCode.RightAlt.ToString();
+                UIHandler.createModal("warning", "Special Keys are not supported: " + KeyCode.RightAlt);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.RightAlt)) {
-                newControls[controlindex] = KeyCode.RightAlt.ToString();
+                UIHandler.createModal("warning", "Special Keys are not supported: " + KeyCode.RightAlt);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.LeftControl)) {
-                newControls[controlindex] = KeyCode.LeftControl.ToString();
+                UIHandler.createModal("warning", "Special Keys are not supported: " + KeyCode.LeftControl);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.RightControl)) {
-                newControls[controlindex] = KeyCode.RightControl.ToString();
+                UIHandler.createModal("warning", "Special Keys are not supported: " + KeyCode.RightControl);
                 keyChanged = true;
             }
             // arrow keys
             else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-                newControls[controlindex] = KeyCode.RightArrow.ToString();
+                UIHandler.createModal("warning", "Arrow Keys are already supported by default: " + KeyCode.RightArrow);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-                newControls[controlindex] = KeyCode.LeftArrow.ToString();
+                UIHandler.createModal("warning", "Arrow Keys are already supported by default: " + KeyCode.LeftArrow);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.UpArrow)) {
-                newControls[controlindex] = KeyCode.UpArrow.ToString();
+                UIHandler.createModal("warning", "Arrow Keys are already supported by default: " + KeyCode.UpArrow);
                 keyChanged = true;
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-                newControls[controlindex] = KeyCode.DownArrow.ToString();
+                UIHandler.createModal("warning", "Arrow Keys are already supported by default: " + KeyCode.DownArrow);
                 keyChanged = true;
             }
             else if (keyPresses.ToLower() == "escape") {
@@ -230,6 +230,10 @@ public class ControlPanel : Panel
         switch(keypressed) {
             // check if spacebar
             case " ": newKey = "space";
+                      break;
+            case "\r": newKey = "enter";
+                      break;
+            case "\b": newKey = "backspace";
                       break;
         }
         return newKey;
