@@ -225,5 +225,89 @@ public class PlayerControls {
     public string[] getControlSet() {
         return new string [] {moveUp, moveDown, moveLeft, moveRight, attack, defend, dodge, pause};
     }
+
+    protected void checkForSpecialKeys(string controlKey) {
+        
+    }
 }
+
+// class to contain player controls
+/*
+public class PlayerControls {
+    protected KeyCode moveUp, moveDown, moveLeft, moveRight, attack, defend, dodge, pause;
+
+    // constructor
+    public PlayerControls(
+        KeyCode _up, KeyCode _down, KeyCode _left, KeyCode _right, 
+        KeyCode _attack, KeyCode _defend, KeyCode _dodge, KeyCode _pause
+    ) {
+        moveUp = _up;
+        moveDown = _down;
+        moveLeft = _left;
+        moveRight = _right;
+        attack = _attack;
+        defend = _defend;
+        dodge = _dodge;
+        pause = _pause;
+    }
+
+    // overridden constructor
+    public PlayerControls(
+        KeyCode[] controlSet
+    ) {
+        if (controlSet.Length < 8) {
+            throw new ArgumentException("Invalid controlSet property. Must have 8 elements to initialize a PlayerControl class");
+        }
+        moveUp = controlSet[0];
+        moveDown = controlSet[1];
+        moveLeft = controlSet[2];
+        moveRight = controlSet[3];
+        attack = controlSet[4];
+        defend = controlSet[5];
+        dodge = controlSet[6];
+        pause = controlSet[7];
+    }
+
+    // getters & setters
+    public string MoveUp {
+        get { return moveUp; }
+        set { moveUp = value; }
+    }
+    public string MoveDown {
+        get { return moveDown; }
+        set { moveDown = value; }
+    }
+    public string MoveLeft {
+        get { return moveLeft; }
+        set { moveLeft = value; }
+    }
+    public string MoveRight {
+        get { return moveRight; }
+        set { moveRight = value; }
+    }
+    public string Attack {
+        get { return attack; }
+        set { attack = value; }
+    }
+    public string Defend {
+        get { return defend; }
+        set { defend = value; }
+    }
+    public string Dodge {
+        get { return dodge; }
+        set { dodge = value; }
+    }
+    public string Pause {
+        get { return pause; }
+        set { pause = value; }
+    }
+
+    public string[] getControlSet() {
+        return new string [] {moveUp, moveDown, moveLeft, moveRight, attack, defend, dodge, pause};
+    }
+
+    protected void checkForSpecialKeys(string controlKey) {
+        
+    }
+}*/
 

@@ -113,7 +113,9 @@ public class ScorePanel : Panel
         yield return req.SendWebRequest();
         if (req.isNetworkError || req.isHttpError) {
             Debug.Log("Connection Error: " + req.error);
-            errorText.text = req.downloadHandler.text;
+            UIHandler.createModal("warning", "Connection Error:\r\n" + req.error);
+            errorText.text = req.error;
+            isCheckingConn = false;
             isConnected = false;
         }
         else {

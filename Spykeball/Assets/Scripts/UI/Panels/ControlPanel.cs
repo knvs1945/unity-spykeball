@@ -96,7 +96,7 @@ public class ControlPanel : Panel
     /// Listen for control updates here
     /// 
     /// </summary>
-    protected void listenToControlUpdates() {
+    /* protected void listenToControlUpdates() {
         if (!isListening) return;
         int controlindex = 0, UIindex = 0;
 
@@ -132,6 +132,94 @@ public class ControlPanel : Panel
                     isListening = false;
                 }
             }
+        }
+    } */
+
+    protected void listenToControlUpdates() {
+        if (!isListening) return;
+        int controlindex = 0, UIindex = 0;
+        
+        // get control index of the current button clicked
+        switch(currentButton) {
+            case "left": UIindex = 0;
+                         controlindex = 2;
+                         break;
+            case "right": UIindex = 1;
+                          controlindex = 3;
+                          break;
+            case "jump": UIindex = 2;
+                         controlindex = 0;
+                         break;
+            case "dash": UIindex = 3;
+                         controlindex = 1;
+                         break;
+            case "spike": UIindex = 4;
+                          controlindex = 4;
+                          break;
+        }
+
+        // capture keys here
+        if (Input.anyKeyDown) {
+            bool keyChanged = false;
+            string keyPresses = Input.inputString; // get all the keys prseed during the time
+            if (!string.IsNullOrEmpty(keyPresses) && keyPresses.ToLower() != "escape") {
+                keyPresses = filterSpecialKeyPress(keyPresses[0].ToString().ToLower());
+                newControls[controlindex] = keyPresses; // just get the first character recorded    
+                keyChanged = true;
+                // btText[UIindex].text = newControls[controlindex].ToString().ToUpper();
+            }
+            // handle non-character special keys pressed here
+            else if (Input.GetKeyDown(KeyCode.LeftShift)) {
+                newControls[controlindex] = KeyCode.LeftShift.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightShift)) {
+                newControls[controlindex] = KeyCode.RightShift.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftAlt)) {
+                newControls[controlindex] = KeyCode.LeftAlt.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightAlt)) {
+                newControls[controlindex] = KeyCode.RightAlt.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightAlt)) {
+                newControls[controlindex] = KeyCode.RightAlt.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftControl)) {
+                newControls[controlindex] = KeyCode.LeftControl.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightControl)) {
+                newControls[controlindex] = KeyCode.RightControl.ToString();
+                keyChanged = true;
+            }
+            // arrow keys
+            else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+                newControls[controlindex] = KeyCode.RightArrow.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+                newControls[controlindex] = KeyCode.LeftArrow.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+                newControls[controlindex] = KeyCode.UpArrow.ToString();
+                keyChanged = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+                newControls[controlindex] = KeyCode.DownArrow.ToString();
+                keyChanged = true;
+            }
+            else if (keyPresses.ToLower() == "escape") {
+                Debug.Log("Canceling button update");
+            }
+
+            if (keyChanged) btText[UIindex].text = newControls[controlindex].ToString().ToUpper();
+            isListening = false;
         }
     }
 

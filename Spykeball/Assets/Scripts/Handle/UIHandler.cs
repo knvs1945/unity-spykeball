@@ -119,7 +119,7 @@ public class UIHandler : Handler
             return;
         }
         if (type == "confirm") popup = Instantiate(modalConfirm);
-        else if (type == "warning") popup = Instantiate(modalConfirm);
+        else if (type == "warning") popup = Instantiate(modalWarning);
 
         if (popup) {
             popup.transform.SetParent(instance.transform, false);
