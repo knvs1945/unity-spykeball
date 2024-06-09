@@ -61,6 +61,7 @@ public class RestartPanel : Panel
         record.time = UIHandler.roundData.time;
         record.date = date;
         
+        UIHandler.createModal("confirm", "Submitting record... ", 2f);
         StartCoroutine(submitNewRecord(record));
     }
 

@@ -27,7 +27,7 @@ public class TitlePanel : Panel
 
     // button behavior here
     public void btCreditsClicked() {
-        UIHandler.createModal("confirm", " Coding: KJ Cabrera, \r\n Art: KJ Cabrera, \r\n Music: Elkan");
+        UIHandler.createModal("confirm", " Coding: KJ Cabrera, \r\n Art: KJ Cabrera, \r\n Music: Elkan Lopez");
     }
 
 }

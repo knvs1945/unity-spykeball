@@ -108,11 +108,11 @@ public class UIHandler : Handler
     }
 
     // Create popup panels globally here
-    public static void createModal(string type, string msg) {
-        instance.createAlertPanel(type, msg);
+    public static void createModal(string type, string msg, float timeout = 0) {
+        instance.createAlertPanel(type, msg, timeout);
     }
 
-    public void createAlertPanel(string type, string msg) {
+    public void createAlertPanel(string type, string msg, float timeout = 0) {
         AlertPanel popup = null;
         if (type == "") {
             Debug.Log("createPopup error: no type specified");
@@ -123,7 +123,7 @@ public class UIHandler : Handler
 
         if (popup) {
             popup.transform.SetParent(instance.transform, false);
-            popup.createPanel(msg);
+            popup.createPanel(msg, timeout);
         }
     }
 
