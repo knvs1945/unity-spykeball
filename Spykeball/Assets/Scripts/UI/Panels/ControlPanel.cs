@@ -33,10 +33,12 @@ public class ControlPanel : Panel
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        if (!preventNavigation && !modalActive && !isListening) highlightNextButton();
         listenToControlUpdates();
     }
+
     public void setCurrentControlUI(PlayerControls controls) {
         if (btText.Length > 0) {
             btText[0].text = controls.MoveLeft.ToUpper();

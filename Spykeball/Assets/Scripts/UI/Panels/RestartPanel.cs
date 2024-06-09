@@ -21,8 +21,9 @@ public class RestartPanel : Panel
     protected bool isInSubmitMode = false, isSubmittingScore = false;
 
     // do on awake 
-    void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         preventNavigation = true;
         isInSubmitMode = true;
         submitSubpanel.SetActive(true);
@@ -49,8 +50,6 @@ public class RestartPanel : Panel
     // gather game info then connect to server to record entry
     // form fields: {"name":"KJC", "targets":"5", "score":"5", "time":"3.5", "date":"3/5"}
     protected void createNewRecord(){
-
-        int score = 0, targets = 0, time = 0;
         string name = tbName.text;
         string date = System.DateTime.Today.ToString("MM/dd/yy");
         ScoreSet record = new ScoreSet();

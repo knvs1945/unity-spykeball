@@ -46,7 +46,7 @@ public class Handler : MonoBehaviour
     // public virtual void goalCompleted (Goal goal) { }
     // public virtual void goalFailed (Goal goal) { }
 
-    public void restartHandler() {
+    public virtual void restartHandler() {
         doOnRestartHandler();
     }
 

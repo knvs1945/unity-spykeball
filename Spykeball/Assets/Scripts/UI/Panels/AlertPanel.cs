@@ -13,19 +13,29 @@ public class AlertPanel : Panel
     [SerializeField]
     protected Text message;
 
-    // Start is called before the first frame update
-    void Start()
+
+    protected override void Update()
     {
-        
+        // player has clicked on attack or spyke button
+        if (Input.GetKeyDown(controls.Attack) || Input.GetKeyDown(KeyCode.Space)) {
+            Debug.Log("Pressing Attack");
+            closeButton.onClick.Invoke();
+        }
     }
 
     public void createPanel(string msg) {
+        if (modalActive) {
+
+            return; // only 1 modal can be active at a time
+        }
         message.text = msg;
         EventSystem.current.SetSelectedGameObject(closeButton.gameObject);
+        modalActive = true;
     }
 
     // button behavior here
     public void btClosePanel() {
+        modalActive = false;
         Destroy(gameObject);
     }
 }

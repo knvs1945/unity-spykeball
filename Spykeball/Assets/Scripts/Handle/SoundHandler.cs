@@ -51,7 +51,8 @@ public class SoundHandler : Handler
     }
 
     
-    public void restartHandler() {
+    public override void restartHandler() {
+        base.restartHandler();
         for (int i = 0; i < SFXSources.Length; i++) {
             SFXSources[i].Stop();
         }

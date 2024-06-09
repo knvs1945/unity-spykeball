@@ -25,4 +25,9 @@ public class TitlePanel : Panel
         SoundHandler.Instance.playSFX(SFXType.TimerSlam);
     }
 
+    // button behavior here
+    public void btCreditsClicked() {
+        UIHandler.createModal("confirm", " Coding: KJ Cabrera, \r\n Art: KJ Cabrera, \r\n Music: Elkan");
+    }
+
 }

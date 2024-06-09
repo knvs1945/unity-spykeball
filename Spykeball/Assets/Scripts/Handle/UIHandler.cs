@@ -339,7 +339,6 @@ public class UIHandler : Handler
 
     // Add time here when ball hits a target
     protected void addTime(int timeToAdd) {
-        float timeInMins, timeInSecs;
         TimeSpan convertedTime; // .Net class for changing time given an integer
 
         // first, add the time to the current timer;

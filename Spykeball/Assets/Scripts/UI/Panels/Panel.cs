@@ -38,17 +38,19 @@ public class Panel : MonoBehaviour
 
     public static PlayerControls controls = null;
     public static string gameMode;
+    protected static bool modalActive = false;
+
     protected Animator titleAnim;
     protected int buttonIndex = 0;
 
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (!preventNavigation) highlightNextButton();
+        if (!preventNavigation && !modalActive) highlightNextButton();
     }
 
     // highlight the first button in the buttonSelection when the panel is open
-    protected void OnEnable() {
+    protected virtual void OnEnable() {
         buttonIndex = 0;
         if (buttonSelection.Length > 0) {
             EventSystem.current.SetSelectedGameObject(null);
@@ -61,14 +63,14 @@ public class Panel : MonoBehaviour
         if (controls == null || buttonSelection.Length <= 0) return;
         bool buttonPressed = false;
 
-        if (Input.GetKeyDown(controls.Attack)) {
+        if (Input.GetKeyDown(controls.Attack) || Input.GetKeyDown(KeyCode.Space)) {
             buttonSelection[buttonIndex].onClick.Invoke();
         }
-        if (Input.GetKeyDown(controls.MoveDown)) {
+        else if (Input.GetKeyDown(controls.MoveDown) || Input.GetKeyDown(controls.MoveRight)) {
             buttonPressed = true;
             buttonIndex++;
         }
-        else if (Input.GetKeyDown(controls.MoveUp)) {
+        else if (Input.GetKeyDown(controls.MoveUp) || Input.GetKeyDown(controls.MoveLeft)) {
             buttonPressed = true;
             buttonIndex--;
         }
@@ -79,7 +81,7 @@ public class Panel : MonoBehaviour
 
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(buttonSelection[buttonIndex].gameObject);
-
+            buttonPressed = false;
             // Debug.Log("highlighting next button: " + buttonIndex + " - " + buttonSelection[buttonIndex].gameObject);
         }
     }

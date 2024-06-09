@@ -105,7 +105,6 @@ public class PlayerBall : GameUnit
     // if the ball hits something
     protected void OnCollisionEnter2D(Collision2D collision) {
         int scoreToAdd = 0, timeToAdd = 0;
-        Target targetHit;
         if (!hasHitAFloor && collision.collider.tag == "Floor") {
             hasHitAFloor = true;
             if (mode == MODE_survival) deductLives();

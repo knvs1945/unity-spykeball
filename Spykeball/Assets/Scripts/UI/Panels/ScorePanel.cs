@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
@@ -52,7 +53,8 @@ public class ScorePanel : Panel
     {
     }
 
-    void OnEnable() {
+    protected override void OnEnable() {
+        base.OnEnable();
         isCheckingConn = true;
         currentPage = 1; // reset the page every time the window is reopened
         pageText.text = currentPage.ToString();
@@ -66,8 +68,9 @@ public class ScorePanel : Panel
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (isCheckingConn) {
             updateLoadingText();
         }
@@ -177,8 +180,21 @@ public class ScorePanel : Panel
         
         currentMode = mode;
         SoundHandler.Instance.playSFX(SFXType.ButtonClick);
+        swapBtMode();
         readFromServer();
     }
+
+    // swaps the active game mode button on the score panel
+     protected void swapBtMode() {
+        if (currentMode == "ta") {
+            int index = Array.IndexOf(buttonSelection, btModeUL); // swap UL button with TA
+            if (index != -1) buttonSelection[index] = btModeTA;
+        }
+        else if (currentMode == "ul") {
+            int index = Array.IndexOf(buttonSelection, btModeTA); // swap UL button with TA
+            if (index != -1) buttonSelection[index] = btModeUL;
+        }
+     }
 
     // button change sort & order
     public void btChangeSort(string sort) {

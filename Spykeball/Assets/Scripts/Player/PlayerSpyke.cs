@@ -37,7 +37,7 @@ public class PlayerSpyke : PlayerUnit
     protected Animator animBody;
 
     // primitives    
-    private int castCounter = 0, xDirection = 1, jumpXDirection = 0;
+    private int xDirection = 1, jumpXDirection = 0;
     private float jumpXPower = 0, width, height, atkTimer = 0f, dashTimer = 0f, dashEffectTimer = 0f;
     private bool canAttack = true, isJumping = false, isFalling = false, isGrounded = false, isDashing = false;
         
