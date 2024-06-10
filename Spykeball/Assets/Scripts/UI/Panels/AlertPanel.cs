@@ -31,7 +31,6 @@ public class AlertPanel : Panel
     }
 
     public void createPanel(string msg, float timeout = 0) {
-        if (modalActive) return; // only 1 modal can be active at a time
         message.text = msg;
         EventSystem.current.SetSelectedGameObject(closeButton.gameObject);
         modalActive = true;

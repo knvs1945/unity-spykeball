@@ -105,8 +105,8 @@ public class ScorePanel : Panel
         string searchOrder = "&order=" + currentOrder;
         string searchPages = "&page=" + currentPage + "&limit=" + limit;
 
-        string ReadURL = LOCAL_READHS + searchMode + searchSort + searchOrder + searchPages;
-        // string ReadURL = LIVE_READHS + searchMode + searchSort + searchOrder + searchPages;
+        // string ReadURL = LOCAL_READHS + searchMode + searchSort + searchOrder + searchPages;
+        string ReadURL = LIVE_READHS + searchMode + searchSort + searchOrder + searchPages;
 
         // first, create a web request using "Get"
         UnityWebRequest req = UnityWebRequest.Get(ReadURL);

@@ -71,8 +71,8 @@ public class RestartPanel : Panel
         string gamemodeURL = GAMEMODEUL;
         if (Panel.gameMode == "Time Attack") gamemodeURL = GAMEMODETA;
 
-        string UpdateURL = LOCAL_UPDATEHS + gamemodeURL;
-        // string UpdateURL = LIVE_UPDATEHS + gamemodeURL;
+        // string UpdateURL = LOCAL_UPDATEHS + gamemodeURL;
+        string UpdateURL = LIVE_UPDATEHS + gamemodeURL;
         
         // convert the received scoreset into JSON data here
         string jsondata = JsonUtility.ToJson(hsrecord);
@@ -91,7 +91,8 @@ public class RestartPanel : Panel
         // send web request and check if it was successful
         yield return req.SendWebRequest();
         if (req.result != UnityWebRequest.Result.Success) {
-            UIHandler.createModal("warning", "Connection Error:\r\n" + req.error);
+            UIHandler.createModal("warning", "Connection Error:\r\n" + req.error, 3);
+            isSubmittingScore = false;
         }
         else {
             string rankResult = req.downloadHandler.text;
