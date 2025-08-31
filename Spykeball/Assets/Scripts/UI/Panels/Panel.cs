@@ -30,8 +30,8 @@ public class Panel : MonoBehaviour
     // protected const string LIVE_READHS = "https://bitknvs-30e00398cef5.herokuapp.com/sbreadhs?";
     // protected const string LIVE_UPDATEHS = "https://bitknvs-30e00398cef5.herokuapp.com/sbupdatehs";
     
-    protected const string LIVE_READHS = "http://bitknvs.com/sbreadhs?";
-    protected const string LIVE_UPDATEHS = "http://bitknvs.com/sbupdatehs";
+    protected const string LIVE_READHS = "https://bitknvs.com/sbreadhs?";
+    protected const string LIVE_UPDATEHS = "https://bitknvs.com/sbupdatehs";
 
     protected const string GAMEMODEUL = "/ul";
     protected const string GAMEMODETA = "/ta";
